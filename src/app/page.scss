@@ -1,0 +1,42 @@
+@use "sass:map";
+
+@use "@/styles/abstracts/" as *;
+
+.home {
+  &-container {
+    max-width: 100vw;
+    @extend %text-center;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: #{map.get($spacing, 8)};
+    min-height: calc(100vh - 50px);
+    font-size: #{map.get($font-sizes, 8)};
+
+    @include media-phone {
+      display: block;
+      margin: #{map.get($spacing, 4)} auto;
+      padding: #{map.get($spacing, 2)} #{map.get($spacing, 2)};
+    }
+  }
+
+  &-header {
+    & h1 {
+      color: var(--color-1);
+      text-shadow: #{$shadow-lg};
+    }
+  }
+
+  &-tech_stack-row {
+    margin: 1rem auto;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+
+    @include media-phone {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+}
