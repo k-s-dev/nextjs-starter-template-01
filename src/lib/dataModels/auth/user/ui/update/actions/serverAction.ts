@@ -73,11 +73,11 @@ export async function updateUserServerAction(
   }
 
   // handle image upload
-  let imageUploadUrl;
+  let imageUploadBlob;
 
   if (imageFile && imageFile.size > 0) {
     try {
-      imageUploadUrl = await saveFileUpload({
+      imageUploadBlob = await saveFileUpload({
         uploadFile: imageFile,
         uploadDir: `uploads/user/${user.id}/images/`,
         fileNameWoExt: "profile-pic",
@@ -97,12 +97,12 @@ export async function updateUserServerAction(
     }
   }
 
-  if (imageUploadUrl) {
+  if (imageUploadBlob) {
     try {
       await updateUser(
         { id: user.id },
         {
-          image: imageUploadUrl,
+          image: imageUploadBlob.url,
         },
         "client",
         sessionUser,

@@ -76,10 +76,10 @@ export async function createUserServerAction(
   }
 
   // handle image upload
-  let imageUploadUrl;
+  let imageUploadBlob;
   if (imageFile && imageFile.size > 0) {
     try {
-      imageUploadUrl = await saveFileUpload({
+      imageUploadBlob = await saveFileUpload({
         uploadFile: imageFile,
         uploadDir: `uploads/user/${user.id}/images/`,
         fileNameWoExt: "profile-pic",
@@ -99,12 +99,12 @@ export async function createUserServerAction(
     }
   }
 
-  if (imageUploadUrl) {
+  if (imageUploadBlob) {
     try {
       await updateUser(
         { id: user.id },
         {
-          image: imageUploadUrl,
+          image: imageUploadBlob.url,
         },
       );
     } catch (error) {
