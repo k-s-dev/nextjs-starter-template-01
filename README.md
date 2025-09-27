@@ -2,7 +2,7 @@
 
 ## Stack & Features
 
-- Framework: [Nextjs - full stack react](https://nextjs.org/)
+- Framework: [Nextjs - app router](https://nextjs.org/)
 - Styling
   - vanilla css and sass (without css/sass modules)
   - styled components: [mantine](https://mantine.dev/)
@@ -12,6 +12,9 @@
   - Database: sqlite (can be configured with `.env*`)
   - Data access and control layer
   - Admin template
+
+- File uploads: [Vercel blob](https://vercel.com/docs/vercel-blob)
+
 - Auth: [Authjs](https://authjs.dev/)
   - providers (github, google, ...) can be configured
   - encryption/session management: [jose](https://github.com/panva/jose)
@@ -28,7 +31,7 @@
 
 ### Setup env variables
 
-Sample environment files provided below.
+Sample environment files provided below and in git repo.
 
 Refer to below links for more details.
 
@@ -36,6 +39,7 @@ Refer to below links for more details.
 - [Authjs environment setup](https://authjs.dev/getting-started/installation#setup-environment)
 - Gmail account details for verification emails.
 - Prisma database setup configuration
+- [Vercel blob store key](https://vercel.com/docs/vercel-blob)
 
 #### Generic (`.env`)
 
@@ -52,6 +56,11 @@ AUTH_GITHUB_SECRET=
 
 AUTH_EMAIL_ID=
 AUTH_EMAIL_PASSWORD=
+```
+
+```bash
+# .env.local
+BLOB_READ_WRITE_TOKEN=
 ```
 
 #### Production
@@ -81,7 +90,7 @@ DATABASE_URL="file:../../prod.db"
 
 CYPRESS_NODE_ENV=test
 NODE_ENV=test
-PORT=3001
+PORT=3000
 HOST=http://localhost:${PORT}
 DATABASE_URL="file:../../test.db"
 ```
@@ -91,6 +100,11 @@ DATABASE_URL="file:../../test.db"
 ```bash
 npm install
 ```
+
+- Note: with `package-lock.json`, `npm install` should work fine. Without it there might be [issue  while installing cypress.](https://github.com/cypress-io/cypress/issues/29204)
+- Solution: If you are installing latest versions without `package-lock.json` then
+  - install `cypress` first: `npm install cypress@latest --save-dev --ignore-scripts`
+  - then `npm i` as usual
 
 ### Run server
 
