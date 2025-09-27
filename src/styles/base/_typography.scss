@@ -30,6 +30,10 @@ h6 {
   margin-bottom: #{map.get($spacing, 1)};
 }
 
+h1, h2, h3, h4, h5, h6, h7, h8 {
+  color: var(--color-2);
+}
+
 h1 {
   font-size: #{map.get($font-sizes, 14)};
   font-weight: 600;

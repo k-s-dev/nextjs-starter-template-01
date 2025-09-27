@@ -1,10 +1,10 @@
 @use "../abstracts/" as *;
 
 @mixin dark-theme-variables {
-  --body-background-color: #{$grey-900};
+  --body-background-color: #{$grey-800};
   --body-text-color: white;
 
-  --color-light: black;
+  --color-light: #{$grey-700};
   --color-dark: white;
 
   --color-1: #{$blue-300};
@@ -15,9 +15,9 @@
   --color-2-muted: #{$grey-500};
   --color-2-emphasis: #{$grey-100};
 
-  --color-3: #{$grey-300};
-  --color-3-muted: #{$grey-500};
-  --color-3-emphasis: #{$grey-100};
+  --color-3: #{$indigo-300};
+  --color-3-muted: #{$indigo-500};
+  --color-3-emphasis: #{$indigo-100};
 
   --color-danger: #{$red-300};
   --color-danger-muted: #{$red-500};
