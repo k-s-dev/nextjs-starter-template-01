@@ -1,4 +1,4 @@
-# Nextjs auth template
+# Nextjs starter template
 
 ## Stack & Features
 
@@ -27,7 +27,7 @@
   - client and server actions
   - validation (client and server): using [valibot](https://valibot.dev/)
 
-## Dev workflow
+## Dev setup
 
 ### Setup env variables
 
@@ -105,6 +105,14 @@ npm install
 - Solution: If you are installing latest versions without `package-lock.json` then
   - install `cypress` first: `npm install cypress@latest --save-dev --ignore-scripts`
   - then `npm i` as usual
+
+### Setup database
+
+Generate initial migrations.
+
+```bash
+npm run dev:db:migrate
+```
 
 ### Run server
 

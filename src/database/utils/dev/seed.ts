@@ -16,13 +16,6 @@ export async function seedUsers() {
     await prisma.user.createMany({
       data: [
         {
-          email: "shunya.acad@gmail.com",
-          name: "shunya acad",
-          password: hashedPassword,
-          emailVerified: new Date(),
-          role: "SUPERUSER",
-        },
-        {
           email: "test-user-01@example.com",
           password: hashedPassword,
           emailVerified: new Date(),

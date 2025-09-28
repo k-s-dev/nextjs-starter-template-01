@@ -19,14 +19,16 @@ export async function saveFileUpload({
   let uploadUrl;
 
   const env = process.env.NODE_ENV;
+  const app_name = process.env.APP_NAME;
 
   fileExt = fileExt ? fileExt : uploadFile.name.split(".")[1].toLowerCase();
   const fileName = fileNameWoExt
     ? `${fileNameWoExt}.${fileExt}`
     : uploadFile.name;
 
-  const uploadFilePath = path.join(`${env}/${uploadDir}/${fileName}`).toString();
-  console.log(uploadFilePath)
+  const uploadFilePath = path
+    .join(`${app_name}/${env}/${uploadDir}/${fileName}`)
+    .toString();
 
   try {
     uploadUrl = await put(uploadFilePath, uploadFile, {
