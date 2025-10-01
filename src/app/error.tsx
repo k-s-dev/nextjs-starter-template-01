@@ -1,7 +1,7 @@
 "use client";
 
+import styles from "./error.module.scss";
 import { Blockquote } from "@mantine/core";
-import "./error.scss";
 
 import { useEffect } from "react";
 
@@ -18,17 +18,17 @@ export default function Error({
   }, [error]);
 
   return (
-    <section className="error-page-container">
+    <section className={styles.rootContainer}>
       <Blockquote color="orange">
-        <header className="error-page-header">
+        <header className={styles.header}>
           <h1>Something went wrong!</h1>
         </header>
-        <p className="error-page-text">
+        <p className={styles.text}>
           There seems to be an internal server error.
         </p>
       </Blockquote>
       <button
-        className="error-page-btn--reset"
+        className={styles.resetButton}
         onClick={
           // Attempt to recover by trying to re-render the segment
           () => reset()

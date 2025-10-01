@@ -1,14 +1,13 @@
+import styles from "./layout.module.scss";
+import "@/styles/index.scss";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
+import "@mantine/notifications/styles.css";
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import { Roboto } from "next/font/google";
 import { Suspense } from "react";
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
-import "@mantine/core/styles.css";
-import "@mantine/dates/styles.css";
-import "@mantine/notifications/styles.css";
-
-import "@/styles/index.scss";
-import "./layout.scss";
 import Providers from "@/lib/components/Providers";
 import Navbar from "@/lib/components/nav/Navbar";
 import { Notifications } from "@mantine/notifications";
@@ -51,8 +50,8 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <div className="app-layout-root">
-            <header className="app-header">
+          <div className={styles.rootContainer}>
+            <header className={styles.header}>
               <Navbar />
             </header>
             {children}
