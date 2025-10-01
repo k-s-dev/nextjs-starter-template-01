@@ -65,7 +65,7 @@ const stack = [
   ["Nextjs", "https://www.nextjs.org/"],
   ["Vercel Blob", "https://vercel.com/storage/blob"],
   ["Prisma", "https://www.prisma.io/"],
-  ["Postgres", "www.postgresql.org"],
+  ["Postgres", "https://www.postgresql.org"],
   ["Authjs", "https://authjs.dev/"],
   ["Valibot", "https://valibot.dev/"],
   ["Mantine UI", "https://mantine.dev/"],
