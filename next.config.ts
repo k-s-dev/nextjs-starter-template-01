@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
     },
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
   },
-  allowedDevOrigins: ["192.168.1.*"],
+  allowedDevOrigins: ["192.168.1.*", "10.163.217.*"],
   images: {
     remotePatterns: [
       {
