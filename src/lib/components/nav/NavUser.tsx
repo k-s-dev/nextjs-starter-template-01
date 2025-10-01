@@ -9,9 +9,6 @@ import {
   Skeleton,
 } from "@mantine/core";
 import Link from "next/link";
-
-import "./Navbar.scss";
-
 import SignInLinkBtn from "@/lib/features/authentication/features/signIn/SignInLinkBtn";
 import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/SignUpLinkBtn";
 import SignOutButton from "@/lib/features/authentication/features/signOut/SignOutButton";
@@ -53,18 +50,15 @@ export default function NavUser() {
     <>
       <Menu trigger="click-hover">
         <MenuTarget>
+          {/* div needed for click/hover trigger to work */}
           <div>
             <UserAvatar src={user?.image} userName={user?.name} />
           </div>
         </MenuTarget>
         <MenuDropdown>
-          <MenuItem className="nav-user-name">
-            {user.name || user.email}
-          </MenuItem>
           <MenuItem component="div">
             <Link
               href={routes.authentication.resetPassword} // TODO: change url when available
-              className="nav-link"
             >
               Profile
             </Link>

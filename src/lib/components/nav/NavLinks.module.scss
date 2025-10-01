@@ -2,8 +2,7 @@
 
 @use "@/styles/abstracts/" as *;
 
-
-.links, .container {
+.container {
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -11,10 +10,16 @@
 }
 
 .link {
-  &:hover,
-  .active {
+  padding: #{map.get($spacing, 1)} #{map.get($spacing, 2)};
+  border-radius: #{map.get($spacing, 1)};
+  background-color: transparent;
+
+  &:hover {
     color: var(--color-danger);
   }
 }
 
-
+.active {
+  background-color: rgba(0, 0, 0, 0.03);
+  color: var(--color-1);
+}
