@@ -1,4 +1,4 @@
-import "./layout.scss";
+import styles from "./layout.module.scss";
 import AdminSidebarWrapper from "@/lib/features/admin/AdminSidebarContainer";
 
 export default async function layout({
@@ -8,11 +8,11 @@ export default async function layout({
 }) {
   return (
     <>
-      <div className="admin-layout">
-        <aside className="admin-sidebar-left">
+      <div className={styles.rootLayout}>
+        <aside className={styles.leftSidebar}>
           <AdminSidebarWrapper />
         </aside>
-        <main className="admin-main">{children}</main>
+        <main className={styles.main}>{children}</main>
       </div>
     </>
   );

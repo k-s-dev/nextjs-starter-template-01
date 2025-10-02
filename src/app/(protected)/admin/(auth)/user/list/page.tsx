@@ -1,4 +1,4 @@
-import "./page.scss";
+import styles from "./page.module.scss";
 import "@/styles/components/_button.scss";
 
 import { getUsers } from "@/lib/dataModels/auth/user/dataAccess";
@@ -14,7 +14,7 @@ export default async function Page() {
 
   return (
     <div>
-      <header className="admin-user-list-header">
+      <header className={styles.rootHeader}>
         <h1>User: List</h1>
         <Link href={routes.admin.user.create} className="btn-create">
           Create User
