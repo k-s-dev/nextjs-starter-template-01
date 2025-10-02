@@ -1,5 +1,6 @@
 "use client";
 
+import * as dtStyles from "@/lib/components/table/DataTable.module.scss";
 import { TUserPublic } from "../definitions";
 import { useEffect, useMemo, useState } from "react";
 import { DataTable } from "@/lib/components/table/DataTable";
@@ -15,6 +16,7 @@ import CopyIcon from "@/lib/components/icons/CopyIcon";
 import DeleteModal from "@/lib/components/form/DeleteModal";
 import { deleteUserServerAction } from "./delete/action/serverSingle";
 import { deleteManyUsersServerAction } from "./delete/action/serverMany";
+import clsx from "clsx";
 
 export function UserTable({ users }: { users: TUserPublic[] }) {
   const [data, setData] = useState([...users]);
@@ -59,7 +61,12 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
             <>
               {props.row.original && (
                 <>
-                  <TableCell className="table-cell table-cell--primary">
+                  <TableCell
+                    className={clsx(
+                      dtStyles.default.cell,
+                      dtStyles.default.cellPrimary,
+                    )}
+                  >
                     <Link
                       href={routes.admin.user.withId(
                         props.row.original.id,
@@ -69,7 +76,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
                     >
                       {props.getValue()}
                     </Link>
-                    <section className="table-cell-icons-row">
+                    <section className={dtStyles.default.cellIconsRow}>
                       <CopyIcon copyText={props.getValue()} />
                       <Link
                         href={routes.admin.user.withId(
@@ -107,7 +114,9 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
         accessorKey: "role",
         id: "role",
         header: "Role",
-        cell: (props) => <div className="table-cell">{props.getValue()}</div>,
+        cell: (props) => (
+          <div className={dtStyles.default.cell}>{props.getValue()}</div>
+        ),
         footer: "Role",
       },
       {
@@ -118,7 +127,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
           const emailVerified = props.row.original.emailVerified;
           const dateObj = emailVerified ? new Date(emailVerified) : undefined;
           return (
-            <div className="table-cell">
+            <div className={dtStyles.default.cell}>
               {dateObj ? dateFormat1.format(dateObj) : ""}
             </div>
           );

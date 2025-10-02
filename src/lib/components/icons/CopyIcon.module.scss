@@ -1,0 +1,8 @@
+@use "sass:map";
+
+@use "@/styles/abstracts/" as *;
+
+.icon {
+  cursor: pointer;
+  color: var(--color-2);
+}

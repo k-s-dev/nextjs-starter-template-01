@@ -1,6 +1,6 @@
 "use client";
 
-import "./AdminSidebar.scss";
+import styles from "./AdminSidebar.module.scss";
 import Link from "next/link";
 import { Button, Modal, NavLink } from "@mantine/core";
 import { usePathname } from "next/navigation";
@@ -30,7 +30,7 @@ export default function AdminSidebar({
           component={Link}
           active={pathname === routes.admin.root}
         />
-        <ul className="admin-sidebar-table-link-list">{itemList}</ul>
+        <ul className={styles.tableLinks}>{itemList}</ul>
       </div>
       <div className="media-tablet-down">
         <Button variant="default" onClick={open}>
@@ -44,7 +44,7 @@ export default function AdminSidebar({
             component={Link}
             active={pathname === routes.admin.root}
           />
-          <ul className="admin-sidebar-table-link-list" onClick={close}>
+          <ul className={styles.tableLinks} onClick={close}>
             {itemList}
           </ul>
         </Modal>

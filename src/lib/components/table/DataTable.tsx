@@ -1,7 +1,6 @@
 "use client";
 
-import "./Table.scss";
-
+import styles from "./DataTable.module.scss";
 import {
   Divider,
   Pagination,
@@ -35,6 +34,7 @@ import {
 import { useMemo, useState } from "react";
 import DebouncedInput from "../DebouncedInput";
 import DeleteModal from "../form/DeleteModal";
+import clsx from "clsx";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -108,7 +108,7 @@ export function DataTable<TData, TValue>({
       <Divider size="sm" mb="md" />
       <TableScrollContainer minWidth={600}>
         <Table striped withTableBorder withRowBorders withColumnBorders>
-          <TableThead className="table-head">
+          <TableThead className={styles.head}>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableTr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
@@ -116,16 +116,16 @@ export function DataTable<TData, TValue>({
                     <TableTh
                       key={header.id}
                       colSpan={header.colSpan}
-                      className="table-th"
+                      className={styles.th}
                     >
-                      <div className="table-th-container">
+                      <div className={styles.thContainer}>
                         {header.isPlaceholder ? null : (
                           <>
                             <div
                               {...{
                                 className: header.column.getCanSort()
-                                  ? "table-head-title-sort"
-                                  : "table-head-title",
+                                  ? styles.headTitleSort
+                                  : styles.headTitle,
                                 onClick:
                                   header.column.getToggleSortingHandler(),
                               }}
@@ -167,7 +167,7 @@ export function DataTable<TData, TValue>({
               ))
             ) : (
               <TableTr>
-                <TableTd colSpan={columns.length} className="">
+                <TableTd colSpan={columns.length} className={styles.td}>
                   No results.
                 </TableTd>
               </TableTr>
@@ -191,7 +191,7 @@ export function DataTable<TData, TValue>({
 function DataTablePagination<TData>({ table }: { table: TsDataTable<TData> }) {
   return (
     <>
-      <div className="table-pagination-container">
+      <div className={styles.paginationContainer}>
         <Pagination
           size="xs"
           withEdges
@@ -201,7 +201,7 @@ function DataTablePagination<TData>({ table }: { table: TsDataTable<TData> }) {
           value={table.getState().pagination.pageIndex + 1}
           onChange={(n) => table.setPageIndex(n - 1)}
         />
-        <div className="table-pagination-show-container">
+        <div className={styles.paginationShowContainer}>
           <div>Show</div>
           <Select
             size="xs"
@@ -231,8 +231,8 @@ function DataTableInfo({
   const identifier = `${count} user${count > 1 ? "s" : ""}`;
 
   return (
-    <div className="table-info-container">
-      <p className="table-info">
+    <div className={styles.infoContainer}>
+      <p className={styles.info}>
         <i>* Click column title to sort</i>
       </p>
 
@@ -278,7 +278,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
 
   return filterVariant === "range" ? (
     <div>
-      <div className="table-filter-range-container">
+      <div className={styles.filterRangeContainer}>
         <DebouncedInput
           type="number"
           min={Number(column.getFacetedMinMaxValues()?.[0] ?? "")}
@@ -292,7 +292,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
               ? `(${column.getFacetedMinMaxValues()?.[0]})`
               : ""
           }`}
-          className="table-filter table-filter-range"
+          className={clsx(styles.filter, styles.filterRange)}
         />
         <DebouncedInput
           type="number"
@@ -307,7 +307,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
               ? `(${column.getFacetedMinMaxValues()?.[1]})`
               : ""
           }`}
-          className="table-filter table-filter-range"
+          className={clsx(styles.filter, styles.filterRange)}
         />
       </div>
     </div>
@@ -318,7 +318,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
     >
       {sortedUniqueValues.map((value) => (
         //dynamically generated select options from faceted values feature
-        <option value={value} key={value} className="table-filter-select">
+        <option value={value} key={value} className={styles.filterSelect}>
           {value}
         </option>
       ))}
@@ -328,7 +328,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
       {/* Autocomplete suggestions from faceted values feature */}
       <datalist id={column.id + "list"}>
         {sortedUniqueValues.map((value: string | number | undefined) => (
-          <option value={value} key={value} className="table-filter-select" />
+          <option value={value} key={value} className={styles.filterSelect}/>
         ))}
       </datalist>
       <DebouncedInput
@@ -336,7 +336,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
         value={(columnFilterValue ?? "") as string}
         handleChangeAction={(value) => column.setFilterValue(value)}
         placeholder={`Search... (${column.getFacetedUniqueValues().size})`}
-        className="table-filter table-filter-text"
+        className={clsx(styles.filter, styles.filterSelect)}
         list={column.id + "list"}
       />
     </>

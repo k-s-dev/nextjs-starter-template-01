@@ -10,7 +10,7 @@ export function SelectSingle({
   ...selectProps
 }: SelectSingleProps) {
   return (
-    <FormControl errors={errors} messages={messages}>
+    <FormControl errorsProps={{ errors }} messagesProps={{ messages }}>
       <Select form={formId} id={fieldId} {...selectProps} />
     </FormControl>
   );

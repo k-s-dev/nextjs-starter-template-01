@@ -1,43 +1,75 @@
 "use client";
 
+import styles from "./FormMessage.module.scss";
 import { Divider } from "@mantine/core";
-import { v4 as uuidv4 } from "uuid";
-
-import "./Form.scss";
-
+import clsx from "clsx";
 
 export default function FormMessage({
   messages,
+  error = false,
   title = "Message",
-  rootClass = "form-message",
-  itemClass = "form-message-item",
-}: {
-  messages?: string[];
-  title?: string | null;
-  rootClass?: string;
-  itemClass?: string;
-}) {
+  containerClass,
+  listClass,
+  itemClass,
+  headerClass,
+  appendContainerClass = true,
+  appendItemClass = true,
+  appendHeaderClass = true,
+}: FormMessageProps) {
   if (!messages || messages.length <= 0) return null;
+
+  const finalContainerClass = clsx(
+    appendContainerClass && styles.container,
+    containerClass,
+  );
+
+  const finalListClass = clsx(
+    appendContainerClass && styles.container,
+    appendHeaderClass && !error && styles.message,
+    appendHeaderClass && error && styles.error,
+    listClass,
+  );
+
+
+  const finalItemClass = clsx(appendItemClass && styles.item, itemClass);
+
+  const finalHeaderClass = clsx(
+    appendHeaderClass && styles.header,
+    headerClass,
+  );
 
   const messageList = messages.map((msg) => {
     return (
-      <li key={uuidv4()} className={itemClass}>
+      <li key={msg} className={finalItemClass}>
         {msg}
       </li>
     );
   });
 
   return (
-    <section className={`${rootClass}-container`}>
+    <section className={finalContainerClass}>
       {title && (
         <>
           <Divider size="md" my="sm" />
-          <header className={`${rootClass}-header`}>
+          <header className={finalHeaderClass}>
             <h4>{title}</h4>
           </header>
         </>
       )}
-      <ul className={rootClass}>{messageList}</ul>
+      <ul className={finalListClass}>{messageList}</ul>
     </section>
   );
+}
+
+export interface FormMessageProps {
+  messages?: string[];
+  error?: boolean;
+  title?: string | null;
+  containerClass?: string;
+  listClass?: string;
+  itemClass?: string;
+  headerClass?: string;
+  appendContainerClass?: boolean;
+  appendItemClass?: boolean;
+  appendHeaderClass?: boolean;
 }

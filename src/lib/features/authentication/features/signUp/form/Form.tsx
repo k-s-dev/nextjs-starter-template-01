@@ -17,6 +17,7 @@ import {
   UserName,
   UserPassword,
 } from "@/lib/dataModels/auth/user/ui/Fields";
+import Form from "@/lib/components/form/Form";
 
 export default function SignUpForm({
   formId = "signUp-form",
@@ -58,7 +59,7 @@ export default function SignUpForm({
 
   return (
     <>
-      <form id={formId} className="form" noValidate>
+      <Form id={formId} noValidate>
         <UserEmail
           formId={formId}
           formState={formState}
@@ -93,7 +94,7 @@ export default function SignUpForm({
           type="submit"
           data-test-cy="signUp-btn"
         />
-      </form>
+      </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages} />
     </>

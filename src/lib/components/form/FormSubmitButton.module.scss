@@ -1,0 +1,7 @@
+@use "sass:map";
+
+@use "@/styles/abstracts" as *;
+
+.submitButton {
+  @include btn(success, outline, 4);
+}

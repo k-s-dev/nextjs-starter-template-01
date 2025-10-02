@@ -1,11 +1,9 @@
 "use client";
 
+import styles from "./UserCreateForm.module.scss";
 import React, { useActionState, useEffect, useState } from "react";
 import Link from "next/link";
 import { Divider } from "@mantine/core";
-
-import "../UserForm.scss";
-
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import { createUserClientAction } from "./actions/clientAction";
@@ -16,12 +14,12 @@ import {
 import { TUserFormState, TUserFormStateData } from "../../definitions";
 import { routes } from "@/lib/utils/routeMapper";
 import FormContainer from "@/lib/components/form/FormContainer";
-import FormRowBtns from "@/lib/components/form/FormRowBtns";
 import FormHeader from "@/lib/components/form/FormHeader";
 import { UserForm } from "../UserForm";
 import { USER_ROLE } from "@/generated/prisma";
 import { notifications } from "@mantine/notifications";
 import { redirect } from "next/navigation";
+import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
 
 export default function UserCreateForm({
   formId = `user-create-form`,
@@ -71,16 +69,16 @@ export default function UserCreateForm({
 
 export function FormRowBtnsUser({ formId, isPending }: IPropsFormBtn) {
   return (
-    <FormRowBtns>
+    <FormButtonsRow>
       <FormSubmitButton
         formId={formId}
         isPending={isPending}
         buttonText="Save"
       />
-      <Link href={routes.admin.user.read} className="form-btn-cancel">
+      <Link href={routes.admin.user.read} className={styles.cancelButton}>
         Cancel
       </Link>
-    </FormRowBtns>
+    </FormButtonsRow>
   );
 }
 

@@ -1,28 +1,21 @@
-import FormMessage from "../FormMessage";
-import FormControlError from "./FormControlError";
+import styles from "./FormControl.module.scss";
+import FormMessage, { FormMessageProps } from "../FormMessage";
+import FormControlError, { FormControlErrorProps } from "./FormControlError";
 
 export default function FormControl({
   children,
-  errors,
-  messages,
-  errorRootClass = "form-control-error",
-  errorItemClass = "form-control-error-item",
+  errorsProps,
+  messagesProps,
 }: {
   children?: React.ReactNode;
-  errors: string[] | undefined;
-  messages?: string[] | undefined;
-  errorRootClass?: string;
-  errorItemClass?: string;
+  errorsProps?: FormControlErrorProps;
+  messagesProps?: FormMessageProps;
 }) {
   return (
-    <section className="form-control">
+    <section className={styles.container}>
       {children}
-      <FormControlError
-        errors={errors}
-        rootClass={errorRootClass}
-        itemClass={errorItemClass}
-      />
-      <FormMessage messages={messages} />
+      <FormControlError {...errorsProps} />
+      <FormMessage {...messagesProps} />
     </section>
   );
 }

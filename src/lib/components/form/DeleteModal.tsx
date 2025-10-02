@@ -1,7 +1,6 @@
 "use client";
 
-import "./DeleteModal.scss";
-
+import styles from "./DeleteModal.module.scss";
 import { useDisclosure } from "@mantine/hooks";
 import DeleteIcon from "../icons/DeleteIcon";
 import { Blockquote, Modal } from "@mantine/core";
@@ -12,10 +11,10 @@ export default function DeleteModal({
   identifier,
   deleteAction,
   children,
-  title = "Delete Confirmation",
+  title,
   tooltipLabel = "Delete",
   disabled = false,
-  btnClassName = "icon",
+  btnClassName = styles.buttonIcon,
 }: {
   resource: string;
   identifier: string;
@@ -79,18 +78,18 @@ export function DeleteModalContent({
   children?: React.ReactNode;
 }) {
   return (
-    <section className="delete-modal-section">
-      <h4>This is a destructive action!</h4>
+    <section>
+      <h4 className={styles.highlight}>This is a destructive action!</h4>
 
       <p>
-        <span className="delete-modal-resource">{resource || "Resource"}</span>
+        <span className={styles.resource}>{resource || "Resource"}</span>
         {": "}
-        <span className="delete-modal-identifier">{identifier}</span>{" "}
+        <span className={styles.identifier}>{identifier}</span>{" "}
       </p>
 
       <p>
         will be{" "}
-        <span className="delete-modal-highlight">permanently deleted.</span>
+        <span className={styles.highlight}>permanently deleted.</span>
       </p>
 
       <p>
@@ -104,12 +103,12 @@ export function DeleteModalContent({
 
       {children}
 
-      <section className="delete-modal-btn-row">
+      <section className={styles.buttonRow}>
         <form id={identifier} action={deleteAction}>
-          <button className="delete-modal-btn--confirm">Confirm</button>
+          <button className={styles.buttonConfirm}>Confirm</button>
         </form>
 
-        <button className="delete-modal-btn--cancel" onClick={closeAction}>
+        <button className={styles.buttonCancel} onClick={closeAction}>
           Cancel
         </button>
       </section>

@@ -1,8 +1,7 @@
 "use client";
 
+import styles from "./FormHeader.module.scss";
 import { Divider } from "@mantine/core";
-
-import "./Form.scss"
 
 export default function FormHeader({
   children,
@@ -11,7 +10,7 @@ export default function FormHeader({
 }) {
   return (
     <>
-      <section className="form-header">{children}</section>
+      <section className={styles.header}>{children}</section>
       <Divider size="md" my="sm" />
     </>
   );

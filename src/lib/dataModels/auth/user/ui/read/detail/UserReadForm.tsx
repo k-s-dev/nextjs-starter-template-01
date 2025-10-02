@@ -1,7 +1,6 @@
 "use client";
 
-import "../../UserForm.scss";
-
+import styles from "./UserReadForm.module.scss";
 import React, { useActionState, useState } from "react";
 import Link from "next/link";
 import { Divider } from "@mantine/core";
@@ -9,7 +8,6 @@ import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import { routes } from "@/lib/utils/routeMapper";
 import FormContainer from "@/lib/components/form/FormContainer";
-import FormRowBtns from "@/lib/components/form/FormRowBtns";
 import FormHeader from "@/lib/components/form/FormHeader";
 import {
   TUserFormState,
@@ -20,6 +18,7 @@ import { UserForm } from "../../UserForm";
 import DeleteModal from "@/lib/components/form/DeleteModal";
 import { FaArrowLeft, FaPenToSquare } from "react-icons/fa6";
 import { deleteUserServerAction } from "../../delete/action/serverSingle";
+import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
 
 export default function UserReadForm({
   user,
@@ -70,10 +69,10 @@ export default function UserReadForm({
 
 function BtnsRow({ id, email }: { id: string; email: string }) {
   return (
-    <FormRowBtns>
+    <FormButtonsRow>
       <Link
         href={routes.admin.user.withId(id, "update")}
-        className="form-btn-edit"
+        className={styles.editIcon}
       >
         <FaPenToSquare />
       </Link>
@@ -81,12 +80,11 @@ function BtnsRow({ id, email }: { id: string; email: string }) {
         resource="User"
         identifier={`${email} (id: ${id})`}
         deleteAction={async () => await deleteUserServerAction(id)}
-        btnClassName="form-btn-delete"
       />
-      <Link href={routes.admin.user.read} className="form-btn-back">
+      <Link href={routes.admin.user.read} className={styles.backIcon}>
         <FaArrowLeft />
       </Link>
-    </FormRowBtns>
+    </FormButtonsRow>
   );
 }
 

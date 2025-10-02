@@ -1,11 +1,9 @@
 "use client";
 
+import styles from "./UserUpdateForm.module.scss";
 import React, { useActionState, useState } from "react";
 import Link from "next/link";
 import { Divider } from "@mantine/core";
-
-import "../UserForm.scss";
-
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
@@ -19,10 +17,10 @@ import {
 } from "../../definitions";
 import { routes } from "@/lib/utils/routeMapper";
 import FormContainer from "@/lib/components/form/FormContainer";
-import FormRowBtns from "@/lib/components/form/FormRowBtns";
 import FormHeader from "@/lib/components/form/FormHeader";
 import { UserForm } from "../UserForm";
 import { updateUserClientAction } from "./actions/clientAction";
+import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
 
 export default function UserUpdateForm({
   user,
@@ -68,7 +66,7 @@ export function FormRowBtnsUser({
   isPending,
 }: IPropsFormBtn & { id: string }) {
   return (
-    <FormRowBtns>
+    <FormButtonsRow>
       <FormSubmitButton
         formId={formId}
         isPending={isPending}
@@ -76,11 +74,11 @@ export function FormRowBtnsUser({
       />
       <Link
         href={routes.admin.user.withId(id, "detail")}
-        className="form-btn-cancel"
+        className={styles.cancelButton}
       >
         Cancel
       </Link>
-    </FormRowBtns>
+    </FormButtonsRow>
   );
 }
 

@@ -18,6 +18,7 @@ import { sendVerificationLinkActionServer } from "./action/server/sendVerficatio
 import { VSSignInForm, VSSignInFormBase } from "./definitions";
 import { UserEmail, UserPassword } from "@/lib/dataModels/auth/user/ui/Fields";
 import { routes } from "@/lib/utils/routeMapper";
+import Form from "@/lib/components/form/Form";
 
 export default function CredentialsSignInForm({
   formId = "signIn-form",
@@ -97,7 +98,7 @@ export default function CredentialsSignInForm({
 
   return (
     <>
-      <form id={formId} className="form" noValidate>
+      <Form id={formId} noValidate>
         <UserEmail
           formId={formId}
           formState={formState}
@@ -136,7 +137,7 @@ export default function CredentialsSignInForm({
             data-test-cy="reset_password-btn"
           />
         </section>
-      </form>
+      </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages || []} />
     </>

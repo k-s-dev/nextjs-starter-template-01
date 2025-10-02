@@ -1,0 +1,7 @@
+@use "sass:map";
+
+@use "@/styles/abstracts/" as *;
+
+.tableLinks {
+  padding-left: #{map.get($spacing, 2)};
+}

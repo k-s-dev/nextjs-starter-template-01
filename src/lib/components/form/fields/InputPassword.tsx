@@ -12,7 +12,7 @@ export function InputPassword({
   ...props
 }: InputPasswordProps) {
   return (
-    <FormControl errors={errors} messages={messages}>
+    <FormControl errorsProps={{errors}} messagesProps={{messages}}>
       <PasswordInput
         form={formId}
         defaultValue={defaultValue}

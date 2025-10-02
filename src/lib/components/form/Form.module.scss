@@ -1,0 +1,26 @@
+@use "sass:map";
+
+@use "@/styles/abstracts" as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: #{map.get($spacing, 2)};
+  text-align: start;
+  margin-bottom: #{map.get($spacing, 3)};
+  color: var(--color-2);
+
+  &[inert] {
+    & input,
+    & button {
+      background-color: $grey-100;
+    }
+  }
+}
+
+// .inert {
+//   & input,
+//   & button {
+//     background-color: $grey-100;
+//   }
+// }
