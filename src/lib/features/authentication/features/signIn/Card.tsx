@@ -1,14 +1,12 @@
+import styles from "./Card.module.scss";
 import Link from "next/link";
 import { Suspense } from "react";
-
-import "./SignIn.scss";
-
 import { routes } from "@/lib/utils/routeMapper";
 import { Card, CardContent } from "@/lib/components/card";
-import CredentialsSignInForm from "./credentials/Form";
 import AuthCardHeader from "../../components/AuthCardHeader";
 import AuthProviderIcons from "../../components/AuthProviderIcons";
 import { Divider } from "@mantine/core";
+import CredentialsSignInForm from "./credentials/Form";
 
 export default function SignInCard() {
   return (
@@ -29,7 +27,7 @@ export default function SignInCard() {
 
 function SignUpLink() {
   return (
-    <Link href={routes.all.signUp} className="signIn-signUp-btn">
+    <Link href={routes.all.signUp} className={styles.signUpButton}>
       Sign Up
     </Link>
   );

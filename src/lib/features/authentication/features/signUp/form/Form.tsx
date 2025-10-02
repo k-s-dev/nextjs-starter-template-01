@@ -1,8 +1,8 @@
 "use client";
 
+import styles from "./Form.module.scss";
 import React, { useActionState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
@@ -40,7 +40,7 @@ export default function SignUpForm({
   if (formState.status === "success") {
     return (
       <div
-        className="signUp-success-message"
+        className={styles.successMessage}
         data-test-cy="signUp-success-message"
       >
         <p>User created succuesfully.</p>
@@ -48,7 +48,7 @@ export default function SignUpForm({
           Verification link has been sent to email:{" "}
           <span>{formState.data?.email}</span>
         </p>
-        <p className="signUp-verification-notice">
+        <p className={styles.verificationNotice}>
           Email verification is needed to be able to sign in using email and
           password.
         </p>

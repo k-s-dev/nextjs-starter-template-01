@@ -2,6 +2,6 @@
 
 @use "@/styles/abstracts" as *;
 
-.signOut-btn {
-  @include btn(danger, filled);
+.signUpButton {
+  @include btn(success, outline, 5);
 }

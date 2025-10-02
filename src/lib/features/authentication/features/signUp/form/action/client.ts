@@ -3,9 +3,9 @@
 import * as v from "valibot";
 
 import { parseFormData } from "@/lib/utils/form";
-import { VSSignUpForm } from "../definitions";
 import { signUpActionServer } from "./server";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { VSSignUpForm } from "../../definitions";
 
 export async function signUpActionClient(
   prevState: TUserFormState | null,

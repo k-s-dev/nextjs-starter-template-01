@@ -5,7 +5,6 @@
 .rootContainer {
   display: grid;
   grid-template-rows: auto 1fr;
-  min-height: 200vh;
 
   @include media-tablet-down {
     grid-template-columns: 1fr;

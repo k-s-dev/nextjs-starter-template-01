@@ -9,14 +9,14 @@ import {
   Skeleton,
 } from "@mantine/core";
 import Link from "next/link";
-import SignInLinkBtn from "@/lib/features/authentication/features/signIn/SignInLinkBtn";
-import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/SignUpLinkBtn";
-import SignOutButton from "@/lib/features/authentication/features/signOut/SignOutButton";
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
 import { routes } from "@/lib/utils/routeMapper";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { useEffect } from "react";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
+import SignInLinkBtn from "@/lib/features/authentication/features/signIn/Button";
+import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/Button";
+import SignOutButton from "@/lib/features/authentication/features/signOut/Button";
 
 export default function NavUser() {
   const { data: session, status } = useSession();

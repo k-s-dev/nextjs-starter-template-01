@@ -2,19 +2,17 @@
 
 @use "@/styles/abstracts" as *;
 
-.auth-provider-icon-row {
+.iconRow {
   display: flex;
   gap: #{map.get($spacing, 2)};
   justify-content: space-around;
   flex-wrap: wrap;
 }
 
-// .auth-provider-icon-form { }
-
-.auth-provider-icon-btn {
+.iconButton {
   @include btn($color: 1, $variant: outline);
 }
 
-.auth-provider-icon {
+.icon {
   font-size: #{map.get($font-sizes, 9)};
 }

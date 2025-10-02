@@ -1,15 +1,13 @@
 "use client";
 
+import styles from "./Button.module.scss";
 import { signOut } from "next-auth/react";
-
-import "./SignOut.scss";
-
 import { signOutAction } from "./action";
 import { useRouter } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
 
 export default function SignOutButton({
-  className = "signOut-btn",
+  className,
 }: {
   className?: string;
 }) {
@@ -17,7 +15,7 @@ export default function SignOutButton({
 
   return (
     <button
-      className={className}
+      className={className || styles.signOutButton}
       type="button"
       onClick={async () => {
         await signOut({ redirect: false });

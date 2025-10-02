@@ -3,14 +3,14 @@
 import * as v from "valibot";
 import bcrypt from "bcryptjs";
 
-import { VSSignUpForm } from "../definitions";
-import { sendVerificationEmail } from "../../../verification";
 import { parseFormData } from "@/lib/utils/form";
 import { TUser, TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import {
   createUser,
   getUserByEmail,
 } from "@/lib/dataModels/auth/user/dataAccess";
+import { VSSignUpForm } from "../../definitions";
+import { sendVerificationEmail } from "@/lib/features/authentication/verification";
 
 export async function signUpActionServer(
   prevState: TUserFormState | null,

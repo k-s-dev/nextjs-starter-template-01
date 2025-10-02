@@ -1,7 +1,6 @@
 import Link from "next/link";
 
-import "./ResetPassword.scss";
-
+import styles from "./ResetPasswordCard.module.scss";
 import { routes } from "@/lib/utils/routeMapper";
 import { Card, CardContent } from "@/lib/components/card";
 import AuthCardHeader from "../../components/AuthCardHeader";
@@ -26,9 +25,9 @@ export default function ResetPasswordCard({
 
 function SignIn() {
   return (
-    <section className="signUp-signIn-container">
+    <section className={styles.container}>
       <h4>Already have an account?</h4>
-      <Link href={routes.all.signIn} className="signUp-signIn-btn">
+      <Link href={routes.all.signIn} className={styles.btn}>
         Sign In
       </Link>
     </section>

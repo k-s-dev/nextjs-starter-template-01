@@ -1,11 +1,9 @@
 "use client";
 
+import styles from "./Form.module.scss";
 import React, { useActionState, useEffect, useState } from "react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-import "./SignInForm.scss";
-
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
@@ -120,13 +118,13 @@ export default function CredentialsSignInForm({
           data-test-cy="signIn-btn"
         />
 
-        <section className="signIn-form-extra-btns-row">
+        <section className={styles.extraButtonsRow}>
           <FormSubmitButton
             formId={formId}
             formAction={sendVerificationEmailFormAction}
             isPending={isPending}
             buttonText="Resend email verification link"
-            className="signIn-form-send_verification_link_email-btn"
+            className={styles.verificationButton}
             data-test-cy="send_verification_link_email-btn"
           />
           <FormSubmitButton
@@ -134,7 +132,7 @@ export default function CredentialsSignInForm({
             formAction={resetPasswordAction}
             isPending={isPending}
             buttonText="Reset password"
-            className="signIn-form-reset_password-btn"
+            className={styles.resetPasswordButton}
             data-test-cy="reset_password-btn"
           />
         </section>
