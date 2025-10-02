@@ -1,6 +1,6 @@
 @use "sass:map";
 
-@use "@/styles/abstracts/" as *;
+@use "../abstracts/" as *;
 
 @mixin visibility-on {
   display: block;

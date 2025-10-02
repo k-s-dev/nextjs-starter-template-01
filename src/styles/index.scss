@@ -1,6 +1,6 @@
-@use "vendors";
-@use "abstracts";
-@use "base";
-@use "components";
-@use "themes";
+@forward "vendors";
+@forward "abstracts";
+@forward "base";
+@forward "components";
+@forward "themes";
 
