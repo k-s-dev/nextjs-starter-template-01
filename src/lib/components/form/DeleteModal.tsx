@@ -15,6 +15,7 @@ export default function DeleteModal({
   tooltipLabel = "Delete",
   disabled = false,
   btnClassName = styles.buttonIcon,
+  ...btnProps
 }: {
   resource: string;
   identifier: string;
@@ -24,6 +25,7 @@ export default function DeleteModal({
   tooltipLabel?: string;
   disabled?: boolean;
   btnClassName?: string;
+  btnProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [showFailMessage, setShowFailMessage] = useState<boolean>(false);
@@ -57,6 +59,7 @@ export default function DeleteModal({
         disabled={disabled}
         onClick={open}
         className={btnClassName}
+        {...btnProps}
       >
         <DeleteIcon label={tooltipLabel} />
       </button>
@@ -88,8 +91,7 @@ export function DeleteModalContent({
       </p>
 
       <p>
-        will be{" "}
-        <span className={styles.highlight}>permanently deleted.</span>
+        will be <span className={styles.highlight}>permanently deleted.</span>
       </p>
 
       <p>
@@ -105,7 +107,12 @@ export function DeleteModalContent({
 
       <section className={styles.buttonRow}>
         <form id={identifier} action={deleteAction}>
-          <button className={styles.buttonConfirm}>Confirm</button>
+          <button
+            className={styles.buttonConfirm}
+            data-test-cy="confirm-delete-button"
+          >
+            Confirm
+          </button>
         </form>
 
         <button className={styles.buttonCancel} onClick={closeAction}>
@@ -118,7 +125,7 @@ export function DeleteModalContent({
 
 function FailMessage() {
   return (
-    <Blockquote color="orange" mb="md" >
+    <Blockquote color="orange" mb="md">
       Failed to delete resource. Please try again.
     </Blockquote>
   );

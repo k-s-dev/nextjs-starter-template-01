@@ -28,6 +28,6 @@ describe("SignIn flow", () => {
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
     cy.location("pathname").should("eq", routes.authentication.signIn);
-    cy.get(".form-error-item").eq(0).should("exist");
+    cy.getByData("form-error-item").eq(0).should("be.visible");
   });
 });

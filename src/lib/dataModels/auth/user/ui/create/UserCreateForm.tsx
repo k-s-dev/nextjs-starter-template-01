@@ -74,6 +74,7 @@ export function FormRowBtnsUser({ formId, isPending }: IPropsFormBtn) {
         formId={formId}
         isPending={isPending}
         buttonText="Save"
+        data-test-cy="user-create-form-submit-button"
       />
       <Link href={routes.admin.user.read} className={styles.cancelButton}>
         Cancel

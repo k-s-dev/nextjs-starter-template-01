@@ -80,6 +80,7 @@ function BtnsRow({ id, email }: { id: string; email: string }) {
         resource="User"
         identifier={`${email} (id: ${id})`}
         deleteAction={async () => await deleteUserServerAction(id)}
+        data-test-cy="delete-user-button"
       />
       <Link href={routes.admin.user.read} className={styles.backIcon}>
         <FaArrowLeft />

@@ -30,7 +30,6 @@ export default function FormMessage({
     listClass,
   );
 
-
   const finalItemClass = clsx(appendItemClass && styles.item, itemClass);
 
   const finalHeaderClass = clsx(
@@ -40,7 +39,11 @@ export default function FormMessage({
 
   const messageList = messages.map((msg) => {
     return (
-      <li key={msg} className={finalItemClass}>
+      <li
+        key={msg}
+        className={finalItemClass}
+        data-test-cy={error ? "form-error-item" : "form-message-item"}
+      >
         {msg}
       </li>
     );

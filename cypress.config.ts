@@ -3,6 +3,7 @@ import { defineConfig } from "cypress";
 import { resetTestDb } from "@/database/utils/test/reset";
 import { seedTestDb } from "@/database/utils/test/seed";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
+import { getVerificationToken } from "@/lib/dataModels/auth/verificationToken";
 
 export default defineConfig({
   e2e: {
@@ -29,6 +30,9 @@ export default defineConfig({
         },
         "db:getUserByEmail": async (email) => {
           return await getUser({ email: email }, "server");
+        },
+        "db:getEmailVerificationTokenByEmail": async (email) => {
+          return await getVerificationToken(email, "EMAIL_VERFICATION");
         },
       });
       return config;

@@ -46,9 +46,9 @@ describe("admin.user.create flow", () => {
     cy.location("pathname").should("eq", "/");
     cy.visit(routes.admin.user.create);
     cy.get('input[name="email"]').type(userEmail);
-    cy.get("button.form-btn-submit").contains("Save").click();
+    cy.getByData("user-create-form-submit-button").eq(0).click();
     cy.location("pathname").should("eq", "/admin/user/list");
-    cy.get(".table-cell").contains(userEmail).click();
+    cy.contains(userEmail).click()
     cy.location("pathname").should("contain", "/admin/user/");
     cy.location("pathname").should("contain", "/detail");
     cy.get("h1").should("contain.text", "User: Details")

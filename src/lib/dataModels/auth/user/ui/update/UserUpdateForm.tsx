@@ -71,6 +71,7 @@ export function FormRowBtnsUser({
         formId={formId}
         isPending={isPending}
         buttonText="Save"
+        data-test-cy="save-user-updates-button"
       />
       <Link
         href={routes.admin.user.withId(id, "detail")}

@@ -32,19 +32,23 @@ describe("SignUp flow", () => {
     cy.getByData("signUp-password").type("12345678");
     cy.getByData("signUp-confirmPassword").type("12345678");
     cy.getByData("signUp-btn").click();
-    cy.get(".form-error-item").should("be.visible");
+    cy.getByData("form-error-item").eq(0).should("be.visible");
   });
 
-  it.skip("should verify email", () => {
+  it("should verify email", () => {
     const email = "test-user-04@example.com";
     cy.visit(routes.authentication.signUp);
     cy.getByData("signUp-email").type(email);
     cy.getByData("signUp-password").type("12345678");
     cy.getByData("signUp-confirmPassword").type("12345678");
     cy.getByData("signUp-btn").click();
-    // get token
-    // construct verify-email route with token
-    // visit verfify-email page
-    // confirm email verfied using displayed confirmation message
+    cy.contains("has been sent").should("be.visible");
+    cy.task("db:getEmailVerificationTokenByEmail", email).then((token) => {
+      cy.visit(`/verify-email/?verificationToken=${token.token}`, {
+        failOnStatusCode: false,
+      });
+      cy.document().its("readyState").should("eq", "complete");
+      cy.contains("has been verified").should("be.visible");
+    });
   });
 });

@@ -40,13 +40,24 @@ describe("admin.user.delete flow", () => {
     cy.get("@user02UrlDetail").then((url) => {
       cy.visit(url);
     });
-    cy.get("button.form-btn-delete").eq(0).click();
-    cy.get("button.delete-modal-btn--confirm").click();
+    cy.getByData("delete-user-button").eq(0).click();
+    cy.getByData("confirm-delete-button").click();
     cy.visit(routes.admin.user.read);
-    cy.get(".table-cell")
-      .contains("test-user-02@example.com")
-      .should("not.be.true");
+    cy.contains("test-user-02@example.com").should("not.be.true");
   });
 
-  it("should delete many users when signed in as superuser");
+  it("should delete many users when signed in as superuser", () => {
+    cy.visit(routes.authentication.signIn);
+    cy.getByData("signIn-email").type("test-user-01@example.com");
+    cy.getByData("signIn-password").type("12345678");
+    cy.getByData("signIn-btn").click();
+    cy.location("pathname").should("eq", "/");
+    cy.visit(routes.admin.user.read);
+    cy.get("input[type='checkbox']").eq(2).click();
+    cy.get("input[type='checkbox']").eq(3).click();
+    cy.getByData("delete-all-icon").eq(0).click();
+    cy.getByData("confirm-delete-button").click();
+    cy.contains("test-user-01@example.com").should("be.visible");
+    cy.contains("test-user-02@example.com").should("not.be.true");
+  });
 });
