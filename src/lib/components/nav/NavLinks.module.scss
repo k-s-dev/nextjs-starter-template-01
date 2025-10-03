@@ -20,6 +20,6 @@
 }
 
 .active {
-  background-color: rgba(0, 0, 0, 0.03);
-  color: var(--color-1);
+  background-color: var(--color-warning-muted);
+  color: var(--color-success-emphasis);
 }
