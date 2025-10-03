@@ -37,11 +37,21 @@ Refer to below links for more details.
 
 - [Nextjs environment setup](https://nextjs.org/docs/app/guides/environment-variables)
 - [Authjs environment setup](https://authjs.dev/getting-started/installation#setup-environment)
-- Gmail account details for verification emails.
-- Prisma database setup configuration
-- [Vercel blob store key](https://vercel.com/docs/vercel-blob)
+#### Checklist
 
-#### Generic (`.env`)
+- **Database**: Prisma database setup configuration
+
+- **File uploads**:
+  - env variable `UPLOAD_METHOD` decides where to upload files
+    - options
+      - `local`: local `public` folder is used
+      - `vercel-blob`: [Vercel blob store key is needed](https://vercel.com/docs/vercel-blob)
+
+- **Emails**: Gmail account details for verification emails.
+
+#### Samples
+
+##### Generic (`.env`)
 
 ```bash
 # .env
@@ -63,7 +73,7 @@ AUTH_EMAIL_PASSWORD=
 BLOB_READ_WRITE_TOKEN=
 ```
 
-#### Production
+##### Production
 
 ```bash
 # .env.development.local
@@ -73,7 +83,7 @@ HOST=http://localhost:${PORT}
 DATABASE_URL="file:../../dev.db"
 ```
 
-#### Development
+##### Development
 
 ```bash
 # .env.production.local
@@ -83,7 +93,7 @@ HOST=http://localhost:${PORT}
 DATABASE_URL="file:../../prod.db"
 ```
 
-#### Test
+##### Test
 
 ```bash
 # .env.test.local
@@ -108,7 +118,9 @@ npm install
 
 ### Setup database
 
-Generate initial migrations.
+- Check prisma configuration
+- Check npm scripts in `package.json` based on workflow choices
+- Generate initial migrations.
 
 ```bash
 npm run dev:db:migrate
