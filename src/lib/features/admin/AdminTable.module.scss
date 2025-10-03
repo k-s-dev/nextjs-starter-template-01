@@ -1,0 +1,5 @@
+@use "sass:map";
+
+@use "@/styles/abstracts/" as *;
+
+@include link;

@@ -1,6 +1,6 @@
 "use client";
 
-import "./Form.scss";
+import styles from "./FormSubmitButton.module.scss";
 
 export function FormSubmitButton({
   formId,
@@ -14,7 +14,7 @@ export function FormSubmitButton({
     <button
       form={formId}
       disabled={isPending}
-      className={!!className ? className : "form-btn-submit"}
+      className={!!className ? className : styles.submitButton}
       {...props}
     >
       {buttonText}

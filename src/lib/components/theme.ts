@@ -1,3 +1,5 @@
+"use client";
+
 import {
   createTheme,
   DEFAULT_THEME,
@@ -6,16 +8,16 @@ import {
 } from "@mantine/core";
 
 const blue: MantineColorsTuple = [
-  "#e4f9ff",
-  "#d6edf7",
-  "#b3d7e7",
-  "#8cc0d7",
-  "#6badc9",
-  "#58a2c2",
-  "#489bbe",
-  "#3687a8",
-  "#287898",
-  "#066887",
+  "#eaf3ff",
+  "#d7e2f9",
+  "#aec3ed",
+  "#81a1e2",
+  "#5c85d8",
+  "#4573d3",
+  "#376ad1",
+  "#2959ba",
+  "#204fa7",
+  "#104495"
 ];
 
 const indigo: MantineColorsTuple = [
@@ -136,6 +138,8 @@ const cyan: MantineColorsTuple = [
 ]
 
 const themeOverride = createTheme({
+  autoContrast: true,
+  primaryColor: "green",
   colors: {
     blue,
     indigo,

@@ -1,6 +1,7 @@
 "use client";
 
-import "./Navbar.scss";
+import styles from "./NavLinks.module.scss";
+import { clsx } from "clsx";
 import Link from "next/link";
 import { PiYinYang } from "react-icons/pi";
 import { usePathname } from "next/navigation";
@@ -10,17 +11,14 @@ export default function NavLinks() {
   const pathname = usePathname();
 
   return (
-    <section className="nav-links">
+    <section className={styles.container}>
       <PiYinYang />
       {Object.entries(navLinks).map(([k, v]) => {
-        const className =
-          pathname === v.href ? "nav-link nav-link-active" : "nav-link";
-
         return (
           <Link
             key={`${k}-phone-up`}
             href={v.href || "/"}
-            className={className}
+            className={clsx(styles.link, pathname === v.href && styles.active)}
           >
             {v.title}
           </Link>

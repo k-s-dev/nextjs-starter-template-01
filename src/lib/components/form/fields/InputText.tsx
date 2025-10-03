@@ -12,7 +12,7 @@ export function InputText({
   ...props
 }: InputTextProps) {
   return (
-    <FormControl errors={errors} messages={messages}>
+    <FormControl errorsProps={{errors}} messagesProps={{messages}}>
       <TextInput
         form={formId}
         defaultValue={defaultValue}

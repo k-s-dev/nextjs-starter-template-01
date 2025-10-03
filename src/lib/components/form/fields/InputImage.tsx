@@ -1,7 +1,6 @@
+import styles from "./InputImage.module.scss";
 import { Dispatch, SetStateAction } from "react";
 import Image from "next/image";
-
-import "./InputImage.scss";
 import FormControl from "../control/FormControl";
 
 export function InputImage({
@@ -41,25 +40,32 @@ export function InputImage({
       <Image
         src={URL.createObjectURL(imageFile)}
         alt=""
-        className="form-image"
+        className={styles.image}
         fill
       />
     );
   } else {
     if (initialImageUrl) {
-      img = <Image src={`${initialImageUrl}?q=${new Date()}`} alt="" className="form-image" fill />;
+      img = (
+        <Image
+          src={`${initialImageUrl}?q=${new Date()}`}
+          alt=""
+          className={styles.image}
+          fill
+        />
+      );
     } else {
-      img = <div className="form-image-fill"></div>;
+      img = <div></div>;
     }
   }
 
   return (
     <>
-      <div className="form-image-field">
-        <FormControl errors={errors}>
-          <div className="form-image-container">{img}</div>
+      <div className={styles.field}>
+        <FormControl errorsProps={{ errors }}>
+          <div className={styles.imagecontainer}>{img}</div>
           <div>File name: {fileName}</div>
-          <label htmlFor={fieldId} className="form-image-label">
+          <label htmlFor={fieldId} className={styles.imageLabel}>
             {fieldLabel}
           </label>
           <input

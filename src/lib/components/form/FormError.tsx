@@ -1,27 +1,41 @@
 "use client";
 
-import "./Form.scss";
-
 import FormMessage from "./FormMessage";
 
 export default function FormError({
   errors,
   title = "Form Error",
-  rootClass = "form-error",
-  itemClass = "form-error-item",
+  containerClass,
+  listClass,
+  itemClass,
+  headerClass,
+  appendContainerClass = true,
+  appendItemClass = true,
+  appendHeaderClass = true,
 }: {
   errors?: string[];
   title?: string | null;
-  rootClass?: string;
+  containerClass?: string;
+  listClass?: string;
   itemClass?: string;
+  headerClass?: string;
+  appendContainerClass?: boolean;
+  appendItemClass?: boolean;
+  appendHeaderClass?: boolean;
 }) {
   return (
     <>
       <FormMessage
         messages={errors}
+        error
         title={title}
-        rootClass={rootClass}
+        containerClass={containerClass}
+        listClass={listClass}
         itemClass={itemClass}
+        headerClass={headerClass}
+        appendContainerClass={appendContainerClass}
+        appendItemClass={appendItemClass}
+        appendHeaderClass={appendHeaderClass}
       />
     </>
   );

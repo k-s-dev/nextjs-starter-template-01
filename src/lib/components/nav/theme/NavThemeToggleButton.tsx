@@ -1,7 +1,6 @@
 "use client";
 
-import "../Navbar.scss";
-
+import styles from "./NavThemeToggle.module.scss";
 import { PiMoonFill, PiSun } from "react-icons/pi";
 import {
   Menu,
@@ -34,10 +33,10 @@ export default function NavThemeToggleButton({
   const theme = themes.find((t) => t.name === themeName) || themes[0];
 
   return (
-    <section className="nav-toggle_theme">
+    <section>
       <Menu trigger="click-hover">
         <MenuTarget>
-          <div className="nav-toggle_theme-icon-selected">{theme.icon}</div>
+          <div className={styles.triggerIcon}>{theme.icon}</div>
         </MenuTarget>
         <MenuDropdown>
           {themes.map((value) => {
@@ -47,7 +46,7 @@ export default function NavThemeToggleButton({
                 leftSection={value.icon}
                 onClick={() => handleClick(value.name)}
               >
-                <span className="nav-theme-name">{value.name}</span>
+                <span className={styles.name}>{value.name}</span>
               </MenuItem>
             );
           })}

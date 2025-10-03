@@ -1,7 +1,6 @@
 "use client";
 
-import "./Icons.scss";
-
+import styles from "./CopyIcon.module.scss";
 import {
   Popover,
   PopoverDropdown,
@@ -21,16 +20,14 @@ export default function CopyIcon({ copyText }: { copyText: string }) {
       <Popover opened={opened} onChange={setOpened}>
         <PopoverTarget>
           <Tooltip label="Copy">
-            <button
-              className="icon"
+            <FaRegCopy
+              className={styles.icon}
               onClick={() => {
                 clipboard.copy(copyText);
                 setOpened((o) => !o);
                 setTimeout(() => setOpened((o) => !o), 1000);
               }}
-            >
-              <FaRegCopy className="icon--copy" />
-            </button>
+            />
           </Tooltip>
         </PopoverTarget>
         <PopoverDropdown>Copied</PopoverDropdown>

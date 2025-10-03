@@ -3,7 +3,8 @@ import { DateTimePicker, DateTimePickerProps } from "@mantine/dates";
 import FormControl from "../control/FormControl";
 
 /**
- * Input component for Datetime fields. FormControl wrapper is added to provide error and messages.
+ * Input component for Datetime fields. 
+ * FormControl wrapper is added to provide error and messages.
  */
 export function InputDateTime({
   formId,
@@ -13,7 +14,7 @@ export function InputDateTime({
   ...props
 }: InputDateTimeProps) {
   return (
-    <FormControl errors={errors} messages={messages}>
+    <FormControl errorsProps={{errors}} messagesProps={{messages}}>
       <DateTimePicker
         form={formId}
         defaultValue={defaultValue}

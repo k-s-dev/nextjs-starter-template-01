@@ -1,7 +1,6 @@
 "use client";
 
-import "./Card.scss"
-
+import styles from "./Card.module.scss";
 import Image, { ImageProps } from "next/image";
 
 export function CardImage({
@@ -11,8 +10,8 @@ export function CardImage({
   ...props
 }: CardImageProps) {
   return (
-    <article className="card-image-container">
-      {img && <Image className="card-image" alt={alt} {...props} />}
+    <article className={styles.imageContainer}>
+      {img && <Image className={styles.image} alt={alt} {...props} />}
       {children}
     </article>
   );

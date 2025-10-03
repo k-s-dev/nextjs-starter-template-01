@@ -57,7 +57,7 @@ describe("admin.user.update flow", () => {
       cy.visit(url);
     });
     cy.get('input[name="name"]').as("input").type("superuser 01");
-    cy.get("button.form-btn-submit").contains("Save").click();
+    cy.getByData("save-user-updates-button").eq(0).click();
     cy.get("@user01UrlUpdate").then((url) => {
       cy.location("pathname").should("eq", url);
     });

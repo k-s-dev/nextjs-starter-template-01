@@ -1,9 +1,9 @@
-import "./page.scss"
-
-import ResetPasswordCard from "@/lib/features/authentication/features/resetPassword/Card";
+import ResetPasswordCard from "@/lib/features/authentication/features/resetPassword/ResetPasswordCard";
+import styles from "./page.module.scss";
 import ResetPasswordForm from "@/lib/features/authentication/features/resetPassword/Form";
 import { verifyToken } from "@/lib/features/authentication/verification";
 import { routes } from "@/lib/utils/routeMapper";
+import clsx from "clsx";
 
 export default async function Page({
   searchParams,
@@ -42,12 +42,9 @@ export default async function Page({
 function InvalidLink() {
   return (
     <ResetPasswordCard>
-      <p className="text text-invalid">
+      <p className={clsx(styles.text, styles.textInvalid)}>
         Invalid link. Reset password link can be generated from{" "}
-        <a href={routes.all.signIn} className="btn">
-          SignIn
-        </a>{" "}
-        page.
+        <a href={routes.all.signIn}>SignIn</a> page.
       </p>
     </ResetPasswordCard>
   );

@@ -1,22 +1,19 @@
+import styles from "./AuthProviderIcons.module.scss";
 import { FaGithub, FaGoogle } from "react-icons/fa6";
-
-import "./Authentication.scss";
-
 import { signIn } from "../config";
 
 export default function AuthProviderIcons() {
   return (
     <>
-      <section className="auth-provider-icon-row">
+      <section className={styles.iconRow}>
         <form
           action={async () => {
             "use server";
             await signIn("github");
           }}
-          className="auth-provider-icon-form"
         >
-          <button className="auth-provider-icon-btn">
-            <FaGithub className="auth-provider-icon" />
+          <button className={styles.iconButton}>
+            <FaGithub className={styles.icon}/>
           </button>
         </form>
         <form
@@ -24,10 +21,9 @@ export default function AuthProviderIcons() {
             "use server";
             await signIn("google");
           }}
-          className="auth-provider-icon-form"
         >
-          <button className="auth-provider-icon-btn">
-            <FaGoogle className="auth-provider-icon" />
+          <button className={styles.iconButton}>
+            <FaGoogle className={styles.icon}/>
           </button>
         </form>
       </section>

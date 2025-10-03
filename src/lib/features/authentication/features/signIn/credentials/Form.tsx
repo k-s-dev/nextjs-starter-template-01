@@ -1,11 +1,9 @@
 "use client";
 
+import styles from "./Form.module.scss";
 import React, { useActionState, useEffect, useState } from "react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
-
-import "./SignInForm.scss";
-
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
@@ -20,6 +18,7 @@ import { sendVerificationLinkActionServer } from "./action/server/sendVerficatio
 import { VSSignInForm, VSSignInFormBase } from "./definitions";
 import { UserEmail, UserPassword } from "@/lib/dataModels/auth/user/ui/Fields";
 import { routes } from "@/lib/utils/routeMapper";
+import Form from "@/lib/components/form/Form";
 
 export default function CredentialsSignInForm({
   formId = "signIn-form",
@@ -99,7 +98,7 @@ export default function CredentialsSignInForm({
 
   return (
     <>
-      <form id={formId} className="form" noValidate>
+      <Form id={formId} noValidate>
         <UserEmail
           formId={formId}
           formState={formState}
@@ -120,13 +119,13 @@ export default function CredentialsSignInForm({
           data-test-cy="signIn-btn"
         />
 
-        <section className="signIn-form-extra-btns-row">
+        <section className={styles.extraButtonsRow}>
           <FormSubmitButton
             formId={formId}
             formAction={sendVerificationEmailFormAction}
             isPending={isPending}
             buttonText="Resend email verification link"
-            className="signIn-form-send_verification_link_email-btn"
+            className={styles.verificationButton}
             data-test-cy="send_verification_link_email-btn"
           />
           <FormSubmitButton
@@ -134,11 +133,11 @@ export default function CredentialsSignInForm({
             formAction={resetPasswordAction}
             isPending={isPending}
             buttonText="Reset password"
-            className="signIn-form-reset_password-btn"
+            className={styles.resetPasswordButton}
             data-test-cy="reset_password-btn"
           />
         </section>
-      </form>
+      </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages || []} />
     </>

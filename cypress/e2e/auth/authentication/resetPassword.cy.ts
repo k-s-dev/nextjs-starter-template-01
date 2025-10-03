@@ -9,20 +9,20 @@ describe("Reset password flow", () => {
     cy.visit(routes.authentication.signIn);
     cy.getByData("signIn-email").type("test-user-01@example.com");
     cy.getByData("reset_password-btn").click();
-    cy.get(".form-message-item").should("be.visible");
+    cy.getByData("form-message-item").eq(0).should("contain", "sent")
   });
 
   it("should not reset password for unverfied user", () => {
     cy.visit(routes.authentication.signIn);
     cy.getByData("signIn-email").type("test-user-03@example.com");
     cy.getByData("reset_password-btn").click();
-    cy.get(".form-error-item").should("be.visible");
+    cy.getByData("form-error-item").eq(0).should("be.visible");
   });
 
   it("should not reset password for invalid user", () => {
     cy.visit(routes.authentication.signIn);
     cy.getByData("signIn-email").type("test-user-03@example.com");
     cy.getByData("reset_password-btn").click();
-    cy.get(".form-error-item").should("be.visible");
+    cy.getByData("form-error-item").eq(0).should("be.visible");
   });
 });

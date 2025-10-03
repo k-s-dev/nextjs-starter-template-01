@@ -1,13 +1,11 @@
 "use client";
 
 import React, { Dispatch, SetStateAction } from "react";
-
-import "./UserForm.scss";
-
 import { InputImage } from "@/lib/components/form/fields/InputImage";
 import { UserEmail, UserName, UserRole, UserEmailVerified } from "./Fields";
 import { TUserFormState } from "../definitions";
-import FormRowFields from "@/lib/components/form/FormRowFields";
+import FormFieldsRow from "@/lib/components/form/FormFieldsRow";
+import Form from "@/lib/components/form/Form";
 
 export function UserForm({
   formId,
@@ -19,24 +17,23 @@ export function UserForm({
   inert = false,
 }: IPropsFormUser) {
   return (
-    <form
+    <Form
       id={formId}
       inert={inert}
       noValidate
-      className={`form ${inert ? "form-inert" : ""}`}
       action={formAction}
     >
-      <FormRowFields>
+      <FormFieldsRow>
         <UserEmail formId={formId} formState={formState} />
         <UserName formId={formId} formState={formState} />
-      </FormRowFields>
+      </FormFieldsRow>
 
-      <FormRowFields>
+      <FormFieldsRow>
         <UserRole formId={formId} formState={formState} />
         <UserEmailVerified formId={formId} formState={formState} clearable />
-      </FormRowFields>
+      </FormFieldsRow>
 
-      <FormRowFields>
+      <FormFieldsRow>
         <InputImage
           formId={formId}
           imageFile={imageFile}
@@ -44,8 +41,8 @@ export function UserForm({
           initialImageUrl={initialImageUrl}
           errors={formState.errors?.nested?.image}
         />
-      </FormRowFields>
-    </form>
+      </FormFieldsRow>
+    </Form>
   );
 }
 

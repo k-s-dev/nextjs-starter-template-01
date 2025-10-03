@@ -1,11 +1,11 @@
 "use client";
 
-import "./Card.scss"
+import styles from "./Card.module.scss";
 
 export function CardContent({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  return <section className="card-content">{children}</section>;
+  return <section className={styles.content}>{children}</section>;
 }

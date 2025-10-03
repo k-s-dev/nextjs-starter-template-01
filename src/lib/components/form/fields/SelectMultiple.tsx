@@ -9,7 +9,7 @@ export function SelectMultiple({
   ...multiSelectProps
 }: SelectMultipleProps) {
   return (
-    <FormControl errors={errors} messages={messages}>
+    <FormControl errorsProps={{ errors }} messagesProps={{ messages }}>
       <MultiSelect form={formId} id={fieldId} {...multiSelectProps} />
     </FormControl>
   );

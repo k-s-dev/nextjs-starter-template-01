@@ -1,3 +1,4 @@
+import styles from "./DataTable.module.scss";
 import { HtmlHTMLAttributes } from "react";
 import CopyIcon from "../icons/CopyIcon";
 
@@ -5,7 +6,7 @@ export default function TableCellWithCopy({
   text,
   children,
   copyText,
-  className = "table-cell",
+  className = styles.cell,
   ...attrs
 }: {
   text?: string;

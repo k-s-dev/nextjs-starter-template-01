@@ -1,8 +1,9 @@
+import styles from "./DataTable.module.scss";
 import { HtmlHTMLAttributes } from "react";
 
 export default function TableCell({
   children,
-  className = "table-cell",
+  className = styles.cell,
   ...attrs
 }: {
   children: React.ReactNode;

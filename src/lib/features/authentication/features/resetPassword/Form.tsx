@@ -2,7 +2,6 @@
 
 import React, { useActionState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
@@ -18,6 +17,7 @@ import {
   UserEmail,
   UserPassword,
 } from "@/lib/dataModels/auth/user/ui/Fields";
+import Form from "@/lib/components/form/Form";
 
 export default function ResetPasswordForm({
   formId = "reset-password-form",
@@ -44,7 +44,7 @@ export default function ResetPasswordForm({
 
   return (
     <>
-      <form id={formId} action={formAction} className="form" noValidate>
+      <Form id={formId} action={formAction} noValidate>
         <UserEmail
           formId={formId}
           formState={formState}
@@ -71,7 +71,7 @@ export default function ResetPasswordForm({
           buttonText="Save"
           data-test-cy="reset-password-submit-btn"
         />
-      </form>
+      </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages} />
     </>

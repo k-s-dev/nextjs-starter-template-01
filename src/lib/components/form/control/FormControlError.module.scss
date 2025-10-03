@@ -1,0 +1,13 @@
+@use "sass:map";
+
+@use "@/styles/abstracts/" as *;
+
+.container {
+  grid-column: 2 / 3;
+  justify-self: start;
+  color: var(--color-danger-emphasis);
+}
+
+.item {
+  text-align: left;
+}

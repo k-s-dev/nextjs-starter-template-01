@@ -1,26 +1,26 @@
 "use server";
 
+import styles from "./page.module.scss";
 import { Button } from "@mantine/core";
-import "./page.scss";
 import Link from "next/link";
 
 export default async function Page() {
   return (
-    <main className="home-container">
-      <header className="home-header">
+    <main className={styles.rootContainer}>
+      <header className={styles.rootHeader}>
         <h1>Nextjs App Template</h1>
       </header>
 
-      <section className="home-stack-features-container">
+      <section className={styles.stackAndFeaturesContainer}>
         <h2>Features</h2>
-        <section className="home-features-row">
+        <section className={styles.featuresRow}>
           {features.map(([title, href], idx) => {
             return <Item key={idx} href={href} title={title} />;
           })}
         </section>
 
         <h2>Stack</h2>
-        <section className="home-stack-row">
+        <section className={styles.stackRow}>
           {stack.map(([title, href], idx) => {
             return <Item key={idx} href={href} title={title} />;
           })}
@@ -30,13 +30,7 @@ export default async function Page() {
   );
 }
 
-function Item({
-  href,
-  title,
-}: {
-  href: string;
-  title: string;
-}) {
+function Item({ href, title }: { href: string; title: string }) {
   return (
     <Link href={href} target={href.length === 0 ? "_self" : "_blank"}>
       <Button fullWidth variant="outline" color="gray" fz="md">
@@ -65,7 +59,7 @@ const stack = [
   ["Nextjs", "https://www.nextjs.org/"],
   ["Vercel Blob", "https://vercel.com/storage/blob"],
   ["Prisma", "https://www.prisma.io/"],
-  ["Postgres", "www.postgresql.org"],
+  ["Postgres", "https://www.postgresql.org"],
   ["Authjs", "https://authjs.dev/"],
   ["Valibot", "https://valibot.dev/"],
   ["Mantine UI", "https://mantine.dev/"],

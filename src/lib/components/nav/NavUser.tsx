@@ -9,17 +9,14 @@ import {
   Skeleton,
 } from "@mantine/core";
 import Link from "next/link";
-
-import "./Navbar.scss";
-
-import SignInLinkBtn from "@/lib/features/authentication/features/signIn/SignInLinkBtn";
-import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/SignUpLinkBtn";
-import SignOutButton from "@/lib/features/authentication/features/signOut/SignOutButton";
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
 import { routes } from "@/lib/utils/routeMapper";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { useEffect } from "react";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
+import SignInLinkBtn from "@/lib/features/authentication/features/signIn/Button";
+import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/Button";
+import SignOutButton from "@/lib/features/authentication/features/signOut/Button";
 
 export default function NavUser() {
   const { data: session, status } = useSession();
@@ -53,18 +50,15 @@ export default function NavUser() {
     <>
       <Menu trigger="click-hover">
         <MenuTarget>
+          {/* div needed for click/hover trigger to work */}
           <div>
             <UserAvatar src={user?.image} userName={user?.name} />
           </div>
         </MenuTarget>
         <MenuDropdown>
-          <MenuItem className="nav-user-name">
-            {user.name || user.email}
-          </MenuItem>
           <MenuItem component="div">
             <Link
               href={routes.authentication.resetPassword} // TODO: change url when available
-              className="nav-link"
             >
               Profile
             </Link>

@@ -2,7 +2,7 @@
 
 @use "../variables/" as *;
 @use "../utilities/" as *;
-@use "../functions/" as *;
+@use "../functions" as *;
 
 @mixin btn-base(
   $color-background: var(--color-1),

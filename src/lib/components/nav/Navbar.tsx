@@ -1,6 +1,5 @@
+import styles from "./Navbar.module.scss";
 import { Suspense } from "react";
-import "./Navbar.scss";
-
 import NavLinks from "./NavLinks";
 import NavLinksPhone from "./NavLinksPhone";
 import NavUser from "./NavUser";
@@ -10,7 +9,7 @@ import NavThemeToggle from "./theme/NavThemeToggleWrapper";
 export default async function Navbar() {
   return (
     <>
-      <nav className="nav">
+      <nav className={styles.nav}>
         <NavPhoneUp />
         <NavPhone />
       </nav>
@@ -21,14 +20,14 @@ export default async function Navbar() {
 export function NavPhoneUp() {
   return (
     <section className="media-phone-up">
-      <div className="nav-wrapper">
-        <div className="nav-left">
+      <div className={styles.wrapper}>
+        <div className={styles.left}>
           <NavLinks />
         </div>
-        <div className="nav-center">
+        <div className={styles.center}>
           <section>Search</section>
         </div>
-        <div className="nav-right">
+        <div className={styles.right}>
           <NavRightSection />
         </div>
       </div>
@@ -40,7 +39,7 @@ export function NavPhone() {
   return (
     <>
       <section className="media-phone">
-        <div className="nav-wrapper">
+        <div className={styles.wrapper}>
           <NavLinksPhone />
           <NavRightSection />
         </div>
@@ -52,7 +51,7 @@ export function NavPhone() {
 export function NavPhoneSearch() {
   return (
     <section className="media-phone">
-      <div className="nav-phone-search-wrapper">
+      <div className={styles.phoneSearch}>
         <section>Search</section>
       </div>
     </section>

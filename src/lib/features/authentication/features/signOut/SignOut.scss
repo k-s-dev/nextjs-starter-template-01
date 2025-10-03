@@ -1,7 +1,0 @@
-@use "sass:map";
-
-@use "@/styles/abstracts" as *;
-
-.signOut-btn {
-  @include btn(danger, filled);
-}
