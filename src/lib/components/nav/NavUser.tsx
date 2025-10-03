@@ -8,15 +8,15 @@ import {
   MenuTarget,
   Skeleton,
 } from "@mantine/core";
-import Link from "next/link";
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
-import { routes } from "@/lib/utils/routeMapper";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { useEffect } from "react";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
 import SignInLinkBtn from "@/lib/features/authentication/features/signIn/Button";
 import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/Button";
-import SignOutButton from "@/lib/features/authentication/features/signOut/Button";
+import { sendResetPasswordEmail } from "@/lib/features/authentication/features/resetPassword/sendResetPasswordEmail.ts";
+import { notifications } from "@mantine/notifications";
+import SignOut from "@/lib/features/authentication/features/signOut/SignOut";
 
 export default function NavUser() {
   const { data: session, status } = useSession();
@@ -46,24 +46,40 @@ export default function NavUser() {
     );
   }
 
+  async function handleResetPassword() {
+    let result = null;
+    if (session?.user.email) {
+      result = await sendResetPasswordEmail(session.user.email);
+    }
+    if (result?.status) {
+      notifications.show({
+        message: result.message,
+        color: result.status === "error" ? "red" : "green",
+      });
+    } else {
+      notifications.show({
+        message: "Session not valid. SignIn again.",
+        color: "red",
+      });
+    }
+  }
+
   return (
     <>
-      <Menu trigger="click-hover">
+      <Menu trigger="click-hover" shadow="md">
         <MenuTarget>
           {/* div needed for click/hover trigger to work */}
           <div>
             <UserAvatar src={user?.image} userName={user?.name} />
           </div>
         </MenuTarget>
-        <MenuDropdown>
-          <MenuItem component="div">
-            <Link
-              href={routes.authentication.resetPassword} // TODO: change url when available
-            >
-              Profile
-            </Link>
+        <MenuDropdown mx="md">
+          <MenuItem onClick={handleResetPassword} fz="lg">
+            Reset Password
           </MenuItem>
-          <SignOutButton />
+          <MenuItem fz="lg" color="red">
+            <SignOut>Sign Out</SignOut>
+          </MenuItem>
         </MenuDropdown>
       </Menu>
     </>
