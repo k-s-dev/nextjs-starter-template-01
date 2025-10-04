@@ -18,6 +18,37 @@ export async function saveFileUpload({
 }) {
   let uploadUrl;
 
+  // values: vercel-blob, local (fallback)
+  const uploadMethod = process.env.UPLOAD_METHOD;
+  const fnProps = {
+    uploadFile,
+    uploadDir,
+    fileNameWoExt,
+    fileExt,
+  };
+
+  if (uploadMethod === "vercel-blob") {
+    uploadUrl = await saveFileUploadVercelBlob(fnProps);
+  } else {
+    uploadUrl = await saveFileUploadLocal(fnProps);
+  }
+
+  return uploadUrl;
+}
+
+export async function saveFileUploadVercelBlob({
+  uploadFile,
+  uploadDir,
+  fileNameWoExt,
+  fileExt,
+}: {
+  uploadFile: File;
+  uploadDir: string;
+  fileNameWoExt?: string;
+  fileExt?: string;
+}) {
+  let blob;
+
   const env = process.env.NODE_ENV;
   const app_name = process.env.APP_NAME;
 
@@ -31,7 +62,7 @@ export async function saveFileUpload({
     .toString();
 
   try {
-    uploadUrl = await put(uploadFilePath, uploadFile, {
+    blob = await put(uploadFilePath, uploadFile, {
       access: "public",
       allowOverwrite: true,
     });
@@ -42,7 +73,7 @@ export async function saveFileUpload({
     });
   }
 
-  return uploadUrl;
+  return blob.url;
 }
 
 export async function saveFileUploadLocal({

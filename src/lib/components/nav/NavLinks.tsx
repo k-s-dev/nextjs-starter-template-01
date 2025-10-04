@@ -18,7 +18,10 @@ export default function NavLinks() {
           <Link
             key={`${k}-phone-up`}
             href={v.href || "/"}
-            className={clsx(styles.link, pathname === v.href && styles.active)}
+            className={clsx(
+              styles.link,
+              v.href && matchPathHref(pathname, v.href) && styles.active,
+            )}
           >
             {v.title}
           </Link>
@@ -48,6 +51,11 @@ export const navLinks: INavLinks = {
     },
   },
 };
+
+export function matchPathHref(pathname: string, href: string) {
+  if (pathname.length <= 1) return pathname === href;
+  return pathname.split("/")[1] === href.split("/")[1];
+}
 
 export interface INavLinks {
   [k: string]: {
