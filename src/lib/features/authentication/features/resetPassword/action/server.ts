@@ -12,9 +12,9 @@ import {
   getUserByEmail,
   updateUser,
 } from "@/lib/dataModels/auth/user/dataAccess";
-import { getSessionUser } from "../../../getSessionUser";
 
 export async function resetPasswordServerAction(
+  email: string,
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
@@ -31,7 +31,10 @@ export async function resetPasswordServerAction(
     );
     return {
       mode: "update",
-      data: rawFormData,
+      data: {
+        ...rawFormData,
+        email: email,
+      },
       errors: errors,
     };
   }
@@ -39,6 +42,7 @@ export async function resetPasswordServerAction(
   // prepare form data for submission to backend
   const apiSubmissionData = {
     ...validationResult.output,
+    email: email,
   };
 
   const hashedPassword = await bcrypt.hash(
@@ -54,7 +58,10 @@ export async function resetPasswordServerAction(
   if (!existingUser) {
     return {
       mode: "update",
-      data: rawFormData,
+      data: {
+        ...rawFormData,
+        email: email,
+      },
       errors: {
         root: ["User not found."],
       },
@@ -63,7 +70,6 @@ export async function resetPasswordServerAction(
 
   // try submitting data to backend
   try {
-    const sessionUser = await getSessionUser();
     await updateUser(
       {
         email: apiSubmissionData.email,
@@ -72,13 +78,13 @@ export async function resetPasswordServerAction(
         email: apiSubmissionData.email,
         password: hashedPassword,
       },
-      "client",
-      sessionUser,
+      "server",
     );
   } catch (error) {
     console.log(error);
     return {
       mode: "update",
+      status: "failed",
       errors: {
         root: [
           "Failed to update user due to internal server error. Please try again",

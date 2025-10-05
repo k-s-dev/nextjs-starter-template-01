@@ -99,29 +99,29 @@ const yellow: MantineColorsTuple = [
 ]
 
 const green: MantineColorsTuple = [
-  "#f6f9ea",
-  "#ecefdd",
-  "#d7ddbe",
-  "#c1ca9b",
-  "#afba7d",
-  "#a3b06a",
-  "#9dab5f",
-  "#89964e",
-  "#798542",
-  "#677334"
+  "#f4fae8",
+  "#e9f1da",
+  "#d3e0b9",
+  "#bbce95",
+  "#a8bf77",
+  "#9bb562",
+  "#94b057",
+  "#7f9b46",
+  "#708a3b",
+  "#5f772e"
 ]
 
 const teal: MantineColorsTuple = [
-  "#e5fff6",
-  "#d3f9ed",
-  "#a9f1d9",
-  "#7ce9c5",
-  "#57e3b4",
-  "#40dfa9",
-  "#30dda3",
-  "#20c991",
-  "#0dae7d",
-  "#00976a"
+  "#e4fcf7",
+  "#d8f2ed",
+  "#b7e1d8",
+  "#93cfc3",
+  "#74c1b1",
+  "#61b8a6",
+  "#53b39f",
+  "#419d8b",
+  "#348c7b",
+  "#1e7a69"
 ]
 
 const cyan: MantineColorsTuple = [

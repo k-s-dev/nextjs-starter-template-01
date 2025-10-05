@@ -9,7 +9,6 @@ import {
   TUserFormState,
   TUserFormStateData,
 } from "@/lib/dataModels/auth/user/definitions";
-import { FormSubmitButton } from "@/lib/components/form/FormSubmitButton";
 import { signUpActionClient } from "./action/client";
 import {
   UserConfirmPassword,
@@ -18,6 +17,7 @@ import {
   UserPassword,
 } from "@/lib/dataModels/auth/user/ui/Fields";
 import Form from "@/lib/components/form/Form";
+import { Button } from "@mantine/core";
 
 export default function SignUpForm({
   formId = "signUp-form",
@@ -86,14 +86,16 @@ export default function SignUpForm({
           data-test-cy="signUp-name"
         />
 
-        <FormSubmitButton
-          formId={formId}
-          formAction={formAction}
-          isPending={isPending}
-          buttonText="SignUp"
+        <Button
           type="submit"
+          form={formId}
+          formAction={formAction}
+          disabled={isPending}
           data-test-cy="signUp-btn"
-        />
+          color="blue.1"
+        >
+          Sign Up
+        </Button>
       </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages} />

@@ -33,7 +33,7 @@ export async function generateVerificationToken(
 ) {
   const tokenObj = await getVerificationToken(email, tokenType);
   if (tokenObj) {
-    await deleteVerificationToken(tokenObj.email, tokenObj.token, tokenType);
+    await deleteVerificationToken(tokenObj.email, tokenType, tokenObj.token);
     await deleteExpiredVerificationTokens();
   }
 
@@ -113,6 +113,20 @@ export async function verifyToken(
     };
   }
 
+  const existingToken = await getVerificationToken(
+    result.payload.email as string,
+    "RESET_PASSWORD",
+    token,
+  );
+
+  if (!existingToken) {
+    return {
+      status: "failed",
+      data: result,
+      message: "Invalid token.",
+    };
+  }
+
   if (tokenType.valueOf() === TOKEN_TYPE.EMAIL_VERFICATION) {
     const user = await getUser(
       {
@@ -155,11 +169,11 @@ export async function verifyToken(
     });
   }
 
-  await deleteVerificationToken(
-    result.payload.email as string,
-    token,
-    tokenType,
-  );
+  // await deleteVerificationToken(
+  //   result.payload.email as string,
+  //   token,
+  //   tokenType,
+  // );
 
   await deleteExpiredVerificationTokens();
 

@@ -2,6 +2,6 @@
 
 import { signOut } from "../../config";
 
-export async function signOutAction() {
+export async function signOutSa() {
   return signOut({ redirect: false });
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { signOut } from "next-auth/react";
-import { signOutAction } from "./action";
+import { signOutSa } from "./serverAction";
 import { useRouter } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
 
@@ -12,7 +12,7 @@ export default function SignOut({ children }: { children: React.ReactNode }) {
     <div
       onClick={async () => {
         await signOut({ redirect: false });
-        await signOutAction();
+        await signOutSa();
         router.replace(routes.generic.home);
       }}
     >

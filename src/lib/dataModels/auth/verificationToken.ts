@@ -21,13 +21,13 @@ export async function createVerificationToken(
   }
 }
 
-export async function getVerificationToken(
+export async function getVerificationTokenByEmail(
   email: string,
   tokenType: TOKEN_TYPE,
 ) {
-  let token;
+  let dbToken;
   try {
-    token = await prisma.verificationToken.findFirst({
+    dbToken = await prisma.verificationToken.findFirst({
       where: {
         email: email,
         type: tokenType,
@@ -46,15 +46,46 @@ export async function getVerificationToken(
       },
     });
   }
-  return token;
+  return dbToken;
+}
+
+
+export async function getVerificationToken(
+  email: string,
+  tokenType: TOKEN_TYPE,
+  token?: string,
+) {
+  let dbToken;
+  try {
+    dbToken = await prisma.verificationToken.findFirst({
+      where: {
+        email: email,
+        type: tokenType,
+        token: token,
+      },
+    });
+  } catch (error) {
+    throw new DbError({
+      message: "Invalid token.",
+      cause: error,
+      log: {
+        message: "DbError: failed to get token.",
+        data: {
+          email,
+          tokenType,
+        },
+      },
+    });
+  }
+  return dbToken;
 }
 
 export async function deleteVerificationToken(
   email: string,
-  token: string,
   tokenType: TOKEN_TYPE,
+  token: string,
 ) {
-  const existingToken = await getVerificationToken(email, tokenType);
+  const existingToken = await getVerificationToken(email, tokenType, token);
   if (existingToken) {
     try {
       await prisma.verificationToken.delete({

@@ -12,11 +12,11 @@ import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { useEffect } from "react";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
-import SignInLinkBtn from "@/lib/features/authentication/features/signIn/Button";
-import SignUpLinkBtn from "@/lib/features/authentication/features/signUp/Button";
-import { sendResetPasswordEmail } from "@/lib/features/authentication/features/resetPassword/sendResetPasswordEmail.ts";
 import { notifications } from "@mantine/notifications";
 import SignOut from "@/lib/features/authentication/features/signOut/SignOut";
+import SignUpLinkButton from "@/lib/features/authentication/features/signUp/SignUpLinkButton";
+import SignInLinkButton from "@/lib/features/authentication/features/signIn/SignInLinkButton";
+import { sendResetPasswordEmailServerAction } from "@/lib/features/authentication/features/resetPassword/sendResetPasswordEmailServerAction";
 
 export default function NavUser() {
   const { data: session, status } = useSession();
@@ -40,8 +40,8 @@ export default function NavUser() {
   if (status === "unauthenticated") {
     return (
       <>
-        <SignInLinkBtn />
-        <SignUpLinkBtn />
+        <SignInLinkButton />
+        <SignUpLinkButton />
       </>
     );
   }
@@ -49,7 +49,7 @@ export default function NavUser() {
   async function handleResetPassword() {
     let result = null;
     if (session?.user.email) {
-      result = await sendResetPasswordEmail(session.user.email);
+      result = await sendResetPasswordEmailServerAction(session.user.email);
     }
     if (result?.status) {
       notifications.show({

@@ -48,7 +48,7 @@ describe("SignUp flow", () => {
         failOnStatusCode: false,
       });
       cy.document().its("readyState").should("eq", "complete");
-      cy.contains("has been verified").should("be.visible");
+      cy.getByData("email-verified").should("be.visible");
     });
   });
 });

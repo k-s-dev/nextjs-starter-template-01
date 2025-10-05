@@ -1,16 +1,11 @@
 "use client";
 
-import styles from "./UserCreateForm.module.scss";
 import React, { useActionState, useEffect, useState } from "react";
-import Link from "next/link";
-import { Divider } from "@mantine/core";
+import { Button, Divider } from "@mantine/core";
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import { createUserClientAction } from "./actions/clientAction";
-import {
-  FormSubmitButton,
-  IPropsFormBtn,
-} from "@/lib/components/form/FormSubmitButton";
+import { IFormBtnProps } from "@/lib/components/form/FormSubmitButton";
 import { TUserFormState, TUserFormStateData } from "../../definitions";
 import { routes } from "@/lib/utils/routeMapper";
 import FormContainer from "@/lib/components/form/FormContainer";
@@ -20,6 +15,7 @@ import { USER_ROLE } from "@/generated/prisma";
 import { notifications } from "@mantine/notifications";
 import { redirect } from "next/navigation";
 import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
+import LinkButton from "@/lib/components/LinkButton";
 
 export default function UserCreateForm({
   formId = `user-create-form`,
@@ -41,7 +37,11 @@ export default function UserCreateForm({
   useEffect(() => {
     if (formState.status === "success") {
       notifications.show({
-        message: <p>User: <b>{formState.data?.email}</b> created successfully.</p>,
+        message: (
+          <p>
+            User: <b>{formState.data?.email}</b> created successfully.
+          </p>
+        ),
         autoClose: 3000,
         color: "green",
       });
@@ -67,23 +67,24 @@ export default function UserCreateForm({
   );
 }
 
-export function FormRowBtnsUser({ formId, isPending }: IPropsFormBtn) {
+export function FormRowBtnsUser({ formId, isPending }: IFormBtnProps) {
   return (
     <FormButtonsRow>
-      <FormSubmitButton
-        formId={formId}
-        isPending={isPending}
-        buttonText="Save"
+      <Button
+        type="submit"
+        form={formId}
+        disabled={isPending}
         data-test-cy="user-create-form-submit-button"
-      />
-      <Link href={routes.admin.user.read} className={styles.cancelButton}>
-        Cancel
-      </Link>
+        color="yellow.1"
+      >
+        Save
+      </Button>
+      <LinkButton href={routes.admin.user.read} color="blue.1">Cancel</LinkButton>
     </FormButtonsRow>
   );
 }
 
-export function FormHeaderUser({ formId, isPending }: IPropsFormBtn) {
+export function FormHeaderUser({ formId, isPending }: IFormBtnProps) {
   return (
     <FormHeader>
       <h1>User: Create</h1>

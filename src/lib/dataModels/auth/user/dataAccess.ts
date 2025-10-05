@@ -201,7 +201,7 @@ export async function getUserCount(
     });
   }
 
-  return count
+  return count;
 }
 
 export async function getUsers(
@@ -261,8 +261,7 @@ export async function updateUser(
   if (
     (!sessionUser && mode === "client") ||
     (sessionUser &&
-      sessionUser.role !== USER_ROLE.SUPERUSER &&
-      sessionUser.id !== user?.id)
+      (sessionUser.role !== USER_ROLE.SUPERUSER || sessionUser.id !== user?.id))
   ) {
     throw new PermissionError({
       message: "Permission denied.",

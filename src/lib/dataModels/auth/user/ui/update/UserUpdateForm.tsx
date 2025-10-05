@@ -8,7 +8,7 @@ import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
   FormSubmitButton,
-  IPropsFormBtn,
+  IFormBtnProps,
 } from "@/lib/components/form/FormSubmitButton";
 import {
   TUserFormState,
@@ -64,7 +64,7 @@ export function FormRowBtnsUser({
   id,
   formId,
   isPending,
-}: IPropsFormBtn & { id: string }) {
+}: IFormBtnProps & { id: string }) {
   return (
     <FormButtonsRow>
       <FormSubmitButton
@@ -87,7 +87,7 @@ export function FormHeaderUser({
   id,
   formId,
   isPending,
-}: IPropsFormBtn & { id: string }) {
+}: IFormBtnProps & { id: string }) {
   return (
     <FormHeader>
       <h1>User: Update</h1>

@@ -1,7 +1,8 @@
 "use client";
 
+import { PermissionError } from "@/lib/utils/errors";
 import styles from "./error.module.scss";
-import { Blockquote } from "@mantine/core";
+import { Blockquote, Card } from "@mantine/core";
 
 import { useEffect } from "react";
 
@@ -16,6 +17,16 @@ export default function Error({
     // Log the error to an error reporting service
     console.error(error);
   }, [error]);
+
+  if (error.name === PermissionError.name) {
+    return (
+      <section className={styles.rootContainer}>
+        <Card>
+          <Blockquote color="red.3">Unauthorized access.</Blockquote>
+        </Card>
+      </section>
+    );
+  }
 
   return (
     <section className={styles.rootContainer}>

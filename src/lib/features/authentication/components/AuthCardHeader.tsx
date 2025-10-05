@@ -2,23 +2,25 @@
 
 import Link from "next/link";
 import { PiShieldCheck } from "react-icons/pi";
-
-import { CardHeader } from "@/lib/components/card";
 import { routes } from "@/lib/utils/routeMapper";
+import { Divider, Flex, Text } from "@mantine/core";
 
 export default function AuthCardHeader({
   subTitle = "Create an account",
 }: {
-  subTitle?: React.ReactNode;
+  subTitle: React.ReactNode;
 }) {
   return (
-    <CardHeader>
-      <h1>
+    <Flex component="header" direction="column" justify="center" align="center">
+      <Text component="h1" fz="h1" c="blue">
         <Link href={routes.all.home}>
           <PiShieldCheck /> Auth
         </Link>
-      </h1>
-      <h5>{subTitle}</h5>
-    </CardHeader>
+      </Text>
+      <Text component="h2" fz="h2" c="gray.6">
+        {subTitle}
+      </Text>
+      <Divider size="sm" w="100%" mb="md" />
+    </Flex>
   );
 }

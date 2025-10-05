@@ -11,20 +11,21 @@ import {
 import { resetPasswordClientAction } from "./action/client";
 import { resetPasswordServerAction } from "./action/server";
 import { VSResetPasswordForm } from "./definitions";
-import { FormSubmitButton } from "@/lib/components/form/FormSubmitButton";
 import {
   UserConfirmPassword,
   UserEmail,
   UserPassword,
 } from "@/lib/dataModels/auth/user/ui/Fields";
 import Form from "@/lib/components/form/Form";
+import { Button } from "@mantine/core";
 
 export default function ResetPasswordForm({
+  email,
   formId = "reset-password-form",
 }: PropsFormResetPassword) {
   const [visible, { toggle }] = useDisclosure(false);
 
-  const initialFormData = {} as TUserFormStateData;
+  const initialFormData = { email: email } as TUserFormStateData;
 
   const initialFormState: TUserFormState = {
     mode: "update",
@@ -36,6 +37,7 @@ export default function ResetPasswordForm({
       null,
       resetPasswordServerAction,
       VSResetPasswordForm,
+      email,
     ),
     initialFormState,
   );
@@ -48,6 +50,7 @@ export default function ResetPasswordForm({
         <UserEmail
           formId={formId}
           formState={formState}
+          disabled
           data-test-cy="reset-password-email"
         />
         <UserPassword
@@ -65,12 +68,15 @@ export default function ResetPasswordForm({
           data-test-cy="reset-password-confirmPassword"
         />
 
-        <FormSubmitButton
-          formId={formId}
-          isPending={isPending}
-          buttonText="Save"
+        <Button
+          type="submit"
+          form={formId}
+          disabled={isPending}
           data-test-cy="reset-password-submit-btn"
-        />
+          color="yellow.1"
+        >
+          Save
+        </Button>
       </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages} />
@@ -79,5 +85,6 @@ export default function ResetPasswordForm({
 }
 
 export interface PropsFormResetPassword {
+  email: string;
   formId?: string;
 }

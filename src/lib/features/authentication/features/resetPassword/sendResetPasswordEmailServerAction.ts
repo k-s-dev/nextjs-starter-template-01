@@ -4,7 +4,7 @@ import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccess";
 import { TUser } from "@/lib/dataModels/auth/user/definitions";
 import { sendVerificationEmail } from "../../verification";
 
-export async function sendResetPasswordEmail(email: string): Promise<IReturn> {
+export async function sendResetPasswordEmailServerAction(email: string): Promise<IReturn> {
   const user: TUser = await getUserByEmail(email, "server");
 
   // validate: existing user
@@ -32,11 +32,11 @@ export async function sendResetPasswordEmail(email: string): Promise<IReturn> {
   }
   return {
     status: "success",
-    message: "Reset password link sent to the registered email.",
+    message: `Reset password link sent to "${email}"`,
   };
 }
 
 interface IReturn {
   status: "error" | "success";
-  message: string;
+  message: string | React.ReactNode;
 }

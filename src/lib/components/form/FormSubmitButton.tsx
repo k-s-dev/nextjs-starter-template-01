@@ -1,37 +1,28 @@
 "use client";
 
-import styles from "./FormSubmitButton.module.scss";
+import { Button, ButtonProps } from "@mantine/core";
 
 export function FormSubmitButton({
   formId,
   isPending,
   buttonText = "Submit",
   children,
-  className,
   ...props
-}: IPropsFormButtonSubmit) {
+}: IFormButtonSubmitProps) {
   return (
-    <button
-      form={formId}
-      disabled={isPending}
-      className={!!className ? className : styles.submitButton}
-      {...props}
-    >
+    <Button form={formId} disabled={isPending} {...props}>
       {buttonText}
       {children}
-    </button>
+    </Button>
   );
 }
 
-export interface IPropsFormBtn {
+export interface IFormBtnProps {
   formId: string;
   isPending: boolean;
 }
 
-export interface IPropsFormButtonSubmit
-  extends IPropsFormBtn,
-    React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface IFormButtonSubmitProps extends IFormBtnProps, ButtonProps {
   buttonText?: string;
   children?: React.ReactNode;
-  className?: string;
 }

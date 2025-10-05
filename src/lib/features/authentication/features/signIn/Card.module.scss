@@ -1,7 +1,0 @@
-@use "sass:map";
-
-@use "@/styles/abstracts" as *;
-
-.signUpButton {
-  @include btn(success, outline, 5);
-}

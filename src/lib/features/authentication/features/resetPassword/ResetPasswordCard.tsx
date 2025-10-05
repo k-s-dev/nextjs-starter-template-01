@@ -1,10 +1,5 @@
-import Link from "next/link";
-
-import styles from "./ResetPasswordCard.module.scss";
-import { routes } from "@/lib/utils/routeMapper";
-import { Card, CardContent } from "@/lib/components/card";
-import AuthCardHeader from "../../components/AuthCardHeader";
-import AuthProviderIcons from "../../components/AuthProviderIcons";
+import AuthCard from "../../components/AuthCard";
+import SignInLinkButton from "../signIn/SignInLinkButton";
 
 export default function ResetPasswordCard({
   children,
@@ -12,24 +7,10 @@ export default function ResetPasswordCard({
   children: React.ReactNode;
 }) {
   return (
-    <Card>
-      <AuthCardHeader subTitle="Reset password" />
-      <CardContent>
-        {children}
-        <AuthProviderIcons />
-        <SignIn />
-      </CardContent>
-    </Card>
+    <AuthCard subTitle="Reset Password">
+      {children}
+      <SignInLinkButton />
+    </AuthCard>
   );
 }
 
-function SignIn() {
-  return (
-    <section className={styles.container}>
-      <h4>Already have an account?</h4>
-      <Link href={routes.all.signIn} className={styles.btn}>
-        Sign In
-      </Link>
-    </section>
-  );
-}

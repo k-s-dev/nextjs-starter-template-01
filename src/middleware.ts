@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-
 import { routes } from "@/lib/utils/routeMapper";
 import { authentication } from "./lib/features/authentication/config";
 
@@ -32,6 +31,7 @@ export default authentication((req) => {
   }
 
   if (isLoggedIn) {
+    if (req.nextUrl.pathname === routes.authentication.resetPassword) return;
     if (isAuthenticationRoute) {
       const redirectUrl = new URL(
         routes.DEFAULT_LOGIN_REDIRECT,

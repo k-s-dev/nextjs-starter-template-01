@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "./Form.module.scss";
 import React, { useActionState, useEffect, useState } from "react";
 import { redirect, useSearchParams } from "next/navigation";
 import { useSession } from "next-auth/react";
@@ -10,7 +9,6 @@ import {
   TUserFormState,
   TUserFormStateData,
 } from "@/lib/dataModels/auth/user/definitions";
-import { FormSubmitButton } from "@/lib/components/form/FormSubmitButton";
 import { signInActionClient } from "./action/client";
 import { credentialsSignInActionServer } from "./action/server/signIn";
 import { sendResetPasswordLinkActionServer } from "./action/server/sendResetPasswordLink";
@@ -19,6 +17,7 @@ import { VSSignInForm, VSSignInFormBase } from "./definitions";
 import { UserEmail, UserPassword } from "@/lib/dataModels/auth/user/ui/Fields";
 import { routes } from "@/lib/utils/routeMapper";
 import Form from "@/lib/components/form/Form";
+import { Button } from "@mantine/core";
 
 export default function CredentialsSignInForm({
   formId = "signIn-form",
@@ -111,32 +110,40 @@ export default function CredentialsSignInForm({
           data-test-cy="signIn-password"
         />
 
-        <FormSubmitButton
-          formId={formId}
+        <Button
+          type="submit"
+          form={formId}
           formAction={signInAction}
-          isPending={isPending}
-          buttonText="SignIn"
+          disabled={isPending}
+          color="green.1"
           data-test-cy="signIn-btn"
-        />
+        >
+          Sign In
+        </Button>
 
-        <section className={styles.extraButtonsRow}>
-          <FormSubmitButton
-            formId={formId}
-            formAction={sendVerificationEmailFormAction}
-            isPending={isPending}
-            buttonText="Resend email verification link"
-            className={styles.verificationButton}
-            data-test-cy="send_verification_link_email-btn"
-          />
-          <FormSubmitButton
-            formId={formId}
-            formAction={resetPasswordAction}
-            isPending={isPending}
-            buttonText="Reset password"
-            className={styles.resetPasswordButton}
-            data-test-cy="reset_password-btn"
-          />
-        </section>
+        <Button
+          type="submit"
+          form={formId}
+          formAction={sendVerificationEmailFormAction}
+          disabled={isPending}
+          color="gray.2"
+          fullWidth
+          data-test-cy="send_verification_link_email-btn"
+        >
+          Resend email verification link
+        </Button>
+
+        <Button
+          type="submit"
+          form={formId}
+          formAction={resetPasswordAction}
+          disabled={isPending}
+          color="gray.2"
+          fullWidth
+          data-test-cy="reset_password-btn"
+        >
+          Reset Password
+        </Button>
       </Form>
       <FormError errors={formErrors} />
       <FormMessage messages={formState.messages || []} />

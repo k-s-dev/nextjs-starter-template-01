@@ -1,4 +1,4 @@
-import SignUpCard from "@/lib/features/authentication/features/signUp/Card";
+import SignUpCard from "@/lib/features/authentication/features/signUp/SignUpCard";
 
 export default function Page() {
   return (

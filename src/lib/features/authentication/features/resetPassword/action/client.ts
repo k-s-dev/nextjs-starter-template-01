@@ -3,13 +3,14 @@
 import * as v from "valibot";
 
 import { parseFormData } from "@/lib/utils/form";
-import { TServerAction } from "@/lib/utils/types";
 import { VSResetPasswordForm } from "../definitions";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { resetPasswordServerAction } from "./server";
 
 export async function resetPasswordClientAction(
-  serverAction: TServerAction<TUserFormState>,
+  serverAction: typeof resetPasswordServerAction,
   validationSchema: typeof VSResetPasswordForm,
+  email: string,
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
@@ -22,10 +23,10 @@ export async function resetPasswordClientAction(
       ...prevState,
       mode: "update",
       status: "failed",
-      data: rawFormData,
+      data: { ...rawFormData, email: email },
       errors: errors,
     };
   }
 
-  return await serverAction(prevState, formData);
+  return await serverAction(email, prevState, formData);
 }
