@@ -1,15 +1,10 @@
 "use client";
 
-import styles from "./UserUpdateForm.module.scss";
 import React, { useActionState, useState } from "react";
-import Link from "next/link";
-import { Divider } from "@mantine/core";
+import { Button, Divider } from "@mantine/core";
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
-import {
-  FormSubmitButton,
-  IFormBtnProps,
-} from "@/lib/components/form/FormSubmitButton";
+import { IFormBtnProps } from "@/lib/components/form/FormSubmitButton";
 import {
   TUserFormState,
   TUserFormStateData,
@@ -21,6 +16,7 @@ import FormHeader from "@/lib/components/form/FormHeader";
 import { UserForm } from "../UserForm";
 import { updateUserClientAction } from "./actions/clientAction";
 import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
+import LinkButton from "@/lib/components/LinkButton";
 
 export default function UserUpdateForm({
   user,
@@ -67,18 +63,21 @@ export function FormRowBtnsUser({
 }: IFormBtnProps & { id: string }) {
   return (
     <FormButtonsRow>
-      <FormSubmitButton
-        formId={formId}
-        isPending={isPending}
-        buttonText="Save"
+      <Button
+        type="submit"
+        form={formId}
+        disabled={isPending}
         data-test-cy="save-user-updates-button"
-      />
-      <Link
+        color="green.1"
+      >
+        Save
+      </Button>
+      <LinkButton
         href={routes.admin.user.withId(id, "detail")}
-        className={styles.cancelButton}
+        color="yellow.1"
       >
         Cancel
-      </Link>
+      </LinkButton>
     </FormButtonsRow>
   );
 }

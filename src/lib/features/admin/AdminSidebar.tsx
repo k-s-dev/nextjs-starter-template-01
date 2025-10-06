@@ -24,11 +24,13 @@ export default function AdminSidebar({
     <>
       <div className="media-tablet-up">
         <NavLink
-          p={0}
+          px={0}
           href={routes.admin.root}
           label="Admin"
           component={Link}
           active={pathname === routes.admin.root}
+          className={styles.link}
+          color="blue"
         />
         <ul className={styles.tableLinks}>{itemList}</ul>
       </div>
@@ -43,6 +45,7 @@ export default function AdminSidebar({
             label="Admin"
             component={Link}
             active={pathname === routes.admin.root}
+            color="blue"
           />
           <ul className={styles.tableLinks} onClick={close}>
             {itemList}
@@ -73,6 +76,8 @@ export function generateItemList(
             label={`${model.name} (${model.count})`}
             component={Link}
             active={active}
+            className={styles.link}
+            color="blue"
           />,
         );
       });

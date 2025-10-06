@@ -2,10 +2,12 @@
 
 import styles from "./DataTable.module.scss";
 import {
+  Center,
   Divider,
   Pagination,
   Select,
   Table,
+  TableProps,
   TableScrollContainer,
   TableTbody,
   TableTd,
@@ -33,14 +35,15 @@ import {
 } from "@tanstack/react-table";
 import { useMemo, useState } from "react";
 import DebouncedInput from "../DebouncedInput";
-import DeleteModal from "../form/DeleteModal";
 import clsx from "clsx";
+import DeleteModalIcon from "../form/DeleteModalIcon";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   rowSelectionAction?: (ids: string[]) => Promise<"success" | "failed" | never>;
   rowSelectionActionTitle?: string;
+  tableProps?: TableProps;
 }
 
 const PAGE_SIZE = [2, 5, 10, 15, 20];
@@ -50,6 +53,7 @@ export function DataTable<TData, TValue>({
   data,
   rowSelectionAction,
   rowSelectionActionTitle,
+  tableProps,
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
@@ -106,75 +110,85 @@ export function DataTable<TData, TValue>({
       />
 
       <Divider size="sm" mb="md" />
-      <TableScrollContainer minWidth={600}>
-        <Table striped withTableBorder withRowBorders withColumnBorders>
-          <TableThead className={styles.head}>
-            {table.getHeaderGroups().map((headerGroup) => (
-              <TableTr key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableTh
-                      key={header.id}
-                      colSpan={header.colSpan}
-                      className={styles.th}
-                    >
-                      <div className={styles.thContainer}>
-                        {header.isPlaceholder ? null : (
-                          <>
-                            <div
-                              {...{
-                                className: header.column.getCanSort()
-                                  ? styles.headTitleSort
-                                  : styles.headTitle,
-                                onClick:
-                                  header.column.getToggleSortingHandler(),
-                              }}
-                            >
-                              {flexRender(
-                                header.column.columnDef.header,
-                                header.getContext(),
-                              )}
-                              {{
-                                asc: " 🔼",
-                                desc: " 🔽",
-                              }[header.column.getIsSorted() as string] ?? null}
-                            </div>
-                            {header.column.getCanFilter() ? (
-                              <Filter column={header.column} />
-                            ) : null}
-                          </>
-                        )}
-                      </div>
-                    </TableTh>
-                  );
-                })}
-              </TableTr>
-            ))}
-          </TableThead>
-          <TableTbody>
-            {table.getRowModel().rows?.length ? (
-              table.getRowModel().rows.map((row) => (
-                <TableTr key={row.id}>
-                  {row.getVisibleCells().map((cell) => (
-                    <TableTd key={cell.id}>
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
-                    </TableTd>
-                  ))}
+      <Center>
+        <TableScrollContainer minWidth={600}>
+          <Table
+            striped
+            withTableBorder
+            withRowBorders
+            withColumnBorders
+            verticalSpacing="sm"
+            {...tableProps}
+          >
+            <TableThead className={styles.head}>
+              {table.getHeaderGroups().map((headerGroup) => (
+                <TableTr key={headerGroup.id}>
+                  {headerGroup.headers.map((header) => {
+                    return (
+                      <TableTh
+                        key={header.id}
+                        colSpan={header.colSpan}
+                        className={styles.th}
+                      >
+                        <div className={styles.thContainer}>
+                          {header.isPlaceholder ? null : (
+                            <>
+                              <div
+                                {...{
+                                  className: header.column.getCanSort()
+                                    ? styles.headTitleSort
+                                    : styles.headTitle,
+                                  onClick:
+                                    header.column.getToggleSortingHandler(),
+                                }}
+                              >
+                                {flexRender(
+                                  header.column.columnDef.header,
+                                  header.getContext(),
+                                )}
+                                {{
+                                  asc: " 🔼",
+                                  desc: " 🔽",
+                                }[header.column.getIsSorted() as string] ??
+                                  null}
+                              </div>
+                              {header.column.getCanFilter() ? (
+                                <Filter column={header.column} />
+                              ) : null}
+                            </>
+                          )}
+                        </div>
+                      </TableTh>
+                    );
+                  })}
                 </TableTr>
-              ))
-            ) : (
-              <TableTr>
-                <TableTd colSpan={columns.length} className={styles.td}>
-                  No results.
-                </TableTd>
-              </TableTr>
-            )}
-          </TableTbody>
-        </Table>
-      </TableScrollContainer>
+              ))}
+            </TableThead>
+            <TableTbody>
+              {table.getRowModel().rows?.length ? (
+                table.getRowModel().rows.map((row) => (
+                  <TableTr key={row.id}>
+                    {row.getVisibleCells().map((cell) => (
+                      <TableTd key={cell.id}>
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </TableTd>
+                    ))}
+                  </TableTr>
+                ))
+              ) : (
+                <TableTr>
+                  <TableTd colSpan={columns.length} className={styles.td}>
+                    No results.
+                  </TableTd>
+                </TableTr>
+              )}
+            </TableTbody>
+          </Table>
+        </TableScrollContainer>
+      </Center>
       <Divider size="sm" mb="md" />
       <DataTablePagination table={table} />
       <DataTableInfo
@@ -237,7 +251,7 @@ function DataTableInfo({
       </p>
 
       {rowSelectionAction && (
-        <DeleteModal
+        <DeleteModalIcon
           disabled={count < 1}
           tooltipLabel={count < 1 ? "No selection" : rowSelectionActionTitle}
           resource="User"
@@ -329,7 +343,7 @@ function Filter<TData>({ column }: { column: Column<TData, unknown> }) {
       {/* Autocomplete suggestions from faceted values feature */}
       <datalist id={column.id + "list"}>
         {sortedUniqueValues.map((value: string | number | undefined) => (
-          <option value={value} key={value} className={styles.filterSelect}/>
+          <option value={value} key={value} className={styles.filterSelect} />
         ))}
       </datalist>
       <DebouncedInput

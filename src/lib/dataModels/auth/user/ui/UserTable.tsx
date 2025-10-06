@@ -6,17 +6,21 @@ import { useEffect, useMemo, useState } from "react";
 import { DataTable } from "@/lib/components/table/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
 import TableCellWithCopy from "@/lib/components/table/TableCellWithCopy";
-import { Checkbox } from "@mantine/core";
 import TableCell from "@/lib/components/table/TableCell";
 import { dateFormat1 } from "@/lib/utils/format";
 import { routes } from "@/lib/utils/routeMapper";
 import Link from "next/link";
-import EditIcon from "@/lib/components/icons/EditIcon";
 import CopyIcon from "@/lib/components/icons/CopyIcon";
-import DeleteModal from "@/lib/components/form/DeleteModal";
 import { deleteUserServerAction } from "./delete/action/serverSingle";
 import { deleteManyUsersServerAction } from "./delete/action/serverMany";
 import clsx from "clsx";
+import {
+  generateCheckboxCell,
+  generateCheckboxHeader,
+} from "@/lib/components/table/TableCheckbox";
+import { Anchor } from "@mantine/core";
+import { EditIcon } from "@/lib/components/icons/TooltipIcons";
+import DeleteModalIcon from "@/lib/components/form/DeleteModalIcon";
 
 export function UserTable({ users }: { users: TUserPublic[] }) {
   const [data, setData] = useState([...users]);
@@ -30,27 +34,12 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
     return [
       {
         id: "select",
-        header: ({ table }) => (
-          <Checkbox
-            {...{
-              checked: table.getIsAllRowsSelected(),
-              indeterminate: table.getIsSomeRowsSelected(),
-              onChange: table.getToggleAllRowsSelectedHandler(),
-            }}
-          />
-        ),
-        cell: ({ row }) => (
-          <TableCell>
-            <Checkbox
-              {...{
-                checked: row.getIsSelected(),
-                disabled: !row.getCanSelect(),
-                indeterminate: row.getIsSomeSelected(),
-                onChange: row.getToggleSelectedHandler(),
-              }}
-            />
-          </TableCell>
-        ),
+        header: ({ table }) => {
+          return generateCheckboxHeader({ table });
+        },
+        cell: ({ row }) => {
+          return generateCheckboxCell({ row });
+        },
       },
       {
         accessorKey: "email",
@@ -67,15 +56,18 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
                       dtStyles.default.cellPrimary,
                     )}
                   >
-                    <Link
+                    <Anchor
+                      component={Link}
                       href={routes.admin.user.withId(
                         props.row.original.id,
                         "detail",
                       )}
-                      className="link"
+                      fz="lg"
+                      c="blue.7"
+                      underline="not-hover"
                     >
                       {props.getValue()}
-                    </Link>
+                    </Anchor>
                     <section className={dtStyles.default.cellIconsRow}>
                       <CopyIcon copyText={props.getValue()} />
                       <Link
@@ -86,7 +78,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
                       >
                         <EditIcon />
                       </Link>
-                      <DeleteModal
+                      <DeleteModalIcon
                         resource="User"
                         identifier={`${props.row.original.email} (id: ${props.row.original.id})`}
                         deleteAction={async () => {
@@ -154,6 +146,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
         const result = await deleteManyUsersServerAction(ids);
         return result;
       }}
+      tableProps={{ fz: "lg" }}
     />
   );
 }

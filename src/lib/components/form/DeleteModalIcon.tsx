@@ -2,11 +2,17 @@
 
 import styles from "./DeleteModal.module.scss";
 import { useDisclosure } from "@mantine/hooks";
-import DeleteIcon from "../icons/DeleteIcon";
-import { Blockquote, Modal } from "@mantine/core";
+import {
+  Blockquote,
+  Button,
+  ButtonProps,
+  Modal,
+  TextProps,
+} from "@mantine/core";
 import { useEffect, useState } from "react";
+import { DeleteIcon } from "../icons/TooltipIcons";
 
-export default function DeleteModal({
+export default function DeleteModalIcon({
   resource,
   identifier,
   deleteAction,
@@ -15,7 +21,8 @@ export default function DeleteModal({
   tooltipLabel = "Delete",
   disabled = false,
   btnClassName = styles.buttonIcon,
-  ...btnProps
+  iconProps,
+  restBtnProps,
 }: {
   resource: string;
   identifier: string;
@@ -25,7 +32,8 @@ export default function DeleteModal({
   tooltipLabel?: string;
   disabled?: boolean;
   btnClassName?: string;
-  btnProps?: React.ButtonHTMLAttributes<HTMLButtonElement>;
+  iconProps?: TextProps;
+  restBtnProps?: ButtonProps;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
   const [showFailMessage, setShowFailMessage] = useState<boolean>(false);
@@ -54,15 +62,17 @@ export default function DeleteModal({
           {showFailMessage && <FailMessage />}
         </DeleteModalContent>
       </Modal>
-      <button
+      <Button
         type="button"
         disabled={disabled}
         onClick={open}
         className={btnClassName}
-        {...btnProps}
+        variant="transparent"
+        p={0}
+        {...restBtnProps}
       >
-        <DeleteIcon label={tooltipLabel} />
-      </button>
+        <DeleteIcon label={tooltipLabel} textProps={iconProps} />
+      </Button>
     </>
   );
 }
@@ -83,41 +93,35 @@ export function DeleteModalContent({
   return (
     <section>
       <h4 className={styles.highlight}>This is a destructive action!</h4>
-
       <p>
         <span className={styles.resource}>{resource || "Resource"}</span>
         {": "}
         <span className={styles.identifier}>{identifier}</span>{" "}
       </p>
-
       <p>
         will be <span className={styles.highlight}>permanently deleted.</span>
       </p>
-
+      {children}
       <p>
         To <i>Confirm</i>, press <i>confirm button</i>.
       </p>
-
       <p>
         To <i>Cancel</i>, press <i>cancel button</i> or press &quot;Esc&quot;
         key.
       </p>
-
-      {children}
-
       <section className={styles.buttonRow}>
         <form id={identifier} action={deleteAction}>
-          <button
-            className={styles.buttonConfirm}
+          <Button
+            type="submit"
             data-test-cy="confirm-delete-button"
+            color="red.1"
           >
             Confirm
-          </button>
+          </Button>
         </form>
-
-        <button className={styles.buttonCancel} onClick={closeAction}>
+        <Button onClick={closeAction} color="green.1">
           Cancel
-        </button>
+        </Button>
       </section>
     </section>
   );

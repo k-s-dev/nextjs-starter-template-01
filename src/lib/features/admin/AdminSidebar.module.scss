@@ -3,5 +3,12 @@
 @use "@/styles/abstracts/" as *;
 
 .tableLinks {
+  font-size: 1.2rem;
   padding-left: #{map.get($spacing, 2)};
+}
+
+.link {
+  & span {
+    font-size: 1.2rem;
+  }
 }

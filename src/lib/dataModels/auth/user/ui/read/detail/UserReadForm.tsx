@@ -15,10 +15,10 @@ import {
   TUserPublic,
 } from "../../../definitions";
 import { UserForm } from "../../UserForm";
-import DeleteModal from "@/lib/components/form/DeleteModal";
-import { FaArrowLeft, FaPenToSquare } from "react-icons/fa6";
 import { deleteUserServerAction } from "../../delete/action/serverSingle";
 import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
+import { BackIcon, EditIcon } from "@/lib/components/icons/TooltipIcons";
+import DeleteModalIcon from "@/lib/components/form/DeleteModalIcon";
 
 export default function UserReadForm({
   user,
@@ -70,20 +70,18 @@ export default function UserReadForm({
 function BtnsRow({ id, email }: { id: string; email: string }) {
   return (
     <FormButtonsRow>
-      <Link
-        href={routes.admin.user.withId(id, "update")}
-        className={styles.editIcon}
-      >
-        <FaPenToSquare />
+      <Link href={routes.admin.user.withId(id, "update")}>
+        <EditIcon textProps={{ fz: "h2" }} />
       </Link>
-      <DeleteModal
+      <DeleteModalIcon
         resource="User"
         identifier={`${email} (id: ${id})`}
         deleteAction={async () => await deleteUserServerAction(id)}
+        iconProps={{ fz: "h2" }}
         data-test-cy="delete-user-button"
       />
       <Link href={routes.admin.user.read} className={styles.backIcon}>
-        <FaArrowLeft />
+        <BackIcon label="Back to User List" textProps={{ fz: "h2" }} />
       </Link>
     </FormButtonsRow>
   );

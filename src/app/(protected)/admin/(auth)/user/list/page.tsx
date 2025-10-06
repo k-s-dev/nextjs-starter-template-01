@@ -1,12 +1,11 @@
 import styles from "./page.module.scss";
 import "@/styles/components/_button.scss";
-
 import { getUsers } from "@/lib/dataModels/auth/user/dataAccess";
 import { Divider } from "@mantine/core";
-import Link from "next/link";
 import { routes } from "@/lib/utils/routeMapper";
 import { UserTable } from "@/lib/dataModels/auth/user/ui/UserTable";
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
+import LinkButton from "@/lib/components/LinkButton";
 
 export default async function Page() {
   const sessionUser = await getSessionUser()
@@ -16,9 +15,9 @@ export default async function Page() {
     <div>
       <header className={styles.rootHeader}>
         <h1>User: List</h1>
-        <Link href={routes.admin.user.create} className="btn-create">
+        <LinkButton href={routes.admin.user.create} color="blue.1" fz="lg">
           Create User
-        </Link>
+        </LinkButton>
       </header>
       <Divider size="md" mb="md" />
       <UserTable users={users} />

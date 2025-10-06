@@ -36,7 +36,7 @@
 
 .cell {
   display: inline-flex;
-  align-items: center;
+  align-items: baseline;
   gap: #{map.get($spacing, 2)};
 
   &Icon {
@@ -52,11 +52,13 @@
 
   &IconsRow {
     display: inline-flex;
-    align-items: center;
+    justify-content: space-evenly;
+    align-items: baseline;
     gap: #{map.get($spacing, 2)};
 
     @include media-phone {
-      justify-content: space-between;
+      justify-content: flex-start;
+      gap: 2rem;
       width: 100%;
     }
   }

@@ -7,7 +7,7 @@ import { IAdminModelInfo } from "./adminModelList";
 import { DataTable } from "@/lib/components/table/DataTable";
 import { useMemo, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
-import { Tooltip } from "@mantine/core";
+import { Anchor, Tooltip } from "@mantine/core";
 import clsx from "clsx";
 
 export function AdminTable({ modelList }: { modelList: IAdminModelInfo[] }) {
@@ -23,9 +23,15 @@ export function AdminTable({ modelList }: { modelList: IAdminModelInfo[] }) {
         cell: (props) => {
           return (
             <div className={dtStyles.default.cell}>
-              <Link href={props.row.original.href} className="link">
+              <Anchor
+                component={Link}
+                href={props.row.original.href}
+                underline="not-hover"
+                fz="lg"
+                c="blue.7"
+              >
                 {props.getValue()}
-              </Link>
+              </Anchor>
               <Tooltip label={`Add ${props.row.original.name}`}>
                 <Link
                   href={`${props.row.original.rootPath}/create`}
@@ -44,7 +50,9 @@ export function AdminTable({ modelList }: { modelList: IAdminModelInfo[] }) {
         accessorKey: "category",
         id: "category",
         header: "Category",
-        cell: (info) => <div className={dtStyles.default.cell}>{info.getValue()}</div>,
+        cell: (info) => (
+          <div className={dtStyles.default.cell}>{info.getValue()}</div>
+        ),
         sortingFn: "alphanumeric",
         sortDescFirst: true,
       },
@@ -53,7 +61,9 @@ export function AdminTable({ modelList }: { modelList: IAdminModelInfo[] }) {
         id: "count",
         header: "Count",
         cell: (info) => (
-          <div className={dtStyles.default.cell}>{info.getValue().toString()}</div>
+          <div className={dtStyles.default.cell}>
+            {info.getValue().toString()}
+          </div>
         ),
         meta: {
           filterVariant: "range",
@@ -62,5 +72,12 @@ export function AdminTable({ modelList }: { modelList: IAdminModelInfo[] }) {
     ];
   }, []);
 
-  return <DataTable key="admin-table" columns={columns} data={data} />;
+  return (
+    <DataTable
+      key="admin-table"
+      columns={columns}
+      data={data}
+      tableProps={{ fz: "xl" }}
+    />
+  );
 }
