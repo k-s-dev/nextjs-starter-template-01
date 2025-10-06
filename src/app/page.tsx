@@ -32,8 +32,16 @@ export default async function Page() {
 
 function Item({ href, title }: { href: string; title: string }) {
   return (
-    <Link href={href} target={href.length === 0 ? "_self" : "_blank"}>
-      <Button fullWidth variant="outline" color="gray" fz="md">
+    <Link
+      href={href}
+      target={href.length === 0 ? "_self" : "_blank"}
+      referrerPolicy="no-referrer"
+    >
+      <Button
+        fullWidth
+        fz="md"
+        color="yellow.1"
+      >
         {title}
       </Button>
     </Link>
