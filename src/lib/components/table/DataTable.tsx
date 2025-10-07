@@ -110,7 +110,8 @@ export function DataTable<TData, TValue>({
       />
 
       <Divider size="sm" mb="md" />
-      <Center>
+      {/* Note: max-width is linked to admin root layout 20-80 (1fr 4fr) sidebar-main */}
+      <Center maw="80vw">
         <TableScrollContainer minWidth={600}>
           <Table
             striped
