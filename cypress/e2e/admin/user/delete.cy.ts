@@ -41,7 +41,7 @@ describe("admin.user.delete flow", () => {
       cy.visit(url);
     });
     cy.getByData("delete-user-button").eq(0).click();
-    cy.getByData("confirm-delete-button").click();
+    cy.getByData("delete-confirmation-button").click();
     cy.visit(routes.admin.user.read);
     cy.contains("test-user-02@example.com").should("not.be.true");
   });
@@ -55,8 +55,8 @@ describe("admin.user.delete flow", () => {
     cy.visit(routes.admin.user.read);
     cy.get("input[type='checkbox']").eq(2).click();
     cy.get("input[type='checkbox']").eq(3).click();
-    cy.getByData("delete-all-icon").eq(0).click();
-    cy.getByData("confirm-delete-button").click();
+    cy.getByData("delete-all-button").eq(0).click();
+    cy.getByData("delete-confirmation-button").click();
     cy.contains("test-user-01@example.com").should("be.visible");
     cy.contains("test-user-02@example.com").should("not.be.true");
   });

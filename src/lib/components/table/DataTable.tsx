@@ -269,7 +269,7 @@ function DataTableInfo({
             const result = rowSelectionAction(ids);
             return result;
           }}
-          data-test-cy="delete-all-icon"
+          data-test-cy="delete-all-button"
         />
       )}
     </div>

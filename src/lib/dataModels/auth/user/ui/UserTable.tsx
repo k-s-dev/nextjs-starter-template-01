@@ -87,6 +87,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
                           );
                           return result;
                         }}
+                        data-test-cy="delete-user-button"
                       />
                     </section>
                   </TableCell>

@@ -22,7 +22,7 @@ export default function DeleteModalIcon({
   disabled = false,
   btnClassName = styles.buttonIcon,
   iconProps,
-  restBtnProps,
+  ...restBtnProps
 }: {
   resource: string;
   identifier: string;
@@ -113,7 +113,7 @@ export function DeleteModalContent({
         <form id={identifier} action={deleteAction}>
           <Button
             type="submit"
-            data-test-cy="confirm-delete-button"
+            data-test-cy="delete-confirmation-button"
             color="red.1"
           >
             Confirm
