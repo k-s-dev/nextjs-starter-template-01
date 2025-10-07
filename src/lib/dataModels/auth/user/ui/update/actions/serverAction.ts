@@ -2,7 +2,7 @@
 
 import * as v from "valibot";
 
-import { saveFileUpload } from "@/lib/utils/uploads";
+import { deleteUploadedFile, uploadFile } from "@/lib/utils/uploads";
 import { parseFormData } from "@/lib/utils/form";
 import {
   TUserFormState,
@@ -73,11 +73,28 @@ export async function updateUserServerAction(
   }
 
   // handle image upload
-  let imageUploadUrl;
+  let imageUploadUrl = null;
+
+  if (!imageFile && user.image) {
+    try {
+      await deleteUploadedFile({ uploadUrl: user.image });
+    } catch {
+      return {
+        mode: "update",
+        status: "failed",
+        data: rawFormData,
+        errors: {
+          root: [
+            "Failed to clear user image. Please try and update user again.",
+          ],
+        },
+      };
+    }
+  }
 
   if (imageFile && imageFile.size > 0) {
     try {
-      imageUploadUrl = await saveFileUpload({
+      imageUploadUrl = await uploadFile({
         uploadFile: imageFile,
         uploadDir: `uploads/user/${user.id}/images/`,
         fileNameWoExt: "profile-pic",
@@ -85,41 +102,39 @@ export async function updateUserServerAction(
     } catch (error) {
       console.log(error);
       return {
-        mode: "create",
+        mode: "update",
         status: "failed",
         data: rawFormData,
         errors: {
           root: [
-            "User created but image upload failed. Please try and update user again.",
+            "User updated but image upload failed. Please try and update user again.",
           ],
         },
       };
     }
   }
 
-  if (imageUploadUrl) {
-    try {
-      await updateUser(
-        { id: user.id },
-        {
-          image: imageUploadUrl,
-        },
-        "client",
-        sessionUser,
-      );
-    } catch (error) {
-      console.log(error);
-      return {
-        mode: "create",
-        status: "failed",
-        data: rawFormData,
-        errors: {
-          root: [
-            "User created but image upload failed. Please try and update user again.",
-          ],
-        },
-      };
-    }
+  try {
+    await updateUser(
+      { id: user.id },
+      {
+        image: imageUploadUrl,
+      },
+      "client",
+      sessionUser,
+    );
+  } catch (error) {
+    console.log(error);
+    return {
+      mode: "create",
+      status: "failed",
+      data: rawFormData,
+      errors: {
+        root: [
+          "User created but image upload failed. Please try and update user again.",
+        ],
+      },
+    };
   }
 
   revalidatePath(routes.admin.root);

@@ -1,11 +1,11 @@
 "use server";
 
 import path from "node:path";
-import { access, mkdir, writeFile } from "node:fs/promises";
-import { put } from "@vercel/blob";
+import { access, mkdir, unlink, writeFile } from "node:fs/promises";
+import { put, del } from "@vercel/blob";
 import { ApiError } from "./errors";
 
-export async function saveFileUpload({
+export async function uploadFile({
   uploadFile,
   uploadDir,
   fileNameWoExt,
@@ -28,15 +28,15 @@ export async function saveFileUpload({
   };
 
   if (uploadMethod === "vercel-blob") {
-    uploadUrl = await saveFileUploadVercelBlob(fnProps);
+    uploadUrl = await uploadFileVercelBlob(fnProps);
   } else {
-    uploadUrl = await saveFileUploadLocal(fnProps);
+    uploadUrl = await uploadFileLocal(fnProps);
   }
 
   return uploadUrl;
 }
 
-export async function saveFileUploadVercelBlob({
+export async function uploadFileVercelBlob({
   uploadFile,
   uploadDir,
   fileNameWoExt,
@@ -76,7 +76,7 @@ export async function saveFileUploadVercelBlob({
   return blob.url;
 }
 
-export async function saveFileUploadLocal({
+export async function uploadFileLocal({
   uploadFile,
   uploadDir,
   fileNameWoExt,
@@ -111,4 +111,63 @@ export async function saveFileUploadLocal({
   const uploadUrl = path.join("/", uploadDir, fileName);
 
   return uploadUrl;
+}
+
+export async function deleteUploadedFile({
+  uploadUrl,
+  uploadRootDir,
+}: {
+  uploadUrl: string;
+  uploadRootDir?: string;
+}) {
+  let result;
+
+  // values: vercel-blob, local (fallback)
+  const uploadMethod = process.env.UPLOAD_METHOD;
+
+  if (uploadMethod === "vercel-blob") {
+    result = await deleteUploadedFileVercelBlob({ uploadUrl });
+  } else {
+    result = await deleteUploadedFileLocal({ uploadUrl, uploadRootDir });
+  }
+
+  return result;
+}
+
+export async function deleteUploadedFileVercelBlob({
+  uploadUrl,
+}: {
+  uploadUrl: string;
+}) {
+  try {
+    await del(uploadUrl);
+  } catch (error) {
+    throw new ApiError({
+      message: "Failed to delete uploaded image.",
+      cause: error,
+    });
+  }
+
+  return true;
+}
+
+export async function deleteUploadedFileLocal({
+  uploadUrl,
+  uploadRootDir = "public/",
+}: {
+  uploadUrl: string;
+  uploadRootDir?: string;
+}) {
+  const uploadFilePath = path.join(".", "/", uploadRootDir, uploadUrl);
+
+  try {
+    await unlink(uploadFilePath);
+  } catch (error) {
+    throw new ApiError({
+      message: "Failed to delete uploaded image.",
+      cause: error,
+    });
+  }
+
+  return true;
 }

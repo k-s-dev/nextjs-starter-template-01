@@ -2,7 +2,7 @@
 
 import * as v from "valibot";
 
-import { saveFileUpload } from "@/lib/utils/uploads";
+import { uploadFile } from "@/lib/utils/uploads";
 import { parseFormData } from "@/lib/utils/form";
 import { TUser, TUserFormState, VSUserCrudForm } from "../../../definitions";
 import { createUser, getUserByEmail, updateUser } from "../../../dataAccess";
@@ -79,7 +79,7 @@ export async function createUserServerAction(
   let imageUploadUrl;
   if (imageFile && imageFile.size > 0) {
     try {
-      imageUploadUrl = await saveFileUpload({
+      imageUploadUrl = await uploadFile({
         uploadFile: imageFile,
         uploadDir: `uploads/user/${user.id}/images/`,
         fileNameWoExt: "profile-pic",
