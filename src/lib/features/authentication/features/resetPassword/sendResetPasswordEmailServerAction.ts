@@ -3,9 +3,19 @@
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccess";
 import { TUser } from "@/lib/dataModels/auth/user/definitions";
 import { sendVerificationEmail } from "../../verification";
+import { authentication } from "../../config";
 
-export async function sendResetPasswordEmailServerAction(email: string): Promise<IReturn> {
-  const user: TUser = await getUserByEmail(email, "server");
+export async function sendResetPasswordEmailServerAction(): Promise<IReturn> {
+  const session = await authentication();
+
+  // validate: existing user
+  if (!session?.user.email)
+    return {
+      status: "error",
+      message: "UnAuthorized access.",
+    };
+
+  const user: TUser = await getUserByEmail(session?.user.email, "server");
 
   // validate: existing user
   if (!user)
@@ -23,7 +33,7 @@ export async function sendResetPasswordEmailServerAction(email: string): Promise
 
   // send reset password link
   try {
-    await sendVerificationEmail(email, "RESET_PASSWORD");
+    await sendVerificationEmail(user.email, "RESET_PASSWORD");
   } catch {
     return {
       status: "error",
@@ -32,7 +42,7 @@ export async function sendResetPasswordEmailServerAction(email: string): Promise
   }
   return {
     status: "success",
-    message: `Reset password link sent to "${email}"`,
+    message: `Reset password link sent to "${user.email}"`,
   };
 }
 

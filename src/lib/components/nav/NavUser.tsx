@@ -49,7 +49,7 @@ export default function NavUser() {
   async function handleResetPassword() {
     let result = null;
     if (session?.user.email) {
-      result = await sendResetPasswordEmailServerAction(session.user.email);
+      result = await sendResetPasswordEmailServerAction();
     }
     if (result?.status) {
       notifications.show({
