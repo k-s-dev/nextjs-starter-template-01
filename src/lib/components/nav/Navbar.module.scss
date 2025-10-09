@@ -3,7 +3,7 @@
 @use "@/styles/abstracts/" as *;
 
 .nav {
-  font-size: #{map.get($font-sizes, 6)};
+  font-size: fn-font-size(6);
   color: var(--color-success-emphasis);
   background-color: var(--color-light);
 }
@@ -13,7 +13,7 @@
   grid-template-columns: repeat(3, 1fr);
   justify-content: space-between;
   align-items: center;
-  padding: #{map.get($spacing, 2)};
+  padding: fn-space(2);
   border-bottom: 1px solid var(--color-2);
 
   @include media-phone {
@@ -27,7 +27,7 @@
 .right {
   display: flex;
   align-items: center;
-  gap: #{map.get($spacing, 4)};
+  gap: fn-space(4);
 }
 
 .left {

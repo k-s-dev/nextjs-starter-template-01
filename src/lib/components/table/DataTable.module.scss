@@ -23,8 +23,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: #{map.get($spacing, 2)};
-    margin-bottom: #{map.get($spacing, 2)};
+    gap: fn-space(2);
+    margin-bottom: fn-space(2);
 
     @include media-phone {
       flex-direction: column;
@@ -37,10 +37,10 @@
 .cell {
   display: inline-flex;
   align-items: baseline;
-  gap: #{map.get($spacing, 2)};
+  gap: fn-space(2);
 
   &Icon {
-    font-size: #{map.get($font-sizes, 6)};
+    font-size: fn-font-size(6);
   }
 
   &Primary {
@@ -54,7 +54,7 @@
     display: inline-flex;
     justify-content: space-evenly;
     align-items: baseline;
-    gap: #{map.get($spacing, 2)};
+    gap: fn-space(2);
 
     @include media-phone {
       justify-content: flex-start;
@@ -65,14 +65,14 @@
 }
 
 .info {
-  font-size: #{map.get($font-sizes, 4)};
+  font-size: fn-font-size(4);
 
   &Container {
     width: 100%;
     display: inline-flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: #{map.get($spacing, 1)};
+    margin-bottom: fn-space(1);
 
     @include media-phone {
       flex-direction: column;
@@ -83,15 +83,15 @@
 
 .filter {
   border: 1px solid var(--color-2);
-  border-radius: #{map.get($border-radius-sizes, 2)};
-  padding-left: #{map.get($spacing, 1)};
+  border-radius: fn-border-radius-size(2);
+  padding-left: fn-space(1);
 
   &Range {
     width: 100%;
 
     &Container {
       display: inline-flex;
-      gap: #{map.get($spacing, 1)};
+      gap: fn-space(1);
       justify-content: space-evenly;
       width: 100%;
     }

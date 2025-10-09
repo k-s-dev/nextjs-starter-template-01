@@ -9,7 +9,7 @@
   display: grid;
   justify-content: center;
   align-items: center;
-  gap: #{map.get($spacing, 4)};
-  padding: #{map.get($spacing, 2)} 0;
+  gap: fn-space(4);
+  padding: fn-space(2) 0;
 }
 

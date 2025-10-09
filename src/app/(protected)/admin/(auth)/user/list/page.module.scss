@@ -6,7 +6,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: #{map.get($spacing, 2)};
+  padding: fn-space(2);
 
   @include media-phone {
     flex-direction: column;

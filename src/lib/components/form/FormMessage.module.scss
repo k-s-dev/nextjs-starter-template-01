@@ -4,14 +4,14 @@
 
 .container {
   justify-self: center;
-  font-size: #{map.get($font-sizes, 6)};
-  margin-bottom: #{map.get($spacing, 2)};
-  padding: #{map.get($spacing, 1)} #{map.get($spacing, 2)};
-  border-radius: #{map.get($border-radius-sizes, 4)};
+  font-size: fn-font-size(6);
+  margin-bottom: fn-space(2);
+  padding: fn-space(1) fn-space(2);
+  border-radius: fn-border-radius-size(4);
 }
 
 .header {
-  margin-bottom: #{map.get($spacing, 2)};
+  margin-bottom: fn-space(2);
 }
 
 .item {

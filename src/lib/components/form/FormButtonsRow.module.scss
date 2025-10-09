@@ -6,7 +6,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: #{map.get($spacing, 2)};
+  gap: fn-space(2);
 
   @include media-phone {
     width: 100%;

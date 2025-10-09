@@ -3,9 +3,10 @@
 
 @use "../sass" as *;
 @use "../../mixins" as *;
+@use "../../functions" as *;
 
 @mixin sizing-variables {
   // rem calculations are based on html font size
   --html-font-size: 100%;
-  --body-font-size: #{map.get($font-sizes, 5)}; // ~ 16px
+  --body-font-size: fn-font-size(5); // ~ 16px
 }

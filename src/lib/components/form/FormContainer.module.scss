@@ -5,7 +5,7 @@
 .container {
   width: 100%;
   max-width: 700px;
-  border: #{map.get($border-sizes, 2)} solid var(--color-2);
-  border-radius: #{map.get($border-radius-sizes, 5)};
-  padding: #{map.get($spacing, 5)};
+  border: fn-border-size(2) solid var(--color-2);
+  border-radius: fn-border-radius-size(5);
+  padding: fn-space(5);
 }

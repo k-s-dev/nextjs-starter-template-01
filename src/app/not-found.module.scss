@@ -9,11 +9,11 @@
   align-items: center;
   min-width: 100vw;
   height: 50vh;
-  gap: #{map.get($spacing, 5)};
-  padding: #{map.get($spacing, 5)};
+  gap: fn-space(5);
+  padding: fn-space(5);
 
   @include media-phone {
-    padding: #{map.get($spacing, 2)};
+    padding: fn-space(2);
   }
 }
 

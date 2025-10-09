@@ -1,7 +1,5 @@
 @use "sass:map";
-@use "../../functions" as *;
-
-$max-steps: 16;
+@use "../../functions/generators" as *;
 
 $font-sizes: generate-sass-variable-space(0.2rem);
 $line-heights: generate-sass-variable-space(0.25);

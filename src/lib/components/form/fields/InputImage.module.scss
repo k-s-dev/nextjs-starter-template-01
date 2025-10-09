@@ -3,9 +3,9 @@
 @use "@/styles/abstracts/" as *;
 
 .field {
-  border-radius: #{map.get($border-radius-sizes, 4)};
-  border: #{map.get($border-sizes, 3)} solid var(--color-2);
-  padding: #{map.get($spacing, 2)};
+  border-radius: fn-border-radius-size(4);
+  border: fn-border-size(3) solid var(--color-2);
+  padding: fn-space(2);
   width: 100%;
 }
 

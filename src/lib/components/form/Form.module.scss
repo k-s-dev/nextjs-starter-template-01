@@ -5,10 +5,11 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: #{map.get($spacing, 2)};
-  text-align: start;
-  margin-bottom: #{map.get($spacing, 3)};
+  gap: fn-space(2);
+  margin-bottom: fn-space(3);
+
   color: var(--color-2);
+  text-align: start;
 
   &[inert] {
     & input,
@@ -17,10 +18,3 @@
     }
   }
 }
-
-// .inert {
-//   & input,
-//   & button {
-//     background-color: $grey-100;
-//   }
-// }

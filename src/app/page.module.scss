@@ -10,14 +10,14 @@
   flex-direction: column;
   justify-content: start;
   align-items: center;
-  gap: #{map.get($spacing, 8)};
+  gap: fn-space(8);
   min-height: calc(100vh - 50px);
-  font-size: #{map.get($font-sizes, 8)};
+  font-size: fn-font-size(8);
 
   @include media-phone {
     display: block;
-    margin: #{map.get($spacing, 4)} auto;
-    padding: #{map.get($spacing, 2)} #{map.get($spacing, 2)};
+    margin: fn-space(4) auto;
+    padding: fn-space(2) fn-space(2);
   }
 }
 

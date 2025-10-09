@@ -15,7 +15,7 @@
   &Row {
     display: flex;
     justify-content: flex-end;
-    gap: #{map.get($spacing, 2)};
+    gap: fn-space(2);
   }
 
   &Icon {
