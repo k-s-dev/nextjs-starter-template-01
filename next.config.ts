@@ -8,6 +8,7 @@ const nextConfig: NextConfig = {
       bodySizeLimit: "5mb",
     },
     optimizePackageImports: ["@mantine/core", "@mantine/hooks"],
+    webpackMemoryOptimizations: true,
   },
   allowedDevOrigins: ["192.168.1.*", "10.163.217.*"],
   images: {
