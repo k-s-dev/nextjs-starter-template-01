@@ -2,6 +2,8 @@ import prisma from "@/database/prismaClient";
 import { Prisma, USER_ROLE } from "@/generated/prisma";
 import * as v from "valibot";
 
+export const MODEL_NAME = "user";
+
 // generic User form related schemas and types
 // may include extra fields, e.g. "confirmPassword"
 export const VSUserBase = v.partial(

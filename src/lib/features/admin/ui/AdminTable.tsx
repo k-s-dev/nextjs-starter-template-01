@@ -3,12 +3,12 @@
 import * as dtStyles from "@/lib/components/table/DataTable.module.scss";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import { IAdminModelInfo } from "./adminModelList";
 import { DataTable } from "@/lib/components/table/DataTable";
 import { useMemo, useState } from "react";
 import { FaPlus } from "react-icons/fa6";
 import { Anchor, Tooltip } from "@mantine/core";
 import clsx from "clsx";
+import { IAdminModelInfo } from "../adminModelList";
 
 export function AdminTable({ modelList }: { modelList: IAdminModelInfo[] }) {
   const [data] = useState<IAdminModelInfo[]>([...modelList]);

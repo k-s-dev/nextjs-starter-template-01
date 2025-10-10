@@ -34,7 +34,7 @@ describe("admin.user.create flow", () => {
     cy.location("pathname").should("eq", "/");
     cy.visit(routes.admin.user.create);
     cy.location("pathname").should("eq", "/admin/user/create");
-    cy.get("h1").should("contain.text", "User: Create");
+    cy.get("#user-create-form").should("be.visible");
   });
 
   it("should create user with superuser signIn", () => {
@@ -51,6 +51,6 @@ describe("admin.user.create flow", () => {
     cy.contains(userEmail).click()
     cy.location("pathname").should("contain", "/admin/user/");
     cy.location("pathname").should("contain", "/detail");
-    cy.get("h1").should("contain.text", "User: Details")
+    cy.get("input[name='email']").should("have.value", userEmail)
   });
 });

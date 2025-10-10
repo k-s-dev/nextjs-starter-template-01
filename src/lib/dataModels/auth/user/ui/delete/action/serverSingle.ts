@@ -6,7 +6,9 @@ import { routes } from "@/lib/utils/routeMapper";
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
 import { redirect } from "next/navigation";
 
-export async function deleteUserServerAction(id?: string): Promise<"failed" | never> {
+export async function deleteUserServerAction(
+  id?: string,
+): Promise<"failed" | never> {
   const sessionUser = await getSessionUser();
 
   try {

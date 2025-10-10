@@ -1,22 +1,23 @@
 "use client";
 
 import React, { useActionState, useState } from "react";
-import { Button, Divider } from "@mantine/core";
+import { Divider } from "@mantine/core";
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
-import { IFormBtnProps } from "@/lib/components/form/FormSubmitButton";
 import {
+  MODEL_NAME,
   TUserFormState,
   TUserFormStateData,
   TUserPublic,
 } from "../../definitions";
 import { routes } from "@/lib/utils/routeMapper";
-import FormContainer from "@/lib/components/form/FormContainer";
-import FormHeader from "@/lib/components/form/FormHeader";
 import { UserForm } from "../UserForm";
 import { updateUserClientAction } from "./actions/clientAction";
-import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
-import LinkButton from "@/lib/components/LinkButton";
+import AdminFormContainer from "@/lib/features/admin/ui/form/AdminFormContainer";
+import AdminUpdateFormLinks, {
+  IAdminUpdateFormLinksProps,
+} from "@/lib/features/admin/ui/form/update/AdminUpdateFormLinks";
+import AdminUpdateFormHeader from "@/lib/features/admin/ui/form/update/AdminUpdateFormHeader";
 
 export default function UserUpdateForm({
   user,
@@ -37,9 +38,16 @@ export default function UserUpdateForm({
     initialFormState,
   );
 
+  const linksProps: IAdminUpdateFormLinksProps = {
+    form: formId,
+    isPending: isPending,
+    modelName: MODEL_NAME,
+    cancelHref: routes.admin.user.withId(user.id, "detail"),
+  };
+
   return (
-    <FormContainer>
-      <FormHeaderUser id={user.id} formId={formId} isPending={isPending} />
+    <AdminFormContainer>
+      <AdminUpdateFormHeader {...linksProps} />
       <UserForm
         formId={formId}
         formState={formState}
@@ -51,46 +59,7 @@ export default function UserUpdateForm({
       <FormError errors={formState.errors?.root} />
       <FormMessage messages={formState.messages} />
       <Divider size="md" my="sm" />
-      <FormRowBtnsUser id={user.id} formId={formId} isPending={isPending} />
-    </FormContainer>
-  );
-}
-
-export function FormRowBtnsUser({
-  id,
-  formId,
-  isPending,
-}: IFormBtnProps & { id: string }) {
-  return (
-    <FormButtonsRow>
-      <Button
-        type="submit"
-        form={formId}
-        disabled={isPending}
-        data-test-cy="save-user-updates-button"
-        color="green.1"
-      >
-        Save
-      </Button>
-      <LinkButton
-        href={routes.admin.user.withId(id, "detail")}
-        color="yellow.1"
-      >
-        Cancel
-      </LinkButton>
-    </FormButtonsRow>
-  );
-}
-
-export function FormHeaderUser({
-  id,
-  formId,
-  isPending,
-}: IFormBtnProps & { id: string }) {
-  return (
-    <FormHeader>
-      <h1>User: Update</h1>
-      <FormRowBtnsUser id={id} formId={formId} isPending={isPending} />
-    </FormHeader>
+      <AdminUpdateFormLinks {...linksProps} />
+    </AdminFormContainer>
   );
 }

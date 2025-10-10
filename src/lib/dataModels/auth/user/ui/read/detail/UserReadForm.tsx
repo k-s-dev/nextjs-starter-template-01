@@ -1,24 +1,23 @@
 "use client";
 
-import styles from "./UserReadForm.module.scss";
 import React, { useActionState, useState } from "react";
-import Link from "next/link";
 import { Divider } from "@mantine/core";
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import { routes } from "@/lib/utils/routeMapper";
-import FormContainer from "@/lib/components/form/FormContainer";
-import FormHeader from "@/lib/components/form/FormHeader";
 import {
+  MODEL_NAME,
   TUserFormState,
   TUserFormStateData,
   TUserPublic,
 } from "../../../definitions";
 import { UserForm } from "../../UserForm";
 import { deleteUserServerAction } from "../../delete/action/serverSingle";
-import FormButtonsRow from "@/lib/components/form/FormButtonsRow";
-import { BackIcon, EditIcon } from "@/lib/components/icons/TooltipIcons";
-import DeleteModalIcon from "@/lib/components/form/DeleteModalIcon";
+import AdminFormContainer from "@/lib/features/admin/ui/form/AdminFormContainer";
+import AdminReadFormHeader, {
+  IAdminReadFormHeaderProps,
+} from "@/lib/features/admin/ui/form/read/AdminReadFormHeader";
+import AdminReadFormLinks from "@/lib/features/admin/ui/form/read/AdminReadFormLinks";
 
 export default function UserReadForm({
   user,
@@ -47,9 +46,17 @@ export default function UserReadForm({
     );
   }
 
+  const adminLinksProps: IAdminReadFormHeaderProps = {
+    modelName: MODEL_NAME,
+    editHref: routes.admin.user.withId(user.id, "update"),
+    backHref: routes.admin.user.read,
+    identifier: user.email,
+    deleteAction: async () => await deleteUserServerAction(user.id),
+  };
+
   return (
-    <FormContainer>
-      <Header id={user.id} email={user.email} />
+    <AdminFormContainer>
+      <AdminReadFormHeader {...adminLinksProps} />
       <UserForm
         formId={formId}
         formState={formState}
@@ -57,41 +64,12 @@ export default function UserReadForm({
         imageFile={imageFile}
         setImageFileAction={setImageFile}
         initialImageUrl={user.image}
-        inert={true}
+        inert
       />
       <FormError errors={formState.errors?.root} />
       <FormMessage messages={formState.messages} />
       <Divider size="md" my="sm" />
-      <BtnsRow id={user.id} email={user.email} />
-    </FormContainer>
-  );
-}
-
-function BtnsRow({ id, email }: { id: string; email: string }) {
-  return (
-    <FormButtonsRow>
-      <Link href={routes.admin.user.withId(id, "update")}>
-        <EditIcon textProps={{ fz: "h2" }} />
-      </Link>
-      <DeleteModalIcon
-        resource="User"
-        identifier={`${email} (id: ${id})`}
-        deleteAction={async () => await deleteUserServerAction(id)}
-        iconProps={{ fz: "h2" }}
-        data-test-cy="delete-user-button"
-      />
-      <Link href={routes.admin.user.read} className={styles.backIcon}>
-        <BackIcon label="Back to User List" textProps={{ fz: "h2" }} />
-      </Link>
-    </FormButtonsRow>
-  );
-}
-
-function Header({ id, email }: { id: string; email: string }) {
-  return (
-    <FormHeader>
-      <h1>User: Details</h1>
-      <BtnsRow id={id} email={email} />
-    </FormHeader>
+      <AdminReadFormLinks {...adminLinksProps} />
+    </AdminFormContainer>
   );
 }

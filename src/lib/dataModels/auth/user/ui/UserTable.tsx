@@ -147,7 +147,8 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
         const result = await deleteManyUsersServerAction(ids);
         return result;
       }}
-      tableProps={{ fz: "lg" }}
+      // NOTE: id needed for test
+      tableProps={{ id: "admin-user-table", fz: "lg" }}
     />
   );
 }

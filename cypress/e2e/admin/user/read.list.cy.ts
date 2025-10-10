@@ -28,6 +28,6 @@ describe("admin.user.read flow", () => {
     cy.location("pathname").should("eq", "/");
     cy.visit(routes.admin.user.read);
     cy.location("pathname").should("eq", "/admin/user/list");
-    cy.get("h1").should("contain.text", "User");
+    cy.get("#admin-user-table").should("be.visible");
   });
 });

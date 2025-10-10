@@ -1,5 +1,5 @@
+import AdminSidebarWrapper from "@/lib/features/admin/ui/AdminSidebarWrappper";
 import styles from "./layout.module.scss";
-import AdminSidebarWrapper from "@/lib/features/admin/AdminSidebarContainer";
 
 export default async function layout({
   children,

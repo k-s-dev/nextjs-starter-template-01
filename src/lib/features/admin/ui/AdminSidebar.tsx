@@ -5,8 +5,8 @@ import Link from "next/link";
 import { Button, Modal, NavLink } from "@mantine/core";
 import { usePathname } from "next/navigation";
 import { useDisclosure } from "@mantine/hooks";
-import { IAdminModelList } from "./adminModelList";
 import { routes } from "@/lib/utils/routeMapper";
+import { IAdminModelList } from "../adminModelList";
 
 // TODO: render links as a tree that can collapse/expand (mantine/tree)
 // TODO: search functionality synchronized with expand/collapse

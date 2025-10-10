@@ -44,7 +44,7 @@ describe("admin.user.update flow", () => {
       cy.visit(url);
       cy.location("pathname").should("eq", url);
     });
-    cy.get("h1").should("contain.text", "User: Update");
+    cy.get("#user-update-form").should("be.visible");
   });
 
   it("should update user with superuser authentication", () => {

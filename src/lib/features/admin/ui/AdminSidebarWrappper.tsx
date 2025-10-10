@@ -1,9 +1,9 @@
 import { USER_ROLE } from "@/generated/prisma";
-import { getSessionUser } from "../authentication/getSessionUser";
-import { getAdminModelList, IAdminModelList } from "./adminModelList";
 import { PermissionError } from "@/lib/utils/errors";
 import AdminSidebar from "./AdminSidebar";
 import { Suspense } from "react";
+import { getAdminModelList, IAdminModelList } from "../adminModelList";
+import { getSessionUser } from "../../authentication/getSessionUser";
 
 const allowedAdminRoles: USER_ROLE[] = [];
 allowedAdminRoles.push(USER_ROLE.SUPERUSER);

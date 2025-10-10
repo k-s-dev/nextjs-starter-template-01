@@ -1,4 +1,4 @@
-import AdminTableWrapper from "@/lib/features/admin/AdminTableContainer";
+import AdminTableWrapper from "@/lib/features/admin/ui/AdminTableWrapper";
 
 export default async function Page() {
   return (
