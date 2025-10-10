@@ -14,6 +14,7 @@ export default function AuthCard({
       padding="lg"
       radius="md"
       withBorder
+      mx="auto"
       my={{ base: "1rem", xs: "3rem" }}
       w={{ base: "95%", sm: 450 }}
     >
