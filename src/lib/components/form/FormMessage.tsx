@@ -9,12 +9,13 @@ export default function FormMessage({
   error = false,
   title = "Message",
   containerClass,
+  headerClass,
   listClass,
   itemClass,
-  headerClass,
   appendContainerClass = true,
-  appendItemClass = true,
   appendHeaderClass = true,
+  appendListClass = true,
+  appendItemClass = true,
 }: FormMessageProps) {
   if (!messages || messages.length <= 0) return null;
 
@@ -23,19 +24,19 @@ export default function FormMessage({
     containerClass,
   );
 
-  const finalListClass = clsx(
-    appendContainerClass && styles.container,
-    appendHeaderClass && !error && styles.message,
-    appendHeaderClass && error && styles.error,
-    listClass,
-  );
-
-  const finalItemClass = clsx(appendItemClass && styles.item, itemClass);
-
   const finalHeaderClass = clsx(
     appendHeaderClass && styles.header,
     headerClass,
   );
+
+  const finalListClass = clsx(
+    appendListClass && styles.list,
+    appendListClass && !error && styles.message,
+    appendListClass && error && styles.error,
+    listClass,
+  );
+
+  const finalItemClass = clsx(appendItemClass && styles.item, itemClass);
 
   const messageList = messages.map((msg) => {
     return (
@@ -73,6 +74,7 @@ export interface FormMessageProps {
   itemClass?: string;
   headerClass?: string;
   appendContainerClass?: boolean;
-  appendItemClass?: boolean;
   appendHeaderClass?: boolean;
+  appendListClass?: boolean;
+  appendItemClass?: boolean;
 }

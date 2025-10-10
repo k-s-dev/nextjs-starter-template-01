@@ -10,8 +10,9 @@ export default function FormError({
   itemClass,
   headerClass,
   appendContainerClass = true,
-  appendItemClass = true,
   appendHeaderClass = true,
+  appendListClass = true,
+  appendItemClass = true,
 }: {
   errors?: string[];
   title?: string | null;
@@ -20,8 +21,9 @@ export default function FormError({
   itemClass?: string;
   headerClass?: string;
   appendContainerClass?: boolean;
-  appendItemClass?: boolean;
   appendHeaderClass?: boolean;
+  appendListClass?: boolean;
+  appendItemClass?: boolean;
 }) {
   return (
     <>
@@ -34,8 +36,9 @@ export default function FormError({
         itemClass={itemClass}
         headerClass={headerClass}
         appendContainerClass={appendContainerClass}
-        appendItemClass={appendItemClass}
         appendHeaderClass={appendHeaderClass}
+        appendListClass={appendListClass}
+        appendItemClass={appendItemClass}
       />
     </>
   );
