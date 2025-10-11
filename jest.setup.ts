@@ -11,7 +11,7 @@ const execSyncOptions: ExecSyncOptions = {
 };
 
 beforeEach(() => {
-  execSync("npm run test:prisma:reset", execSyncOptions);
-  execSync("npm run test:prisma:push", execSyncOptions);
+  execSync("npm run test:db:reset", execSyncOptions);
+  execSync("npm run test:db:push", execSyncOptions);
 });
 
