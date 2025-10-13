@@ -19,7 +19,7 @@ export async function seedUsers() {
           email: "test-user-01@example.com",
           password: hashedPassword,
           emailVerified: new Date(),
-          role: "USER",
+          role: "SUPERUSER",
         },
         {
           email: "test-user-02@example.com",
