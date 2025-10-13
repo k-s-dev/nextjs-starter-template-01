@@ -9,7 +9,7 @@
   - icons: [react-icons](https://react-icons.github.io/react-icons/)
 - Data backend
   - [Prisma ORM](https://www.prisma.io/)
-  - Database: sqlite (can be configured with `.env*`)
+  - Database: `postgresql` (can be configured with `.env*`)
   - Data access and control layer
   - Admin template
 
@@ -51,59 +51,7 @@ Refer to below links for more details.
 
 #### Samples
 
-##### Generic (`.env`)
-
-```bash
-# .env
-AUTH_SECRET=
-SALT=
-
-AUTH_GOOGLE_ID=
-AUTH_GOOGLE_SECRET=
-
-AUTH_GITHUB_ID=
-AUTH_GITHUB_SECRET=
-
-AUTH_EMAIL_ID=
-AUTH_EMAIL_PASSWORD=
-```
-
-```bash
-# .env.local
-BLOB_READ_WRITE_TOKEN=
-```
-
-##### Production
-
-```bash
-# .env.development.local
-
-PORT=3000
-HOST=http://localhost:${PORT}
-DATABASE_URL="file:../../dev.db"
-```
-
-##### Development
-
-```bash
-# .env.production.local
-
-PORT=3000
-HOST=http://localhost:${PORT}
-DATABASE_URL="file:../../prod.db"
-```
-
-##### Test
-
-```bash
-# .env.test.local
-
-CYPRESS_NODE_ENV=test
-NODE_ENV=test
-PORT=3000
-HOST=http://localhost:${PORT}
-DATABASE_URL="file:../../test.db"
-```
+- provided in `/env_samples/` directory
 
 ### Install node modules
 
