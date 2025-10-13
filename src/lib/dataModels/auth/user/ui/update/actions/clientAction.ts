@@ -4,10 +4,10 @@ import { parseFormData } from "@/lib/utils/form";
 import {
   TUserFormState,
   TUserPublic,
+  userRoleEnum,
   VSUserCrudForm,
 } from "../../../definitions";
 import { updateUserServerAction } from "./serverAction";
-import { USER_ROLE } from "@/generated/prisma";
 
 export async function updateUserClientAction(
   user: TUserPublic,
@@ -16,10 +16,10 @@ export async function updateUserClientAction(
   formData: FormData,
 ): Promise<TUserFormState> {
   let rawFormData = parseFormData(formData, ["imageFile"]);
-  if (user.role === USER_ROLE.SUPERUSER) {
+  if (user.role === userRoleEnum.SUPERUSER) {
     rawFormData = {
       ...rawFormData,
-      role: USER_ROLE.SUPERUSER,
+      role: userRoleEnum.SUPERUSER,
     };
   }
 

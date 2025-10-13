@@ -1,12 +1,12 @@
-import { USER_ROLE } from "@/generated/prisma";
 import { PermissionError } from "@/lib/utils/errors";
 import AdminSidebar from "./AdminSidebar";
 import { Suspense } from "react";
 import { getAdminModelList, IAdminModelList } from "../adminModelList";
 import { getSessionUser } from "../../authentication/getSessionUser";
+import { USER_ROLE, userRoleEnum } from "@/lib/dataModels/auth/user/definitions";
 
 const allowedAdminRoles: USER_ROLE[] = [];
-allowedAdminRoles.push(USER_ROLE.SUPERUSER);
+allowedAdminRoles.push(userRoleEnum.SUPERUSER);
 
 export default async function AdminSidebarWrapper() {
   const modelList = await getAdminModelList();

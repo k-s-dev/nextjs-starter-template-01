@@ -1,7 +1,7 @@
 "use server";
 
-import { Prisma, TOKEN_TYPE } from "@/generated/prisma";
 import prisma from "@/database/prismaClient";
+import { Prisma, TOKEN_TYPE } from "@/generated/prisma/client";
 import { DbError } from "@/lib/utils/errors";
 
 export async function createVerificationToken(

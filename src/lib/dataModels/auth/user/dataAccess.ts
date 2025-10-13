@@ -1,10 +1,10 @@
 "use server";
 
-import { Prisma, USER_ROLE } from "@/generated/prisma";
 import prisma from "@/database/prismaClient";
 import { DbError, PermissionError } from "@/lib/utils/errors";
 import { TDataRequestMode } from "@/lib/utils/types";
 import { TUser, TUserPublic } from "./definitions";
+import { Prisma, USER_ROLE } from "@/generated/prisma/client";
 
 const publicSelect: Prisma.UserSelect = {
   id: true,

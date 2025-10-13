@@ -2,7 +2,6 @@
 
 import * as jose from "jose";
 
-import { TOKEN_TYPE } from "@/generated/prisma";
 import { getEnvVariableValue } from "@/lib/utils/env";
 import {
   createVerificationToken,
@@ -15,6 +14,7 @@ import { sendMail } from "@/lib/utils/email";
 import { DbError } from "@/lib/utils/errors";
 import { routes } from "@/lib/utils/routeMapper";
 import { getHostUrl } from "@/lib/actions/getHostUrl";
+import { TOKEN_TYPE } from "@/generated/prisma/enums";
 
 const { authSecret } = await getAuthEnvVariables();
 const jwtSecret = jose.base64url.decode(authSecret);

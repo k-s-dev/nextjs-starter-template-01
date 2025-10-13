@@ -1,6 +1,5 @@
 import { SelectProps } from "@mantine/core";
 import { SelectSingle } from "@/lib/components/form/fields/SelectSingle";
-import { USER_ROLE } from "@/generated/prisma";
 import {
   InputPassword,
   InputPasswordProps,
@@ -13,7 +12,7 @@ import {
   InputDateTime,
   InputDateTimeProps,
 } from "@/lib/components/form/fields/InputDateTime";
-import { TUserFormState } from "../definitions";
+import { TUserFormState, userRoleEnum } from "../definitions";
 
 export function UserEmail({ formId, formState, ...props }: UserTextFieldProps) {
   return (
@@ -82,12 +81,12 @@ export function UserConfirmPassword({
 }
 
 export function UserRole({ formId, formState, ...props }: UserFieldRoleProps) {
-  if (formState.data?.role === USER_ROLE.SUPERUSER) {
+  if (formState.data?.role === userRoleEnum.SUPERUSER) {
     return (
       <SelectSingle
         formId={formId}
-        data={[USER_ROLE.SUPERUSER]}
-        defaultValue={USER_ROLE.SUPERUSER}
+        data={[userRoleEnum.SUPERUSER]}
+        defaultValue={userRoleEnum.SUPERUSER}
         errors={formState.errors?.nested?.role}
         name="role"
         label="Role"
@@ -100,7 +99,7 @@ export function UserRole({ formId, formState, ...props }: UserFieldRoleProps) {
   return (
     <SelectSingle
       formId={formId}
-      data={[USER_ROLE.USER, USER_ROLE.ADMIN, USER_ROLE.STAFF]}
+      data={[userRoleEnum.USER, userRoleEnum.ADMIN, userRoleEnum.STAFF]}
       defaultValue={formState.data?.role}
       errors={formState.errors?.nested?.role}
       name="role"

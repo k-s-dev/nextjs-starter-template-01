@@ -7,6 +7,7 @@ import { parseFormData } from "@/lib/utils/form";
 import {
   TUserFormState,
   TUserPublic,
+  userRoleEnum,
   VSUserCrudForm,
 } from "../../../definitions";
 import { updateUser } from "../../../dataAccess";
@@ -14,7 +15,6 @@ import { revalidatePath } from "next/cache";
 import { routes } from "@/lib/utils/routeMapper";
 import { redirect } from "next/navigation";
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
-import { USER_ROLE } from "@/generated/prisma";
 
 export async function updateUserServerAction(
   user: TUserPublic,
@@ -26,10 +26,10 @@ export async function updateUserServerAction(
 
   // retreive data
   let rawFormData = parseFormData(formData);
-  if (user.role === USER_ROLE.SUPERUSER) {
+  if (user.role === userRoleEnum.SUPERUSER) {
     rawFormData = {
       ...rawFormData,
-      role: USER_ROLE.SUPERUSER,
+      role: userRoleEnum.SUPERUSER,
     };
   }
 

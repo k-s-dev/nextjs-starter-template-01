@@ -9,10 +9,10 @@ import {
   MODEL_NAME,
   TUserFormState,
   TUserFormStateData,
+  userRoleEnum,
 } from "../../definitions";
 import { routes } from "@/lib/utils/routeMapper";
 import { UserForm } from "../UserForm";
-import { USER_ROLE } from "@/generated/prisma";
 import { notifications } from "@mantine/notifications";
 import { redirect } from "next/navigation";
 import AdminFormContainer from "@/lib/features/admin/ui/form/AdminFormContainer";
@@ -29,7 +29,7 @@ export default function UserCreateForm({
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const initialFormState: TUserFormState = {
-    data: { role: USER_ROLE.USER } as TUserFormStateData,
+    data: { role: userRoleEnum.USER } as TUserFormStateData,
     mode: "create",
   };
 

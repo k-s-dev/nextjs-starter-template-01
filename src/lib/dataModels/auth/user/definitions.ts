@@ -1,8 +1,11 @@
 import prisma from "@/database/prismaClient";
-import { Prisma, USER_ROLE } from "@/generated/prisma";
+import { Prisma } from "@/generated/prisma/browser";
+import { USER_ROLE as Prisma_USER_ROLE } from "@/generated/prisma/enums";
 import * as v from "valibot";
 
 export const MODEL_NAME = "user";
+export const userRoleEnum = Prisma_USER_ROLE;
+export type USER_ROLE = Prisma_USER_ROLE;
 
 // generic User form related schemas and types
 // may include extra fields, e.g. "confirmPassword"
@@ -22,7 +25,7 @@ export const VSUserBase = v.partial(
         return new Date(input);
       }),
     ),
-    role: v.enum(USER_ROLE),
+    role: v.enum(userRoleEnum),
     image: v.string(),
     profile: v.string(),
     groups: v.array(v.string()),
