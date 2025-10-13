@@ -15,30 +15,6 @@ const publicSelect: Prisma.UserSelect = {
   emailVerified: true,
 };
 
-export async function getUsersSql1() {
-  const result = await prisma.$queryRaw<{ id: string; name: string | null }[]>`
-    SELECT idx, name
-    FROM "Users";
-  `;
-  return result;
-}
-
-export async function getUsersSql2() {
-  const result = await prisma.$queryRaw<{ id: string; name: string | null }[]>`
-    SELECT idx, name
-    FROM "User";
-  `;
-  return result;
-}
-
-export async function getUsersSql3() {
-  const result = await prisma.$queryRaw`
-    SELECT id, name
-    FROM "User";
-  `;
-  return result;
-}
-
 export async function createUser(
   dataIn: Prisma.UserCreateInput,
   mode: TDataRequestMode = "client",
