@@ -41,7 +41,7 @@ describe("admin.user.delete flow", () => {
       cy.visit(url);
     });
     cy.getByData("delete-user-button").eq(0).click();
-    cy.getByData("delete-confirmation-button").click();
+    cy.getByData("delete-confirmation-button").should("be.visible").click();
     cy.visit(routes.admin.user.read);
     cy.contains("test-user-02@example.com").should("not.be.true");
   });
