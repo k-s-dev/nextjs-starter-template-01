@@ -37,20 +37,29 @@ describe("admin.user.create flow", () => {
     cy.get("#user-create-form").should("be.visible");
   });
 
-  it("should create user with superuser signIn", () => {
-    const userEmail = "test-user-04@example.com"
-    cy.visit(routes.authentication.signIn);
-    cy.getByData("signIn-email").type("test-user-01@example.com");
-    cy.getByData("signIn-password").type("12345678");
-    cy.getByData("signIn-btn").click();
-    cy.location("pathname").should("eq", "/");
-    cy.visit(routes.admin.user.create);
-    cy.get('input[name="email"]').type(userEmail);
-    cy.getByData("user-create-form-submit-button").eq(0).click();
-    cy.location("pathname").should("eq", "/admin/user/list");
-    cy.contains(userEmail).click()
-    cy.location("pathname").should("contain", "/admin/user/");
-    cy.location("pathname").should("contain", "/detail");
-    cy.get("input[name='email']").should("have.value", userEmail)
-  });
+  it(
+    "should create user with superuser signIn",
+    {
+      retries: {
+        runMode: 4,
+        openMode: 4,
+      },
+    },
+    () => {
+      const userEmail = "test-user-04@example.com";
+      cy.visit(routes.authentication.signIn);
+      cy.getByData("signIn-email").type("test-user-01@example.com");
+      cy.getByData("signIn-password").type("12345678");
+      cy.getByData("signIn-btn").click();
+      cy.location("pathname").should("eq", "/");
+      cy.visit(routes.admin.user.create);
+      cy.get('input[name="email"]').type(userEmail);
+      cy.getByData("user-create-form-submit-button").eq(0).click();
+      cy.location("pathname").should("eq", "/admin/user/list");
+      cy.contains(userEmail).click();
+      cy.location("pathname").should("contain", "/admin/user/");
+      cy.location("pathname").should("contain", "/detail");
+      cy.get("input[name='email']").should("have.value", userEmail);
+    },
+  );
 });

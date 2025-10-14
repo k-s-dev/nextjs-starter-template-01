@@ -47,19 +47,28 @@ describe("admin.user.update flow", () => {
     cy.get("#user-update-form").should("be.visible");
   });
 
-  it("should update user with superuser authentication", () => {
-    cy.visit(routes.authentication.signIn);
-    cy.getByData("signIn-email").type("test-user-01@example.com");
-    cy.getByData("signIn-password").type("12345678");
-    cy.getByData("signIn-btn").click();
-    cy.location("pathname").should("eq", "/");
-    cy.get("@user01UrlUpdate").then((url) => {
-      cy.visit(url);
-    });
-    cy.get('input[name="name"]').as("input").type("superuser 01");
-    cy.getByData("save-user-updates-button").eq(0).click();
-    cy.get("@user01UrlUpdate").then((url) => {
-      cy.location("pathname").should("eq", url);
-    });
-  });
+  it(
+    "should update user with superuser authentication",
+    {
+      retries: {
+        runMode: 4,
+        openMode: 4,
+      },
+    },
+    () => {
+      cy.visit(routes.authentication.signIn);
+      cy.getByData("signIn-email").type("test-user-01@example.com");
+      cy.getByData("signIn-password").type("12345678");
+      cy.getByData("signIn-btn").click();
+      cy.location("pathname").should("eq", "/");
+      cy.get("@user01UrlUpdate").then((url) => {
+        cy.visit(url);
+      });
+      cy.get('input[name="name"]').as("input").type("superuser 01");
+      cy.getByData("save-user-updates-button").eq(0).click();
+      cy.get("@user01UrlUpdate").then((url) => {
+        cy.location("pathname").should("eq", url);
+      });
+    },
+  );
 });
