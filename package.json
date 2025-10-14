@@ -1,5 +1,5 @@
 {
-  "name": "01-nextjs-typeorm-auth",
+  "name": "nextjs-starter-template-01",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -73,6 +73,7 @@
     "dotenv-cli": "^8.0.0",
     "eslint": "^9",
     "eslint-config-next": "15.3.3",
+    "glob": "^11.0.3",
     "jest": "^30.0.5",
     "jest-environment-jsdom": "^30.0.5",
     "postcss": "^8.5.6",

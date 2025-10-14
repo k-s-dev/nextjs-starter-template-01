@@ -37,10 +37,11 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    "eslint.config.mjs",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "eslint.config.mjs"
   ],
   "exclude": [
-    "node_modules"
+    "node_modules",
+    "ops"
   ]
 }
