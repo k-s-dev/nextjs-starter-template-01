@@ -8,8 +8,8 @@ import {
   deleteExpiredVerificationTokens,
   deleteVerificationToken,
   getVerificationToken,
-} from "@/lib/dataModels/auth/verificationToken";
-import { getUser, updateUser } from "@/lib/dataModels/auth/user/dataAccess";
+} from "@/lib/dataModels/auth/verificationToken/dataAccessControl";
+import { getUser, updateUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { sendMail } from "@/lib/utils/email";
 import { DbError } from "@/lib/utils/errors";
 import { routes } from "@/lib/utils/routeMapper";

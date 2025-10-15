@@ -16,7 +16,7 @@ export async function createUserClientAction(
     const errors = v.flatten<typeof VSUserCrudForm>(validationResult.issues);
     return {
       ...prevState,
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: errors,
       mode: "update",

@@ -3,10 +3,9 @@ import Google from "next-auth/providers/google";
 import GitHub from "next-auth/providers/github";
 import Credentials from "next-auth/providers/credentials";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-
 import prisma from "@/database/prismaClient";
 import { routes } from "@/lib/utils/routeMapper";
-import { getUser, updateUser } from "@/lib/dataModels/auth/user/dataAccess";
+import { getUser, updateUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 
 export const {
   handlers,

@@ -29,7 +29,7 @@ export async function updateUserClientAction(
     return {
       ...prevState,
       mode: "update",
-      status: "failed",
+      status: "error",
       data: { ...rawFormData },
       errors: errors,
     };

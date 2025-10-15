@@ -4,8 +4,12 @@ import * as v from "valibot";
 
 import { uploadFile } from "@/lib/utils/uploads";
 import { parseFormData } from "@/lib/utils/form";
-import { TUser, TUserFormState, VSUserCrudForm } from "../../../definitions";
-import { createUser, getUserByEmail, updateUser } from "../../../dataAccess";
+import { TUserFormState, VSUserCrudForm } from "../../../definitions";
+import {
+  createUser,
+  getUserByEmail,
+  updateUser,
+} from "../../../dataAccessControl";
 import { routes } from "@/lib/utils/routeMapper";
 import { revalidatePath } from "next/cache";
 
@@ -26,7 +30,7 @@ export async function createUserServerAction(
     return {
       ...prevState,
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: errors,
     };
@@ -35,15 +39,12 @@ export async function createUserServerAction(
   const validatedData = validationResult.output;
 
   // check for existing user
-  const existingUser: TUser = await getUserByEmail(
-    validatedData.email,
-    "server",
-  );
+  const existingUser = await getUserByEmail(validatedData.email, "server");
 
   if (existingUser) {
     return {
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: {
         root: ["User already exists."],
@@ -65,7 +66,7 @@ export async function createUserServerAction(
     console.log(error);
     return {
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: {
         root: [
@@ -88,7 +89,7 @@ export async function createUserServerAction(
       console.log(error);
       return {
         mode: "create",
-        status: "failed",
+        status: "error",
         data: rawFormData,
         errors: {
           root: [
@@ -111,7 +112,7 @@ export async function createUserServerAction(
       console.log(error);
       return {
         mode: "create",
-        status: "failed",
+        status: "error",
         data: rawFormData,
         errors: {
           root: [
@@ -127,5 +128,5 @@ export async function createUserServerAction(
     mode: "create",
     status: "success",
     data: rawFormData,
-  }
+  };
 }

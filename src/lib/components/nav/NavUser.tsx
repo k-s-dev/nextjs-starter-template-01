@@ -11,7 +11,7 @@ import {
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { useEffect } from "react";
-import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
+import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { notifications } from "@mantine/notifications";
 import SignOut from "@/lib/features/authentication/features/signOut/SignOut";
 import SignUpLinkButton from "@/lib/features/authentication/features/signUp/SignUpLinkButton";

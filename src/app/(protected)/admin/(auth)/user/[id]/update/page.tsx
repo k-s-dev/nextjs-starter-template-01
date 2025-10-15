@@ -1,4 +1,4 @@
-import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
+import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import UserUpdateForm from "@/lib/dataModels/auth/user/ui/update/UserUpdateForm";
 import { notFound } from "next/navigation";

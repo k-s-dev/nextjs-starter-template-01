@@ -143,7 +143,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
       columns={columns}
       data={data}
       rowSelectionAction={async (ids) => {
-        if (ids.length === 0) return "failed";
+        if (ids.length === 0) return "error";
         const result = await deleteManyUsersServerAction(ids);
         return result;
       }}

@@ -20,7 +20,7 @@ export async function signUpActionClient(
     return {
       ...prevState,
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: errors,
     };

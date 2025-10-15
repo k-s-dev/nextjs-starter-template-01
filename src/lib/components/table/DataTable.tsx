@@ -41,7 +41,7 @@ import DeleteModalIcon from "../form/DeleteModalIcon";
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  rowSelectionAction?: (ids: string[]) => Promise<"success" | "failed" | never>;
+  rowSelectionAction?: (ids: string[]) => Promise<"success" | "error" | never>;
   rowSelectionActionTitle?: string;
   tableProps?: TableProps;
 }
@@ -236,7 +236,7 @@ function DataTableInfo({
   rowSelectionActionTitle = "Delete selected rows",
 }: {
   rowSelection: RowSelectionState;
-  rowSelectionAction?: (ids: string[]) => Promise<"success" | "failed" | never>;
+  rowSelectionAction?: (ids: string[]) => Promise<"success" | "error" | never>;
   rowSelectionActionTitle?: string;
 }) {
   const count = Object.values(rowSelection).reduce((count, item) => {

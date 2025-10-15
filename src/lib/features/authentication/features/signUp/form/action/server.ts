@@ -4,13 +4,13 @@ import * as v from "valibot";
 import bcrypt from "bcryptjs";
 
 import { parseFormData } from "@/lib/utils/form";
-import { TUser, TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { VSSignUpForm } from "../../definitions";
+import { sendVerificationEmail } from "@/lib/features/authentication/verification";
 import {
   createUser,
   getUserByEmail,
-} from "@/lib/dataModels/auth/user/dataAccess";
-import { VSSignUpForm } from "../../definitions";
-import { sendVerificationEmail } from "@/lib/features/authentication/verification";
+} from "@/lib/dataModels/auth/user/dataAccessControl";
 
 export async function signUpActionServer(
   prevState: TUserFormState | null,
@@ -27,7 +27,7 @@ export async function signUpActionServer(
     const errors = v.flatten<typeof VSSignUpForm>(validationResult.issues);
     return {
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: errors,
     };
@@ -36,15 +36,12 @@ export async function signUpActionServer(
   const validatedData = validationResult.output;
 
   // check for existing user
-  const existingUser: TUser = await getUserByEmail(
-    validatedData.email,
-    "server",
-  );
+  const existingUser = await getUserByEmail(validatedData.email, "server");
 
   if (existingUser) {
     return {
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: {
         root: ["User already exists."],
@@ -74,7 +71,7 @@ export async function signUpActionServer(
     console.log(error);
     return {
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: {
         root: [

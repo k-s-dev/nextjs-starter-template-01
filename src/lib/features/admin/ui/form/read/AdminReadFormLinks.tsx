@@ -36,5 +36,5 @@ export interface IAdminReadFormLinksProps {
   editHref: string;
   backHref: string;
   identifier: string;
-  deleteAction: () => Promise<"success" | "failed">;
+  deleteAction: () => Promise<"success" | "error">;
 }

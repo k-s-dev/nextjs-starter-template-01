@@ -1,20 +1,20 @@
 "use server";
 
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
-import { deleteManyUsers } from "../../../dataAccess";
+import { deleteManyUsers } from "../../../dataAccessControl";
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
 
 export async function deleteManyUsersServerAction(
   ids: string[],
-): Promise<"failed" | never> {
+): Promise<"error" | never> {
   const sessionUser = await getSessionUser();
 
   try {
     await deleteManyUsers(ids, "client", sessionUser);
   } catch {
-    return "failed";
+    return "error";
   }
 
   revalidatePath(routes.admin.root);

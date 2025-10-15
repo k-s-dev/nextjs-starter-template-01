@@ -22,7 +22,7 @@ export async function signInActionClient(
     return {
       ...prevState,
       mode: "read",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: errors,
     };

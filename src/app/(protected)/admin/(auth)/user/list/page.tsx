@@ -1,10 +1,10 @@
-import { getUsers } from "@/lib/dataModels/auth/user/dataAccess";
+import { getUsers } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { routes } from "@/lib/utils/routeMapper";
 import { UserTable } from "@/lib/dataModels/auth/user/ui/UserTable";
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
 import LinkButton from "@/lib/components/LinkButton";
 import AdminFormHeaderContainer from "@/lib/features/admin/ui/form/AdminFormHeaderContainer";
-import { MODEL_NAME } from "@/lib/dataModels/auth/user/definitions";
+import { MODEL_NAME, TUser } from "@/lib/dataModels/auth/user/definitions";
 
 export default async function Page() {
   const sessionUser = await getSessionUser();
@@ -17,7 +17,7 @@ export default async function Page() {
           Create User
         </LinkButton>
       </AdminFormHeaderContainer>
-      <UserTable users={users} />
+      <UserTable users={users as TUser[]} />
     </div>
   );
 }

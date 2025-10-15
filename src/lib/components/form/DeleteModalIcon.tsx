@@ -26,7 +26,7 @@ export default function DeleteModalIcon({
 }: {
   resource: string;
   identifier: string;
-  deleteAction: () => Promise<"success" | "failed">;
+  deleteAction: () => Promise<"success" | "error">;
   children?: React.ReactNode;
   title?: string;
   tooltipLabel?: string;
@@ -51,7 +51,7 @@ export default function DeleteModalIcon({
           identifier={identifier}
           deleteAction={async () => {
             const result = await deleteAction();
-            if (result === "failed") {
+            if (result === "error") {
               setShowFailMessage(true);
             } else {
               close();

@@ -5,8 +5,8 @@ import * as v from "valibot";
 import { sendVerificationEmail } from "@/lib/features/authentication/verification";
 import { VSSignInFormBase } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
-import { TUser, TUserFormState } from "@/lib/dataModels/auth/user/definitions";
-import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccess";
+import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
 
 export async function sendVerificationLinkActionServer(
   prevState: TUserFormState | null,
@@ -33,7 +33,7 @@ export async function sendVerificationLinkActionServer(
     ...validationResult.output,
   };
 
-  const user: TUser = await getUserByEmail(apiSubmissionData.email, "server");
+  const user = await getUserByEmail(apiSubmissionData.email, "server");
 
   // validate: existing user
   if (!user) {

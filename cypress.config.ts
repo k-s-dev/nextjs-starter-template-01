@@ -2,8 +2,8 @@ import { defineConfig } from "cypress";
 
 import { resetTestDb } from "@/database/utils/test/reset";
 import { seedTestDb } from "@/database/utils/test/seed";
-import { getUser } from "@/lib/dataModels/auth/user/dataAccess";
-import { getVerificationToken } from "@/lib/dataModels/auth/verificationToken";
+import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
+import { getVerificationToken } from "@/lib/dataModels/auth/verificationToken/dataAccessControl";
 
 export default defineConfig({
   e2e: {

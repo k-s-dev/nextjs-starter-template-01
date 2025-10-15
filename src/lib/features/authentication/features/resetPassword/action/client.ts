@@ -22,7 +22,7 @@ export async function resetPasswordClientAction(
     return {
       ...prevState,
       mode: "update",
-      status: "failed",
+      status: "error",
       data: { ...rawFormData, email: email },
       errors: errors,
     };

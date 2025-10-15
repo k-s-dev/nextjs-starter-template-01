@@ -24,6 +24,7 @@ export const VSUserBase = v.partial(
         if (!input || input === "") return undefined;
         return new Date(input);
       }),
+      v.date(),
     ),
     role: v.enum(userRoleEnum),
     image: v.string(),
@@ -39,22 +40,23 @@ export const VSUserBase = v.partial(
   }),
 );
 
-export const VSUser = v.required(v.omit(VSUserBase, ["confirmPassword"]), [
-  "id",
-  "email",
-  "role",
-]);
+export const VSUser = v.required(
+  v.omit(VSUserBase, ["confirmPassword", "emailVerified"]),
+  ["id", "email", "role"],
+);
 
 export const VSUserPublic = v.required(
-  v.pick(VSUser, ["id", "email", "name", "role", "image", "emailVerified"]),
+  v.pick(VSUser, ["id", "email", "name", "role", "image"]),
   ["id", "email", "role"],
 );
 
 // full object for use in server
-export type TUser = v.InferInput<typeof VSUser>;
+export type TUser = v.InferInput<typeof VSUser> & { emailVerified?: Date };
 
 // partial object for use in ui
-export type TUserPublic = v.InferInput<typeof VSUserPublic>;
+export type TUserPublic = v.InferInput<typeof VSUserPublic> & {
+  emailVerified?: Date;
+};
 
 export type TUserPrisma = Prisma.Result<
   typeof prisma.user,
@@ -73,7 +75,7 @@ export type TUserFormStateData = v.InferInput<typeof VSUserFormStateData>;
 export type TUserFormStateErrors = v.FlatErrors<typeof VSUserBase>;
 export type TUserFormState = {
   mode: "create" | "read" | "update";
-  status?: "success" | "failed";
+  status?: "success" | "error";
   data?: TUserFormStateData;
   errors?: TUserFormStateErrors;
   messages?: string[];

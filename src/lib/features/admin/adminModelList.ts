@@ -1,6 +1,6 @@
 "use server";
 
-import { getUserCount } from "@/lib/dataModels/auth/user/dataAccess";
+import { getUserCount } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { routes } from "@/lib/utils/routeMapper";
 
 export async function getAdminModelList(flattenModelList = false) {

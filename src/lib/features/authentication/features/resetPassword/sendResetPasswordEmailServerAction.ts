@@ -1,7 +1,6 @@
 "use server";
 
-import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccess";
-import { TUser } from "@/lib/dataModels/auth/user/definitions";
+import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { sendVerificationEmail } from "../../verification";
 import { authentication } from "../../config";
 
@@ -15,7 +14,7 @@ export async function sendResetPasswordEmailServerAction(): Promise<IReturn> {
       message: "UnAuthorized access.",
     };
 
-  const user: TUser = await getUserByEmail(session?.user.email, "server");
+  const user = await getUserByEmail(session?.user.email, "server");
 
   // validate: existing user
   if (!user)

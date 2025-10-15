@@ -10,7 +10,7 @@ import {
   userRoleEnum,
   VSUserCrudForm,
 } from "../../../definitions";
-import { updateUser } from "../../../dataAccess";
+import { updateUser } from "../../../dataAccessControl";
 import { revalidatePath } from "next/cache";
 import { routes } from "@/lib/utils/routeMapper";
 import { redirect } from "next/navigation";
@@ -42,7 +42,7 @@ export async function updateUserServerAction(
     return {
       ...prevState,
       mode: "update",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: errors,
     };
@@ -62,7 +62,7 @@ export async function updateUserServerAction(
     console.log(error);
     return {
       mode: "update",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: {
         root: [
@@ -81,7 +81,7 @@ export async function updateUserServerAction(
     } catch {
       return {
         mode: "update",
-        status: "failed",
+        status: "error",
         data: rawFormData,
         errors: {
           root: [
@@ -103,7 +103,7 @@ export async function updateUserServerAction(
       console.log(error);
       return {
         mode: "update",
-        status: "failed",
+        status: "error",
         data: rawFormData,
         errors: {
           root: [
@@ -127,7 +127,7 @@ export async function updateUserServerAction(
     console.log(error);
     return {
       mode: "create",
-      status: "failed",
+      status: "error",
       data: rawFormData,
       errors: {
         root: [

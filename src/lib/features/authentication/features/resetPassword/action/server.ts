@@ -7,11 +7,9 @@ import { redirect } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
 import { VSResetPasswordForm } from "../definitions";
 import { parseFormData } from "@/lib/utils/form";
-import { TUser, TUserFormState } from "@/lib/dataModels/auth/user/definitions";
-import {
-  getUserByEmail,
-  updateUser,
-} from "@/lib/dataModels/auth/user/dataAccess";
+import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
+import { updateUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 
 export async function resetPasswordServerAction(
   email: string,
@@ -50,10 +48,7 @@ export async function resetPasswordServerAction(
     10,
   );
 
-  const existingUser: TUser = await getUserByEmail(
-    apiSubmissionData.email,
-    "server",
-  );
+  const existingUser = await getUserByEmail(apiSubmissionData.email, "server");
 
   if (!existingUser) {
     return {
@@ -84,7 +79,7 @@ export async function resetPasswordServerAction(
     console.log(error);
     return {
       mode: "update",
-      status: "failed",
+      status: "error",
       errors: {
         root: [
           "Failed to update user due to internal server error. Please try again",

@@ -6,8 +6,8 @@ import bcrypt from "bcryptjs";
 import { signIn } from "@/lib/features/authentication/config";
 import { VSSignInForm } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
-import { TUser, TUserFormState } from "@/lib/dataModels/auth/user/definitions";
-import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccess";
+import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
 
 export async function credentialsSignInActionServer(
   prevState: TUserFormState | null,
@@ -41,7 +41,7 @@ export async function credentialsSignInActionServer(
 
   apiSubmissionData.password = hashedPassword;
 
-  const user: TUser = await getUserByEmail(apiSubmissionData.email, "server");
+  const user = await getUserByEmail(apiSubmissionData.email, "server");
 
   // validate: existing user
   if (!user) {
