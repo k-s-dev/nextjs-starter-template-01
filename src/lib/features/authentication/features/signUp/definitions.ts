@@ -9,7 +9,7 @@ export const VSSignUpForm = v.pipe(
       "confirmPassword",
       "name",
     ]),
-    ["email", "password", "confirmPassword"],
+    ["name", "email", "password", "confirmPassword"],
     "Required.",
   ),
   v.forward(

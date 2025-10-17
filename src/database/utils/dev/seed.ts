@@ -1,8 +1,9 @@
-import bcrypt from "bcryptjs";
-
 import prisma from "@/database/prismaClient";
 import { DbError } from "@/lib/utils/errors";
+import { auth } from "@/lib/features/authentication/auth";
+import { loadEnvConfig } from "@next/env";
 
+loadEnvConfig(process.cwd());
 seedDevDb();
 
 export async function seedDevDb() {
@@ -10,23 +11,30 @@ export async function seedDevDb() {
 }
 
 export async function seedUsers() {
-  const hashedPassword = await bcrypt.hash("12345678", 10);
+  const password = "12345678";
 
   try {
-    await prisma.user.createMany({
-      data: [
-        {
-          email: "test-user-01@example.com",
-          password: hashedPassword,
-          emailVerified: new Date(),
-          role: "SUPERUSER",
-        },
-        {
-          email: "test-user-02@example.com",
-          password: hashedPassword,
-          role: "USER",
-        },
-      ],
+    const { user: user01 } = await auth.api.signUpEmail({
+      body: {
+        email: "test-user-01@example.com",
+        name: "test user 01",
+        password: password,
+      },
+    });
+    await prisma.user.update({
+      where: { id: user01.id },
+      data: {
+        emailVerified: true,
+        role: "SUPERUSER",
+      },
+    });
+
+    await auth.api.signUpEmail({
+      body: {
+        email: "test-user-02@example.com",
+        name: "test user 02",
+        password: password,
+      },
     });
   } catch (error) {
     throw new DbError({

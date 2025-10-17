@@ -1,15 +1,17 @@
 "use server";
 
 import * as jose from "jose";
-
 import { getEnvVariableValue } from "@/lib/utils/env";
 import {
   createVerificationToken,
   deleteExpiredVerificationTokens,
   deleteVerificationToken,
   getVerificationToken,
-} from "@/lib/dataModels/auth/verificationToken/dataAccessControl";
-import { getUser, updateUser } from "@/lib/dataModels/auth/user/dataAccessControl";
+} from "@/lib/dataModels/auth/verification/dataAccessControl";
+import {
+  getUser,
+  updateUser,
+} from "@/lib/dataModels/auth/user/dataAccessControl";
 import { sendMail } from "@/lib/utils/email";
 import { DbError } from "@/lib/utils/errors";
 import { routes } from "@/lib/utils/routeMapper";
@@ -20,9 +22,9 @@ const { authSecret } = await getAuthEnvVariables();
 const jwtSecret = jose.base64url.decode(authSecret);
 
 export async function getAuthEnvVariables() {
-  const authSecret = await getEnvVariableValue("AUTH_SECRET");
-  const authEmailId = await getEnvVariableValue("AUTH_EMAIL_ID");
-  const authEmailPassword = await getEnvVariableValue("AUTH_EMAIL_PASSWORD");
+  const authSecret = await getEnvVariableValue("BETTER_AUTH_SECRET");
+  const authEmailId = await getEnvVariableValue("EMAIL_ID");
+  const authEmailPassword = await getEnvVariableValue("EMAIL_PASSWORD");
 
   return { authSecret, authEmailId, authEmailPassword };
 }
@@ -33,7 +35,11 @@ export async function generateVerificationToken(
 ) {
   const tokenObj = await getVerificationToken(email, tokenType);
   if (tokenObj) {
-    await deleteVerificationToken(tokenObj.email, tokenType, tokenObj.token);
+    await deleteVerificationToken(
+      tokenObj.identifier,
+      tokenType,
+      tokenObj.value,
+    );
     await deleteExpiredVerificationTokens();
   }
 
@@ -46,9 +52,9 @@ export async function generateVerificationToken(
     .encrypt(jwtSecret);
 
   await createVerificationToken({
-    email: email,
-    token: jwt,
-    expires: expires,
+    identifier: email,
+    value: jwt,
+    expiresAt: expires,
     type: tokenType,
   });
 
@@ -154,7 +160,7 @@ export async function verifyToken(
     await updateUser(
       { email: result.payload.email as string },
       {
-        emailVerified: new Date(),
+        emailVerified: true,
       },
       "server",
     );

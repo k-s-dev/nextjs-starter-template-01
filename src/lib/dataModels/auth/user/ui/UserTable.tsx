@@ -7,7 +7,6 @@ import { DataTable } from "@/lib/components/table/DataTable";
 import { ColumnDef } from "@tanstack/react-table";
 import TableCellWithCopy from "@/lib/components/table/TableCellWithCopy";
 import TableCell from "@/lib/components/table/TableCell";
-import { dateFormat1 } from "@/lib/utils/format";
 import { routes } from "@/lib/utils/routeMapper";
 import Link from "next/link";
 import CopyIcon from "@/lib/components/icons/CopyIcon";
@@ -18,7 +17,7 @@ import {
   generateCheckboxCell,
   generateCheckboxHeader,
 } from "@/lib/components/table/TableCheckbox";
-import { Anchor } from "@mantine/core";
+import { Anchor, Checkbox } from "@mantine/core";
 import { EditIcon } from "@/lib/components/icons/TooltipIcons";
 import DeleteModalIcon from "@/lib/components/form/DeleteModalIcon";
 
@@ -118,10 +117,9 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
         header: "Verified",
         cell: (props) => {
           const emailVerified = props.row.original.emailVerified;
-          const dateObj = emailVerified ? new Date(emailVerified) : undefined;
           return (
             <div className={dtStyles.default.cell}>
-              {dateObj ? dateFormat1.format(dateObj) : ""}
+              <Checkbox checked={emailVerified} />
             </div>
           );
         },

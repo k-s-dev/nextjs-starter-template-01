@@ -17,15 +17,8 @@ export const VSUserBase = v.partial(
       v.nonEmpty("Required."),
       v.email("The email address is badly formatted."),
     ),
-    name: v.string("Name must be a string."),
-    emailVerified: v.pipe(
-      v.string(),
-      v.transform((input) => {
-        if (!input || input === "") return undefined;
-        return new Date(input);
-      }),
-      v.date(),
-    ),
+    name: v.pipe(v.string("Name must be a string."), v.nonEmpty()),
+    emailVerified: v.boolean(),
     role: v.enum(userRoleEnum),
     image: v.string(),
     profile: v.string(),
@@ -51,11 +44,11 @@ export const VSUserPublic = v.required(
 );
 
 // full object for use in server
-export type TUser = v.InferInput<typeof VSUser> & { emailVerified?: Date };
+export type TUser = v.InferInput<typeof VSUser> & { emailVerified?: boolean };
 
 // partial object for use in ui
 export type TUserPublic = v.InferInput<typeof VSUserPublic> & {
-  emailVerified?: Date;
+  emailVerified?: boolean;
 };
 
 export type TUserPrisma = Prisma.Result<
@@ -82,8 +75,7 @@ export type TUserFormState = {
 };
 
 // admin: User crud forms
-export const VSUserCrudForm = v.omit(v.required(VSUser, ["email"]), [
-  "password",
+export const VSUserCrudForm = v.omit(v.required(VSUser, ["email", "name"]), [
   "id",
 ]);
 

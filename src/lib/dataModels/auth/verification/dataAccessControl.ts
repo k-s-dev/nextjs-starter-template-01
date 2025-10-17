@@ -5,10 +5,10 @@ import { Prisma, TOKEN_TYPE } from "@/generated/prisma/client";
 import { DbError } from "@/lib/utils/errors";
 
 export async function createVerificationToken(
-  dataIn: Prisma.VerificationTokenCreateInput,
+  dataIn: Prisma.VerificationCreateInput,
 ) {
   try {
-    await prisma.verificationToken.create({ data: dataIn });
+    await prisma.verification.create({ data: dataIn });
   } catch (error) {
     throw new DbError({
       message: "Internal server error.",
@@ -27,9 +27,9 @@ export async function getVerificationTokenByEmail(
 ) {
   let dbToken;
   try {
-    dbToken = await prisma.verificationToken.findFirst({
+    dbToken = await prisma.verification.findFirst({
       where: {
-        email: email,
+        identifier: email,
         type: tokenType,
       },
     });
@@ -49,7 +49,6 @@ export async function getVerificationTokenByEmail(
   return dbToken;
 }
 
-
 export async function getVerificationToken(
   email: string,
   tokenType: TOKEN_TYPE,
@@ -57,11 +56,11 @@ export async function getVerificationToken(
 ) {
   let dbToken;
   try {
-    dbToken = await prisma.verificationToken.findFirst({
+    dbToken = await prisma.verification.findFirst({
       where: {
-        email: email,
+        identifier: email,
         type: tokenType,
-        token: token,
+        value: token,
       },
     });
   } catch (error) {
@@ -88,12 +87,9 @@ export async function deleteVerificationToken(
   const existingToken = await getVerificationToken(email, tokenType, token);
   if (existingToken) {
     try {
-      await prisma.verificationToken.delete({
+      await prisma.verification.delete({
         where: {
-          email_token: {
-            email: email,
-            token: token,
-          },
+          id: existingToken.id,
         },
       });
     } catch (error) {
@@ -115,9 +111,9 @@ export async function deleteVerificationToken(
 
 export async function deleteExpiredVerificationTokens() {
   try {
-    await prisma.verificationToken.deleteMany({
+    await prisma.verification.deleteMany({
       where: {
-        expires: {
+        expiresAt: {
           lt: new Date(),
         },
       },

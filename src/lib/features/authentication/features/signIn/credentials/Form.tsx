@@ -2,7 +2,6 @@
 
 import React, { useActionState, useEffect, useState } from "react";
 import { redirect, useSearchParams } from "next/navigation";
-import { useSession } from "next-auth/react";
 import FormError from "@/lib/components/form/FormError";
 import FormMessage from "@/lib/components/form/FormMessage";
 import {
@@ -18,6 +17,7 @@ import { UserEmail, UserPassword } from "@/lib/dataModels/auth/user/ui/Fields";
 import { routes } from "@/lib/utils/routeMapper";
 import Form from "@/lib/components/form/Form";
 import { Button } from "@mantine/core";
+import { authClient } from "../../../auth-client";
 
 export default function CredentialsSignInForm({
   formId = "signIn-form",
@@ -25,7 +25,6 @@ export default function CredentialsSignInForm({
   const [formState, setFormState] = useState<TUserFormState>({ mode: "read" });
   const [isPending, setIsPending] = useState(false);
   const searchParams = useSearchParams();
-  const { update: updateSession } = useSession();
 
   const initialFormData = {} as TUserFormStateData;
 
@@ -89,11 +88,31 @@ export default function CredentialsSignInForm({
   }
 
   useEffect(() => {
-    if (formState.status === "success") {
-      updateSession(formState.data);
-      return redirect(routes.DEFAULT_LOGIN_REDIRECT);
+    async function signIn() {
+      if (
+        formState.status === "success" &&
+        formState.data?.email &&
+        formState.data.password
+      ) {
+        const { error } = await authClient.signIn.email({
+          email: formState.data?.email,
+          password: formState.data?.password,
+          callbackURL: routes.DEFAULT_LOGIN_REDIRECT,
+        });
+        if (error) {
+          formState.status = "error";
+          formState.errors = {
+            root: [error.message || ""],
+          };
+
+          return formState;
+        }
+
+        return redirect(routes.DEFAULT_LOGIN_REDIRECT);
+      }
     }
-  }, [formState.data, formState.status, updateSession]);
+    signIn();
+  }, [formState]);
 
   return (
     <>

@@ -1,10 +1,13 @@
 "use server";
 
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
-import { authentication } from "./config";
+import { auth } from "./auth";
+import { headers } from "next/headers";
 
 export async function getSessionUser() {
-  const session = await authentication();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const sessionUser = session?.user;
   return sessionUser as TUserPublic;
 }

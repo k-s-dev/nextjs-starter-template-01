@@ -65,7 +65,6 @@ export async function signUpActionServer(
     await createUser({
       name: apiSubmissionData.name,
       email: apiSubmissionData.email,
-      password: apiSubmissionData.password,
     });
   } catch (error) {
     console.log(error);

@@ -1,13 +1,11 @@
 "use server";
 
 import * as v from "valibot";
-import bcrypt from "bcryptjs";
-
-import { signIn } from "@/lib/features/authentication/config";
 import { VSSignInForm } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
+import { auth } from "@/lib/features/authentication/auth";
 
 export async function credentialsSignInActionServer(
   prevState: TUserFormState | null,
@@ -34,13 +32,6 @@ export async function credentialsSignInActionServer(
     ...validationResult.output,
   };
 
-  const hashedPassword = await bcrypt.hash(
-    validationResult.output.password,
-    10,
-  );
-
-  apiSubmissionData.password = hashedPassword;
-
   const user = await getUserByEmail(apiSubmissionData.email, "server");
 
   // validate: existing user
@@ -65,26 +56,13 @@ export async function credentialsSignInActionServer(
     };
   }
 
-  // validate: password
-  const passwordMatch = await bcrypt.compare(
-    validationResult.output.password,
-    user?.password || "",
-  );
-
-  if (!passwordMatch) {
-    return {
-      mode: "read",
-      data: rawFormData,
-      errors: {
-        root: ["Invalid credentials."],
-      },
-    };
-  }
-
+  // validate: password: handled by better-auth
   // session management
-  await signIn("credentials", {
-    ...validationResult.output,
-    redirect: false,
+  await auth.api.signInEmail({
+    body: {
+      email: apiSubmissionData.email,
+      password: apiSubmissionData.password,
+    },
   });
 
   return {

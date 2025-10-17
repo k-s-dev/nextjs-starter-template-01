@@ -1,5 +1,5 @@
 import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
-import { TUser } from "@/lib/dataModels/auth/user/definitions";
+import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import UserReadForm from "@/lib/dataModels/auth/user/ui/read/detail/UserReadForm";
 import { notFound } from "next/navigation";
 
@@ -17,7 +17,7 @@ export default async function Page({
   return (
     <>
       {/* // TODO:HACK: review forced type casting */}
-      <UserReadForm user={user as TUser} />
+      <UserReadForm user={user as TUserPublic} />
     </>
   );
 }

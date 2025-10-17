@@ -2,10 +2,13 @@
 
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { sendVerificationEmail } from "../../verification";
-import { authentication } from "../../config";
+import { auth } from "../../auth";
+import { headers } from "next/headers";
 
 export async function sendResetPasswordEmailServerAction(): Promise<IReturn> {
-  const session = await authentication();
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   // validate: existing user
   if (!session?.user.email)

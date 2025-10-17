@@ -1,6 +1,5 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
 import {
   Menu,
   MenuDropdown,
@@ -9,7 +8,6 @@ import {
   Skeleton,
 } from "@mantine/core";
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
-import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { useEffect } from "react";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { notifications } from "@mantine/notifications";
@@ -17,27 +15,18 @@ import SignOut from "@/lib/features/authentication/features/signOut/SignOut";
 import SignUpLinkButton from "@/lib/features/authentication/features/signUp/SignUpLinkButton";
 import SignInLinkButton from "@/lib/features/authentication/features/signIn/SignInLinkButton";
 import { sendResetPasswordEmailServerAction } from "@/lib/features/authentication/features/resetPassword/sendResetPasswordEmailServerAction";
+import { authClient, Session } from "@/lib/features/authentication/auth-client";
+import { redirect } from "next/navigation";
+import { routes } from "@/lib/utils/routeMapper";
 
 export default function NavUser() {
-  const { data: session, status } = useSession();
+  const { data: session, isPending, error } = authClient.useSession();
 
-  useEffect(() => {
-    const checkDbUser = async () => {
-      if (session?.user) {
-        const dbUser = await getUser({ id: session?.user.id }, "server");
-        if (!dbUser) signOut();
-      }
-    };
-    checkDbUser();
-  }, [session?.user]);
-
-  const user = session?.user as TUserPublic;
-
-  if (status === "loading") {
+  if (isPending) {
     return <Skeleton circle height={20} />;
   }
 
-  if (status === "unauthenticated") {
+  if (error || !session) {
     return (
       <>
         <SignInLinkButton />
@@ -45,6 +34,23 @@ export default function NavUser() {
       </>
     );
   }
+
+  return <NavUserAvatar session={session} />;
+}
+
+export function NavUserAvatar({ session }: { session: Session }) {
+  useEffect(() => {
+    const checkDbUser = async () => {
+      if (session?.user) {
+        const dbUser = await getUser({ id: session?.user.id }, "server");
+        if (!dbUser) authClient.signOut();
+        redirect(routes.DEFAULT_LOGIN_REDIRECT);
+      }
+    };
+    checkDbUser();
+  }, [session?.user]);
+
+  const user = session?.user;
 
   async function handleResetPassword() {
     let result = null;
@@ -70,7 +76,7 @@ export default function NavUser() {
         <MenuTarget>
           {/* div needed for click/hover trigger to work */}
           <div>
-            <UserAvatar src={user?.image} userName={user?.name} />
+            <UserAvatar src={user?.image || undefined} userName={user?.name} />
           </div>
         </MenuTarget>
         <MenuDropdown mx="md">

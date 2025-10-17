@@ -1,7 +1,10 @@
 "use server";
 
-import { signOut } from "../../config";
+import { headers } from "next/headers";
+import { auth } from "../../auth";
 
-export async function signOutSa() {
-  return signOut({ redirect: false });
+export async function signOutServerAction() {
+  return auth.api.signOut({
+    headers: await headers(),
+  });
 }

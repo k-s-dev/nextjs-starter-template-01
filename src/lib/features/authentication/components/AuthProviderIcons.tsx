@@ -1,7 +1,7 @@
 import { FaGithub, FaGoogle } from "react-icons/fa6";
-import { signIn } from "../config";
 import { Button, Flex } from "@mantine/core";
-import { OAuthProviderId } from "@auth/core/providers";
+import { SocialProvider } from "better-auth/social-providers";
+import { authClient } from "../auth-client";
 
 export default function AuthProviderIcons() {
   return (
@@ -28,14 +28,16 @@ export function ProviderForm({
   oAuthProvider,
   children,
 }: {
-  oAuthProvider: OAuthProviderId;
+  oAuthProvider: SocialProvider;
   children: React.ReactNode;
 }) {
   return (
     <form
       action={async () => {
         "use server";
-        await signIn(oAuthProvider);
+        await authClient.signIn.social({
+          provider: oAuthProvider,
+        });
       }}
     >
       <Button

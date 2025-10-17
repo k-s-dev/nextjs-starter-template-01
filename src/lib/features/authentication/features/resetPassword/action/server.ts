@@ -9,7 +9,7 @@ import { VSResetPasswordForm } from "../definitions";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
-import { updateUser } from "@/lib/dataModels/auth/user/dataAccessControl";
+import { updateAccountByEmail } from "@/lib/dataModels/auth/account/dataAccessControl";
 
 export async function resetPasswordServerAction(
   email: string,
@@ -65,14 +65,9 @@ export async function resetPasswordServerAction(
 
   // try submitting data to backend
   try {
-    await updateUser(
-      {
-        email: apiSubmissionData.email,
-      },
-      {
-        email: apiSubmissionData.email,
-        password: hashedPassword,
-      },
+    await updateAccountByEmail(
+      apiSubmissionData.email,
+      { password: hashedPassword },
       "server",
     );
   } catch (error) {
