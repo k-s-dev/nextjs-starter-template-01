@@ -5,6 +5,8 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import { nextCookies } from "better-auth/next-js";
 import { customSession } from "better-auth/plugins";
+import { sendVerificationEmail } from "./verification";
+import { getHostUrl } from "@/lib/actions/getHostUrl";
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -26,6 +28,11 @@ export const auth = betterAuth({
   ],
   emailAndPassword: {
     enabled: true,
+    // TODO: review eslint disable
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    sendResetPassword: async ({ user, url, token }, request) => {
+      await sendVerificationEmail(user.email, url, "RESET_PASSWORD");
+    },
   },
   socialProviders: {
     google: {

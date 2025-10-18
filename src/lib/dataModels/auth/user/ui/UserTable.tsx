@@ -119,7 +119,7 @@ export function UserTable({ users }: { users: TUserPublic[] }) {
           const emailVerified = props.row.original.emailVerified;
           return (
             <div className={dtStyles.default.cell}>
-              <Checkbox checked={emailVerified} />
+              <Checkbox checked={emailVerified} onChange={() => {}} />
             </div>
           );
         },

@@ -10,14 +10,13 @@ import {
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
 import { useEffect } from "react";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
-import { notifications } from "@mantine/notifications";
 import SignOut from "@/lib/features/authentication/features/signOut/SignOut";
 import SignUpLinkButton from "@/lib/features/authentication/features/signUp/SignUpLinkButton";
 import SignInLinkButton from "@/lib/features/authentication/features/signIn/SignInLinkButton";
-import { sendResetPasswordEmailServerAction } from "@/lib/features/authentication/features/resetPassword/sendResetPasswordEmailServerAction";
 import { authClient, Session } from "@/lib/features/authentication/auth-client";
 import { redirect } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
+import { requestResetPasswordClientAction } from "@/lib/features/authentication/features/resetPassword/requestResetPasswordClientAction";
 
 export default function NavUser() {
   const { data: session, isPending, error } = authClient.useSession();
@@ -52,24 +51,6 @@ export function NavUserAvatar({ session }: { session: Session }) {
 
   const user = session?.user;
 
-  async function handleResetPassword() {
-    let result = null;
-    if (session?.user.email) {
-      result = await sendResetPasswordEmailServerAction();
-    }
-    if (result?.status) {
-      notifications.show({
-        message: result.message,
-        color: result.status === "error" ? "red" : "green",
-      });
-    } else {
-      notifications.show({
-        message: "Session not valid. SignIn again.",
-        color: "red",
-      });
-    }
-  }
-
   return (
     <>
       <Menu trigger="click-hover" shadow="md">
@@ -80,7 +61,12 @@ export function NavUserAvatar({ session }: { session: Session }) {
           </div>
         </MenuTarget>
         <MenuDropdown mx="md">
-          <MenuItem onClick={handleResetPassword} fz="lg">
+          <MenuItem
+            onClick={async () => {
+              await requestResetPasswordClientAction();
+            }}
+            fz="lg"
+          >
             Reset Password
           </MenuItem>
           <MenuItem fz="lg" color="red">

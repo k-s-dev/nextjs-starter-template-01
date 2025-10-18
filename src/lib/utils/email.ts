@@ -18,28 +18,30 @@ const transporter = nodemailer.createTransport({
 });
 
 export async function sendMail(dataIn: {
-  from: string;
   to: string;
-  subject?: string;
   html: string;
   text: string;
-  link: string;
+  from?: string;
+  subject?: string;
 }) {
+  if (!dataIn.from) {
+    dataIn.from = '"Shoonya Dev" <shunya.acad@gmail.com>';
+  }
+
   try {
     if (nodeEnv === "production") {
       await transporter.sendMail(dataIn);
     } else {
       console.log(`send email: ${dataIn.to}, ${dataIn.subject}`);
-      console.log(`link: ${dataIn.link}`);
     }
   } catch (error) {
     throw new SendMailError({
       message: "Failed to send email.",
       cause: error,
       log: {
-        message: "SendMailError: failed to send email.",
         data: dataIn,
       },
     });
   }
 }
+

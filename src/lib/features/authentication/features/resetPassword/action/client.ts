@@ -10,7 +10,7 @@ import { resetPasswordServerAction } from "./server";
 export async function resetPasswordClientAction(
   serverAction: typeof resetPasswordServerAction,
   validationSchema: typeof VSResetPasswordForm,
-  email: string,
+  token: string,
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
@@ -23,10 +23,10 @@ export async function resetPasswordClientAction(
       ...prevState,
       mode: "update",
       status: "error",
-      data: { ...rawFormData, email: email },
+      data: { ...rawFormData },
       errors: errors,
     };
   }
 
-  return await serverAction(email, prevState, formData);
+  return await serverAction(token, prevState, formData);
 }

@@ -1,40 +1,31 @@
 import ResetPasswordCard from "@/lib/features/authentication/features/resetPassword/ResetPasswordCard";
 import ResetPasswordForm from "@/lib/features/authentication/features/resetPassword/Form";
-import { verifyToken } from "@/lib/features/authentication/verification";
 import AuthInvalidLink from "@/lib/features/authentication/components/AuthInvalidLink";
+import { auth } from "@/lib/features/authentication/auth";
+import { headers } from "next/headers";
 
 export default async function Page({
   searchParams,
 }: {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
-  const token = (await searchParams).verificationToken;
+  const token = (await searchParams).token;
+  const reqHeaders = await headers();
 
   if (!token || typeof token !== "string") {
     return <InvalidLink />;
   }
 
-  const result = await verifyToken(token, "RESET_PASSWORD");
+  await auth.api.revokeSessions({ headers: reqHeaders });
+  await auth.api.signOut({ headers: reqHeaders });
 
-  if (
-    !result ||
-    !result.data ||
-    !result.data.payload ||
-    !result.data.payload.email ||
-    result.status === "failed"
-  ) {
-    return <InvalidLink />;
-  }
-
-  if (result.status === "success") {
-    return (
-      <div>
-        <ResetPasswordCard>
-          <ResetPasswordForm email={result.data.payload.email as string} />
-        </ResetPasswordCard>
-      </div>
-    );
-  }
+  return (
+    <div>
+      <ResetPasswordCard>
+        <ResetPasswordForm token={token} />
+      </ResetPasswordCard>
+    </div>
+  );
 }
 
 function InvalidLink() {

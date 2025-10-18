@@ -1,18 +1,15 @@
 "use server";
 
 import * as v from "valibot";
-import bcrypt from "bcryptjs";
 import { redirect } from "next/navigation";
-
 import { routes } from "@/lib/utils/routeMapper";
 import { VSResetPasswordForm } from "../definitions";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
-import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
-import { updateAccountByEmail } from "@/lib/dataModels/auth/account/dataAccessControl";
+import { auth } from "../../../auth";
 
 export async function resetPasswordServerAction(
-  email: string,
+  token: string,
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
@@ -31,7 +28,6 @@ export async function resetPasswordServerAction(
       mode: "update",
       data: {
         ...rawFormData,
-        email: email,
       },
       errors: errors,
     };
@@ -40,36 +36,18 @@ export async function resetPasswordServerAction(
   // prepare form data for submission to backend
   const apiSubmissionData = {
     ...validationResult.output,
-    email: email,
   };
-
-  const hashedPassword = await bcrypt.hash(
-    validationResult.output.password,
-    10,
-  );
-
-  const existingUser = await getUserByEmail(apiSubmissionData.email, "server");
-
-  if (!existingUser) {
-    return {
-      mode: "update",
-      data: {
-        ...rawFormData,
-        email: email,
-      },
-      errors: {
-        root: ["User not found."],
-      },
-    };
-  }
+  let data;
 
   // try submitting data to backend
   try {
-    await updateAccountByEmail(
-      apiSubmissionData.email,
-      { password: hashedPassword },
-      "server",
-    );
+    data = await auth.api.resetPassword({
+      body: {
+        newPassword: apiSubmissionData.password,
+        token: token,
+      }
+    })
+    console.log(data)
   } catch (error) {
     console.log(error);
     return {

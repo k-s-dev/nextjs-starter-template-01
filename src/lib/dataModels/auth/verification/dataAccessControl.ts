@@ -1,7 +1,9 @@
+// eslint-disable
 "use server";
 
 import prisma from "@/database/prismaClient";
-import { Prisma, TOKEN_TYPE } from "@/generated/prisma/client";
+import { Prisma } from "@/generated/prisma/client";
+import { TOKEN_TYPE } from "@/lib/features/authentication/definitions";
 import { DbError } from "@/lib/utils/errors";
 
 export async function createVerificationToken(
@@ -25,12 +27,11 @@ export async function getVerificationTokenByEmail(
   email: string,
   tokenType: TOKEN_TYPE,
 ) {
-  let dbToken;
+  let dbTokens;
   try {
-    dbToken = await prisma.verification.findFirst({
+    dbTokens = await prisma.verification.findMany({
       where: {
         identifier: email,
-        type: tokenType,
       },
     });
   } catch (error) {
@@ -46,7 +47,9 @@ export async function getVerificationTokenByEmail(
       },
     });
   }
-  return dbToken;
+  return dbTokens.filter((token) => {
+    return token.identifier.search(tokenType) !== -1;
+  });
 }
 
 export async function getVerificationToken(
@@ -59,7 +62,6 @@ export async function getVerificationToken(
     dbToken = await prisma.verification.findFirst({
       where: {
         identifier: email,
-        type: tokenType,
         value: token,
       },
     });

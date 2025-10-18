@@ -7,6 +7,8 @@ import { VSSignInFormBase } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
+import { auth } from "@/lib/features/authentication/auth";
+import { routes } from "@/lib/utils/routeMapper";
 
 export async function sendResetPasswordLinkActionServer(
   prevState: TUserFormState | null,
@@ -58,10 +60,16 @@ export async function sendResetPasswordLinkActionServer(
   }
 
   // send reset password link
-  await sendVerificationEmail(user.email, "RESET_PASSWORD");
+  const data = await auth.api.requestPasswordReset({
+    body: {
+      email: user.email,
+      redirectTo: routes.authentication.resetPassword,
+    },
+  });
+
   return {
     mode: "read",
     data: rawFormData,
-    messages: ["Reset password link sent to the registered email."],
+    messages: [data.message],
   };
 }

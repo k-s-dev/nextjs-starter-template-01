@@ -10,7 +10,6 @@ import {
 } from "@/lib/dataModels/auth/user/definitions";
 import { signInActionClient } from "./action/client";
 import { credentialsSignInActionServer } from "./action/server/signIn";
-import { sendResetPasswordLinkActionServer } from "./action/server/sendResetPasswordLink";
 import { sendVerificationLinkActionServer } from "./action/server/sendVerficationLink";
 import { VSSignInForm, VSSignInFormBase } from "./definitions";
 import { UserEmail, UserPassword } from "@/lib/dataModels/auth/user/ui/Fields";
@@ -18,6 +17,7 @@ import { routes } from "@/lib/utils/routeMapper";
 import Form from "@/lib/components/form/Form";
 import { Button } from "@mantine/core";
 import { authClient } from "../../../auth-client";
+import { sendResetPasswordLinkActionServer } from "./action/server/sendResetPasswordLink";
 
 export default function CredentialsSignInForm({
   formId = "signIn-form",
