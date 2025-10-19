@@ -1,9 +1,7 @@
 import prisma from "@/database/prismaClient";
 import { DbError } from "@/lib/utils/errors";
 import { auth } from "@/lib/features/authentication/auth";
-import { loadEnvConfig } from "@next/env";
 
-loadEnvConfig(process.cwd());
 seedDevDb();
 
 export async function seedDevDb() {

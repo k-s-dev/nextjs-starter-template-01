@@ -2,11 +2,12 @@
 
 import * as v from "valibot";
 
-import { sendVerificationEmail } from "@/lib/features/authentication/verification";
 import { VSSignInFormBase } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
+import { auth } from "@/lib/features/authentication/auth";
+import { routes } from "@/lib/utils/routeMapper";
 
 export async function sendVerificationLinkActionServer(
   prevState: TUserFormState | null,
@@ -55,10 +56,23 @@ export async function sendVerificationLinkActionServer(
   }
 
   // send reset password link
-  await sendVerificationEmail(user.email, "EMAIL_VERFICATION");
+  const data = await auth.api.sendVerificationEmail({
+    body: {
+      email: apiSubmissionData.email,
+      callbackURL: routes.generic.home,
+    },
+  });
+  if (data.status) {
+    return {
+      mode: "read",
+      data: rawFormData,
+      messages: [`Email verfication link sent to "${user.email}".`],
+    };
+  }
+
   return {
     mode: "read",
     data: rawFormData,
-    messages: [`Email verfication link sent to "${user.email}".`],
+    messages: ["Failed to send email verification link, please try again."],
   };
 }

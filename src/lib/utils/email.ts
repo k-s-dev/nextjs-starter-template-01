@@ -2,18 +2,21 @@
 
 import * as nodemailer from "nodemailer";
 
-import { SendMailError } from "@/lib/utils/errors";
-import { getAuthEnvVariables } from "@/lib/features/authentication/verification";
-import { getEnvVariableValue } from "./env";
+import { EnvError, SendMailError } from "@/lib/utils/errors";
 
-const { authEmailId, authEmailPassword } = await getAuthEnvVariables();
-const nodeEnv = await getEnvVariableValue("NODE_ENV");
+const nodeEnv = process.env.NODE_ENV;
+const emailId = process.env.EMAIL_ID;
+const password = process.env.EMAIL_PASSWORD;
+
+if (!nodeEnv || !emailId || !password) {
+  throw new EnvError({});
+}
 
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
-    user: authEmailId,
-    pass: authEmailPassword,
+    user: emailId,
+    pass: password,
   },
 });
 
@@ -44,4 +47,3 @@ export async function sendMail(dataIn: {
     });
   }
 }
-

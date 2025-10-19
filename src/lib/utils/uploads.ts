@@ -4,6 +4,7 @@ import path from "node:path";
 import { access, mkdir, unlink, writeFile } from "node:fs/promises";
 import { put, del } from "@vercel/blob";
 import { ApiError } from "./errors";
+import { getEnvVariableValue } from "./env";
 
 export async function uploadFile({
   uploadFile,
@@ -19,7 +20,7 @@ export async function uploadFile({
   let uploadUrl;
 
   // values: vercel-blob, local (fallback)
-  const uploadMethod = process.env.UPLOAD_METHOD;
+  const uploadMethod = await getEnvVariableValue("UPLOAD_METHOD");
   const fnProps = {
     uploadFile,
     uploadDir,
@@ -49,8 +50,8 @@ export async function uploadFileVercelBlob({
 }) {
   let blob;
 
-  const env = process.env.NODE_ENV;
-  const app_name = process.env.APP_NAME;
+  const env = await getEnvVariableValue("NODE_ENV");
+  const app_name = await getEnvVariableValue("APP_NAME");
 
   fileExt = fileExt ? fileExt : uploadFile.name.split(".")[1].toLowerCase();
   const fileName = fileNameWoExt
@@ -123,7 +124,7 @@ export async function deleteUploadedFile({
   let result;
 
   // values: vercel-blob, local (fallback)
-  const uploadMethod = process.env.UPLOAD_METHOD;
+  const uploadMethod = await getEnvVariableValue("UPLOAD_METHOD");
 
   if (uploadMethod === "vercel-blob") {
     result = await deleteUploadedFileVercelBlob({ uploadUrl });

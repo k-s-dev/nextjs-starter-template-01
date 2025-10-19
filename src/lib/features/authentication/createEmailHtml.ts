@@ -1,5 +1,7 @@
-export function createEmailHtml(url: string, title: string) {
-  const appName = process.env.APP_NAME;
+import { getEnvVariableValue } from "@/lib/utils/env";
+
+export async function createEmailHtml(url: string, title: string) {
+  const appName = await getEnvVariableValue("APP_NAME");
   const brandColor = "#346df1";
   const color = {
     background: "#f9f9f9",

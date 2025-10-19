@@ -50,7 +50,7 @@ export async function getUser(
   where: Prisma.UserWhereUniqueInput,
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-) {
+): Promise<Prisma.UserModel | null> {
   let user;
 
   // check permissions attributes
@@ -118,8 +118,8 @@ export async function getUsers(
   let users;
 
   //check permissions
-  await checkPermissionsAttributes(mode, sessionUser)
-  await checkPermissions("read", mode, sessionUser)
+  await checkPermissionsAttributes(mode, sessionUser);
+  await checkPermissions("read", mode, sessionUser);
 
   try {
     users = await prisma.user.findMany({

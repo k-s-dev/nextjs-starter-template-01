@@ -1,9 +1,10 @@
+import { Prisma } from "@/generated/prisma/client";
 import { routes } from "@/lib/utils/routeMapper";
 
 beforeEach(() => {
   cy.task("db:seed");
 
-  cy.task("db:getUserByEmail", "test-user-01@example.com")
+  cy.task<Prisma.UserModel>("db:getUserByEmail", "test-user-01@example.com")
     .then((user) => {
       return routes.admin.user.withId(user?.id as string, "detail");
     })

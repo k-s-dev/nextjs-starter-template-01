@@ -1,13 +1,11 @@
 import { defineConfig } from "cypress";
-
 import { resetTestDb } from "@/database/utils/test/reset";
 import { seedTestDb } from "@/database/utils/test/seed";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
-import { getVerificationToken } from "@/lib/dataModels/auth/verification/dataAccessControl";
 
 export default defineConfig({
   e2e: {
-    baseUrl: process.env.HOST,
+    baseUrl: process.env.BASE_URL,
     defaultCommandTimeout: 10000,
     setupNodeEvents(on, config) {
       // implement node event listeners here
@@ -16,8 +14,8 @@ export default defineConfig({
           console.log(message);
           return null;
         },
-        "db:reset": resetTestDb,
-        "db:seed": seedTestDb,
+        "db:reset": async () => await resetTestDb(),
+        "db:seed": async () => await seedTestDb(),
         logEnv() {
           console.log(process.env.NODE_ENV);
           for (const key in process.env) {
@@ -28,11 +26,8 @@ export default defineConfig({
           }
           return null;
         },
-        "db:getUserByEmail": async (email) => {
+        "db:getUserByEmail": async (email: string) => {
           return await getUser({ email: email }, "server");
-        },
-        "db:getEmailVerificationTokenByEmail": async (email) => {
-          return await getVerificationToken(email, "EMAIL_VERFICATION");
         },
       });
       return config;

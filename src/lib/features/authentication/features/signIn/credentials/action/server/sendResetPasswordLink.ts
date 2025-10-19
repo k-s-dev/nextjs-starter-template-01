@@ -2,7 +2,6 @@
 
 import * as v from "valibot";
 
-import { sendVerificationEmail } from "@/lib/features/authentication/verification";
 import { VSSignInFormBase } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";

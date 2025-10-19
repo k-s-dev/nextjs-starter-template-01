@@ -3,7 +3,6 @@
 import * as v from "valibot";
 
 import { parseFormData } from "@/lib/utils/form";
-import { signUpActionServer } from "./server";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import { VSSignUpForm } from "../../definitions";
 import { authClient } from "@/lib/features/authentication/auth-client";
@@ -43,5 +42,12 @@ export async function signUpActionClient(
     };
   }
 
-  return await signUpActionServer(prevState, formData);
+  return {
+    mode: "create",
+    data: rawFormData,
+    messages: [
+      "User created successfully. Verification email sent. Sign in will work post verfication.",
+    ],
+    status: "success",
+  };
 }

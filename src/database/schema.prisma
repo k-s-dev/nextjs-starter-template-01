@@ -6,7 +6,7 @@ generator client {
   // path is relative to this file
   output       = "../generated/prisma"
   engineType   = "client"
-  // needed for cypress compatibility
+  // cjs needed for cypress compatibility
   moduleFormat = "cjs"
 }
 

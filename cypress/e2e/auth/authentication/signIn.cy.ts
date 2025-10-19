@@ -1,9 +1,5 @@
 import { routes } from "@/lib/utils/routeMapper";
 
-beforeEach(() => {
-  cy.task("db:seed");
-});
-
 describe("SignIn flow", () => {
   it("should navigate to the Sign in page", () => {
     // Start from the index page

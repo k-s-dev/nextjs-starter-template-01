@@ -1,18 +1,19 @@
+import { Prisma } from "@/generated/prisma/client";
 import { routes } from "@/lib/utils/routeMapper";
 
 beforeEach(() => {
   cy.task("db:seed");
-  cy.task("db:getUserByEmail", "test-user-02@example.com")
+  cy.task<Prisma.UserModel>("db:getUserByEmail", "test-user-02@example.com")
     .then((user) => {
       return routes.admin.user.withId(user?.id as string, "update");
     })
     .as("user02UrlUpdate");
-  cy.task("db:getUserByEmail", "test-user-02@example.com")
+  cy.task<Prisma.UserModel>("db:getUserByEmail", "test-user-02@example.com")
     .then((user) => {
       return routes.admin.user.withId(user?.id as string, "detail");
     })
     .as("user02UrlDetail");
-  cy.task("db:getUserByEmail", "test-user-01@example.com")
+  cy.task<Prisma.UserModel>("db:getUserByEmail", "test-user-01@example.com")
     .then((user) => {
       return routes.admin.user.withId(user?.id as string, "detail");
     })
@@ -25,7 +26,7 @@ describe("admin.user.delete flow", () => {
     cy.getByData("signIn-email").type("test-user-02@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
-    cy.get("@user01UrlDetail").then((url) => {
+    cy.get<string>("@user01UrlDetail").then((url) => {
       cy.visit(url);
       cy.document().should("not.be.visible");
     });
@@ -45,7 +46,7 @@ describe("admin.user.delete flow", () => {
       cy.getByData("signIn-password").type("12345678");
       cy.getByData("signIn-btn").click();
       cy.location("pathname").should("eq", "/");
-      cy.get("@user02UrlDetail").then((url) => {
+      cy.get<string>("@user02UrlDetail").then((url) => {
         cy.visit(url);
       });
       cy.getByData("delete-user-button").eq(0).click();
