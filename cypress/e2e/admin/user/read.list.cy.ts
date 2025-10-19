@@ -1,9 +1,5 @@
 import { routes } from "@/lib/utils/routeMapper";
 
-beforeEach(() => {
-  cy.task("db:seed");
-});
-
 describe("admin.user.read flow", () => {
   it("should not navigate to the /user/list page without authentication", () => {
     cy.visit(routes.admin.user.read);

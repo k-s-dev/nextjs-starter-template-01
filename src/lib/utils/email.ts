@@ -1,7 +1,6 @@
 "use server";
 
 import * as nodemailer from "nodemailer";
-
 import { EnvError, SendMailError } from "@/lib/utils/errors";
 
 const nodeEnv = process.env.NODE_ENV;

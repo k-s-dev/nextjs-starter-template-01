@@ -71,6 +71,8 @@ export const auth = betterAuth({
     },
   },
   emailVerification: {
+    sendOnSignUp: true,
+    sendOnSignIn: true,
     // TODO: review eslint disable
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sendVerificationEmail: async ({ user, url, token }, request) => {

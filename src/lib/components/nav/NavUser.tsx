@@ -56,7 +56,7 @@ export function NavUserAvatar({ session }: { session: Session }) {
       <Menu trigger="click-hover" shadow="md">
         <MenuTarget>
           {/* div needed for click/hover trigger to work */}
-          <div>
+          <div data-test-cy="nav-user-avatar">
             <UserAvatar src={user?.image || undefined} userName={user?.name} />
           </div>
         </MenuTarget>
