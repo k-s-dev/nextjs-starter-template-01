@@ -22,14 +22,13 @@ import { sendResetPasswordLinkActionServer } from "./action/server/sendResetPass
 export default function CredentialsSignInForm({
   formId = "signIn-form",
 }: CredentialsSigninProps) {
-  const [formState, setFormState] = useState<TUserFormState>({ mode: "read" });
+  const [formState, setFormState] = useState<TUserFormState>({});
   const [isPending, setIsPending] = useState(false);
   const searchParams = useSearchParams();
 
   const initialFormData = {} as TUserFormStateData;
 
   const initialFormState: TUserFormState = {
-    mode: "update",
     data: initialFormData,
   };
 

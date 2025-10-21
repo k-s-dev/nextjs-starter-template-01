@@ -28,6 +28,7 @@
     "test:db:push": "npm run test:env -- npx prisma db push --",
     "test:db:reset": "npm run test:env -- npx prisma migrate reset --",
     "test:db:generate": "npm run test:env -- npx prisma generate --",
+    "test:db:seed": "npm run test:env -- npx tsx ./src/database/utils/test/seedExec.ts",
     "test:jest": "npm run test:env -- jest --",
     "test:cypress:open": "npm run test:env -- cypress open --",
     "test:cypress:e2e": "npm run test:env -- cypress run --e2e --"

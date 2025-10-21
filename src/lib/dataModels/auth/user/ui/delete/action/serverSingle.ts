@@ -10,13 +10,7 @@ export async function deleteUserServerAction(
   id?: string,
 ): Promise<"error" | never> {
   const sessionUser = await getSessionUser();
-
-  try {
-    await deleteUser({ id: id }, "client", sessionUser);
-  } catch {
-    return "error";
-  }
-
+  await deleteUser({ id: id }, "client", sessionUser);
   revalidatePath(routes.admin.root);
   redirect(routes.admin.user.read);
 }

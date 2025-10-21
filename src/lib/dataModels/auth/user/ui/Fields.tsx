@@ -1,4 +1,4 @@
-import { SelectProps } from "@mantine/core";
+import { Checkbox, SelectProps } from "@mantine/core";
 import { SelectSingle } from "@/lib/components/form/fields/SelectSingle";
 import {
   InputPassword,
@@ -8,10 +8,7 @@ import {
   InputText,
   InputTextProps,
 } from "@/lib/components/form/fields/InputText";
-import {
-  InputDateTime,
-  InputDateTimeProps,
-} from "@/lib/components/form/fields/InputDateTime";
+import { InputDateTimeProps } from "@/lib/components/form/fields/InputDateTime";
 import { TUserFormState, userRoleEnum } from "../definitions";
 
 export function UserEmail({ formId, formState, ...props }: UserTextFieldProps) {
@@ -39,6 +36,7 @@ export function UserName({ formId, formState, ...props }: UserTextFieldProps) {
       placeholder="e.g. First Last"
       defaultValue={formState.data?.name}
       errors={formState.errors?.nested?.name}
+      required
       {...props}
     />
   );
@@ -81,6 +79,10 @@ export function UserConfirmPassword({
 }
 
 export function UserRole({ formId, formState, ...props }: UserFieldRoleProps) {
+  /**
+   * Separate node for rendering disabled field is needed
+   * to avoid random functionality clashes
+   */
   if (formState.data?.role === userRoleEnum.SUPERUSER) {
     return (
       <SelectSingle
@@ -114,19 +116,15 @@ export function UserEmailVerified({
   formId,
   formState,
   ...props
-}: UserFieldDateTimeProps) {
+}: UserFieldProps) {
   return (
-    <InputDateTime
-      formId={formId}
-      defaultValue={
-        formState.data?.emailVerified
-          ? formState.data.emailVerified.toString()
-          : undefined
-      }
-      errors={formState.errors?.nested?.emailVerified}
+    <Checkbox
+      form={formId}
+      defaultChecked={formState.data?.emailVerified}
       name="emailVerified"
-      label="Email Verified (on date)"
-      placeholder="Pick date/time"
+      label="Email Verified"
+      labelPosition="left"
+      size="lg"
       {...props}
     />
   );

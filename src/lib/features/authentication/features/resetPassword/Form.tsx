@@ -27,7 +27,6 @@ export default function ResetPasswordForm({
   const initialFormData = {} as TUserFormStateData;
 
   const initialFormState: TUserFormState = {
-    mode: "update",
     data: initialFormData,
   };
 

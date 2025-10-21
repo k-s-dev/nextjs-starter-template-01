@@ -24,6 +24,7 @@ export function generateCheckboxCell<T>({ row }: { row: Row<T> }) {
           indeterminate: row.getIsSomeSelected(),
           onChange: row.getToggleSelectedHandler(),
         }}
+        data-test-cy={`select-row-${row.index}`}
       />
     </TableCell>
   );

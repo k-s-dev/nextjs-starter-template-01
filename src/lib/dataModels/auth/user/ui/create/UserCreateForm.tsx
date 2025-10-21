@@ -30,7 +30,6 @@ export default function UserCreateForm({
 
   const initialFormState: TUserFormState = {
     data: { role: userRoleEnum.USER } as TUserFormStateData,
-    mode: "create",
   };
 
   const [formState, formAction, isPending] = useActionState(

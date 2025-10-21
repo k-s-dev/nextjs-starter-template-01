@@ -52,7 +52,7 @@ export async function seedUsers() {
       where: { id: user03.id },
       data: {
         emailVerified: false,
-        role: "USER",
+        role: "SUPERUSER",
       },
     });
   } catch (error) {

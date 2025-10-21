@@ -19,7 +19,10 @@ export class AppError extends Error {
     super(args.message);
     this.cause = args.cause;
     this.name = this.constructor.name;
-    this.log = args.log || { message: args.message };
+    this.log = {
+      message: args.log?.message || args.message,
+      data: JSON.stringify(args.log?.data),
+    }
   }
 }
 
@@ -95,7 +98,7 @@ export class HttpError extends AppError {
 
 export interface ErrorLog {
   message?: string;
-  data?: object;
+  data?: object | string;
 }
 
 export interface IErrorConstructorArgs {

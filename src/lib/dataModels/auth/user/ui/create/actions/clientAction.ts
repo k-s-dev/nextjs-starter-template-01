@@ -1,5 +1,4 @@
 import * as v from "valibot";
-
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState, VSUserCrudForm } from "../../../definitions";
 import { createUserServerAction } from "./serverAction";
@@ -9,18 +8,24 @@ export async function createUserClientAction(
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
-  const rawFormData = parseFormData(formData, ["imageFile"]);
+  const parsedFormData = parseFormData({
+    formData,
+    info: {
+      booleans: ["emailVerified"],
+    },
+    excludeKeys: ["imageFile"],
+  });
 
-  const validationResult = v.safeParse(VSUserCrudForm, rawFormData);
+  const validationResult = v.safeParse(VSUserCrudForm, parsedFormData);
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSUserCrudForm>(validationResult.issues);
     return {
       ...prevState,
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
-      mode: "update",
     };
   }
+
   return await createUserServerAction(imageFile, prevState, formData);
 }

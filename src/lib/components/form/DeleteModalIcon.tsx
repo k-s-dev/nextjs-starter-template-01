@@ -11,6 +11,10 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { DeleteIcon } from "../icons/TooltipIcons";
+import { AppError } from "@/lib/utils/errors";
+import { notifications } from "@mantine/notifications";
+
+const defaultErrorMessage = "Failed to delete resource. Please try again.";
 
 export default function DeleteModalIcon({
   resource,
@@ -36,10 +40,10 @@ export default function DeleteModalIcon({
   restBtnProps?: ButtonProps;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [showFailMessage, setShowFailMessage] = useState<boolean>(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   useEffect(() => {
-    setShowFailMessage(false);
+    setErrorMessage(null);
   }, [opened]);
 
   return (
@@ -50,16 +54,28 @@ export default function DeleteModalIcon({
           resource={resource}
           identifier={identifier}
           deleteAction={async () => {
-            const result = await deleteAction();
-            if (result === "error") {
-              setShowFailMessage(true);
-            } else {
+            let errors;
+            try {
+              errors = await deleteAction();
+              if (errors) {
+                notifications.show({
+                  title: "Delete Errors!",
+                  message: JSON.stringify(errors),
+                  color: "orange",
+                });
+              }
               close();
+            } catch (error) {
+              if (error instanceof AppError) {
+                setErrorMessage(error.message);
+              } else {
+                setErrorMessage(JSON.stringify(error));
+              }
             }
           }}
         >
           {children}
-          {showFailMessage && <FailMessage />}
+          {errorMessage && <FailMessage errorMessage={errorMessage} />}
         </DeleteModalContent>
       </Modal>
       <Button
@@ -127,10 +143,10 @@ export function DeleteModalContent({
   );
 }
 
-function FailMessage() {
+function FailMessage({ errorMessage }: { errorMessage?: string }) {
   return (
     <Blockquote color="orange" mb="md">
-      Failed to delete resource. Please try again.
+      {errorMessage || defaultErrorMessage}
     </Blockquote>
   );
 }

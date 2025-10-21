@@ -14,17 +14,16 @@ export async function sendResetPasswordLinkActionServer(
   formData: FormData,
 ): Promise<TUserFormState> {
   // retreive data
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = parseFormData({ formData });
 
   // Validate form
-  const validationResult = v.safeParse(VSSignInFormBase, rawFormData);
+  const validationResult = v.safeParse(VSSignInFormBase, parsedFormData);
 
   // handle validation errors
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSSignInFormBase>(validationResult.issues);
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
     };
   }
@@ -39,8 +38,7 @@ export async function sendResetPasswordLinkActionServer(
   // validate: existing user
   if (!user) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: ["Invalid credentials."],
       },
@@ -50,8 +48,7 @@ export async function sendResetPasswordLinkActionServer(
   // validate: verification status
   if (!user?.emailVerified) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: ["Email is not verified yet."],
       },
@@ -67,8 +64,7 @@ export async function sendResetPasswordLinkActionServer(
   });
 
   return {
-    mode: "read",
-    data: rawFormData,
+    data: parsedFormData,
     messages: [data.message],
   };
 }

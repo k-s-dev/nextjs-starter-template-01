@@ -1,3 +1,5 @@
+"use client";
+
 import { FaGithub, FaGoogle } from "react-icons/fa6";
 import { Button, Flex } from "@mantine/core";
 import { SocialProvider } from "better-auth/social-providers";
@@ -32,22 +34,18 @@ export function ProviderForm({
   children: React.ReactNode;
 }) {
   return (
-    <form
-      action={async () => {
-        "use server";
+    <Button
+      type="button"
+      onClick={async () => {
         await authClient.signIn.social({
           provider: oAuthProvider,
         });
       }}
+      fz={24}
+      variant="gradient"
+      gradient={{ from: "green", to: "blue", deg: 45 }}
     >
-      <Button
-        type="submit"
-        fz={24}
-        variant="gradient"
-        gradient={{ from: "green", to: "blue", deg: 45 }}
-      >
-        {children}
-      </Button>
-    </form>
+      {children}
+    </Button>
   );
 }

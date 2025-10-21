@@ -30,7 +30,6 @@ export default function UserReadForm({
 
   const initialFormState: TUserFormState = {
     data: { ...user } as TUserFormStateData,
-    mode: "read",
   };
 
   const [formState, formAction] = useActionState(

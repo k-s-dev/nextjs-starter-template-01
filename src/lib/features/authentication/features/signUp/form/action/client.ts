@@ -12,17 +12,16 @@ export async function signUpActionClient(
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = parseFormData({ formData });
 
-  const validationResult = v.safeParse(VSSignUpForm, rawFormData);
+  const validationResult = v.safeParse(VSSignUpForm, parsedFormData);
 
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSSignUpForm>(validationResult.issues);
     return {
       ...prevState,
-      mode: "create",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
     };
   }
@@ -35,16 +34,14 @@ export async function signUpActionClient(
   if (result.error?.message) {
     return {
       ...prevState,
-      mode: "create",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: { root: [result.error.message] },
     };
   }
 
   return {
-    mode: "create",
-    data: rawFormData,
+    data: parsedFormData,
     messages: [
       "User created successfully. Verification email sent. Sign in will work post verfication.",
     ],

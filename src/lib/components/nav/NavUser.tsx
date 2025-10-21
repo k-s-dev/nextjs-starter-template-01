@@ -8,14 +8,10 @@ import {
   Skeleton,
 } from "@mantine/core";
 import UserAvatar from "@/lib/features/authentication/components/UserAvatar";
-import { useEffect } from "react";
-import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import SignOut from "@/lib/features/authentication/features/signOut/SignOut";
 import SignUpLinkButton from "@/lib/features/authentication/features/signUp/SignUpLinkButton";
 import SignInLinkButton from "@/lib/features/authentication/features/signIn/SignInLinkButton";
 import { authClient, Session } from "@/lib/features/authentication/auth-client";
-import { redirect } from "next/navigation";
-import { routes } from "@/lib/utils/routeMapper";
 import { requestResetPasswordClientAction } from "@/lib/features/authentication/features/resetPassword/requestResetPasswordClientAction";
 
 export default function NavUser() {
@@ -38,17 +34,6 @@ export default function NavUser() {
 }
 
 export function NavUserAvatar({ session }: { session: Session }) {
-  useEffect(() => {
-    const checkDbUser = async () => {
-      if (session?.user) {
-        const dbUser = await getUser({ id: session?.user.id }, "server");
-        if (!dbUser) authClient.signOut();
-        redirect(routes.DEFAULT_LOGIN_REDIRECT);
-      }
-    };
-    checkDbUser();
-  }, [session?.user]);
-
   const user = session?.user;
 
   return (

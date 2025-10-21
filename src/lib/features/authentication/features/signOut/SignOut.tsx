@@ -9,7 +9,7 @@ export default function SignOut({ children }: { children: React.ReactNode }) {
     <div
       onClick={async () => {
         await authClient.signOut();
-        return redirect(routes.DEFAULT_LOGIN_REDIRECT);
+        redirect(routes.DEFAULT_LOGIN_REDIRECT);
       }}
     >
       {children}

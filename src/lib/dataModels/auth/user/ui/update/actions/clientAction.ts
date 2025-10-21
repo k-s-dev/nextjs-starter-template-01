@@ -1,5 +1,4 @@
 import * as v from "valibot";
-
 import { parseFormData } from "@/lib/utils/form";
 import {
   TUserFormState,
@@ -15,22 +14,30 @@ export async function updateUserClientAction(
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
-  let rawFormData = parseFormData(formData, ["imageFile"]);
+  let parsedFormData = parseFormData({
+    formData,
+    info: {
+      booleans: ["emailVerified"],
+    },
+    excludeKeys: ["imageFile"],
+  });
+
+  // SUPERUSER role cannot be changed
   if (user.role === userRoleEnum.SUPERUSER) {
-    rawFormData = {
-      ...rawFormData,
+    parsedFormData = {
+      ...parsedFormData,
       role: userRoleEnum.SUPERUSER,
     };
   }
 
-  const validationResult = v.safeParse(VSUserCrudForm, rawFormData);
+  const validationResult = v.safeParse(VSUserCrudForm, parsedFormData);
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSUserCrudForm>(validationResult.issues);
+    console.log(errors);
     return {
       ...prevState,
-      mode: "update",
       status: "error",
-      data: { ...rawFormData },
+      data: { ...parsedFormData },
       errors: errors,
     };
   }

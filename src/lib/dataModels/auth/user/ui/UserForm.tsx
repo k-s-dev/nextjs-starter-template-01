@@ -17,12 +17,7 @@ export function UserForm({
   inert = false,
 }: IPropsFormUser) {
   return (
-    <Form
-      id={formId}
-      inert={inert}
-      noValidate
-      action={formAction}
-    >
+    <Form id={formId} inert={inert} noValidate action={formAction}>
       <FormFieldsRow>
         <UserEmail formId={formId} formState={formState} />
         <UserName formId={formId} formState={formState} />
@@ -30,10 +25,6 @@ export function UserForm({
 
       <FormFieldsRow>
         <UserRole formId={formId} formState={formState} />
-        <UserEmailVerified formId={formId} formState={formState} clearable />
-      </FormFieldsRow>
-
-      <FormFieldsRow>
         <InputImage
           formId={formId}
           imageFile={imageFile}
@@ -42,6 +33,8 @@ export function UserForm({
           errors={formState.errors?.nested?.image}
         />
       </FormFieldsRow>
+
+      <UserEmailVerified formId={formId} formState={formState} />
     </Form>
   );
 }

@@ -8,15 +8,12 @@ import { routes } from "@/lib/utils/routeMapper";
 
 export async function deleteManyUsersServerAction(
   ids: string[],
-): Promise<"error" | never> {
+) {
   const sessionUser = await getSessionUser();
-
-  try {
-    await deleteManyUsers(ids, "client", sessionUser);
-  } catch {
-    return "error";
+  const failedDeleteUsers = await deleteManyUsers(ids, "client", sessionUser);
+  if (failedDeleteUsers) {
+    return failedDeleteUsers;
   }
-
   revalidatePath(routes.admin.root);
-  redirect(routes.admin.user.read);
+  return redirect(routes.admin.user.read);
 }

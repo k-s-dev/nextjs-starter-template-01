@@ -29,7 +29,6 @@ export default function UserUpdateForm({
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   const initialFormState: TUserFormState = {
-    mode: "update",
     data: { ...user } as TUserFormStateData,
   };
 

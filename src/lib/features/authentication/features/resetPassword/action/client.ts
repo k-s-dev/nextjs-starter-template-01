@@ -14,16 +14,15 @@ export async function resetPasswordClientAction(
   prevState: TUserFormState | null,
   formData: FormData,
 ): Promise<TUserFormState> {
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = parseFormData({ formData });
 
-  const validationResult = v.safeParse(validationSchema, rawFormData);
+  const validationResult = v.safeParse(validationSchema, parsedFormData);
   if (!validationResult.success) {
     const errors = v.flatten<typeof validationSchema>(validationResult.issues);
     return {
       ...prevState,
-      mode: "update",
       status: "error",
-      data: { ...rawFormData },
+      data: { ...parsedFormData },
       errors: errors,
     };
   }

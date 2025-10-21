@@ -4,9 +4,9 @@ import * as v from "valibot";
 import { redirect } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
 import { VSResetPasswordForm } from "../definitions";
-import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 import { auth } from "../../../auth";
+import { decode } from "decode-formdata";
 
 export async function resetPasswordServerAction(
   token: string,
@@ -14,10 +14,10 @@ export async function resetPasswordServerAction(
   formData: FormData,
 ): Promise<TUserFormState> {
   // retreive data
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = decode(formData);
 
   // Validate form
-  const validationResult = v.safeParse(VSResetPasswordForm, rawFormData);
+  const validationResult = v.safeParse(VSResetPasswordForm, parsedFormData);
 
   // handle validation errors
   if (!validationResult.success) {
@@ -25,9 +25,8 @@ export async function resetPasswordServerAction(
       validationResult.issues,
     );
     return {
-      mode: "update",
       data: {
-        ...rawFormData,
+        ...parsedFormData,
       },
       errors: errors,
     };
@@ -45,13 +44,12 @@ export async function resetPasswordServerAction(
       body: {
         newPassword: apiSubmissionData.password,
         token: token,
-      }
-    })
-    console.log(data)
+      },
+    });
+    console.log(data);
   } catch (error) {
     console.log(error);
     return {
-      mode: "update",
       status: "error",
       errors: {
         root: [

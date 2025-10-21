@@ -17,13 +17,12 @@ export const VSUserBase = v.partial(
       v.nonEmpty("Required."),
       v.email("The email address is badly formatted."),
     ),
-    name: v.pipe(v.string("Name must be a string."), v.nonEmpty()),
+    name: v.pipe(v.string("Name must be a string."), v.nonEmpty("Required.")),
     emailVerified: v.boolean(),
     role: v.enum(userRoleEnum),
     image: v.string(),
-    profile: v.string(),
-    groups: v.array(v.string()),
-    permissions: v.array(v.string()),
+    sessions: v.array(v.string()),
+    accounts: v.array(v.string()),
     password: v.pipe(
       v.string("Password must be a string."),
       v.nonEmpty("Required."),
@@ -33,23 +32,22 @@ export const VSUserBase = v.partial(
   }),
 );
 
-export const VSUser = v.required(
-  v.omit(VSUserBase, ["confirmPassword", "emailVerified"]),
-  ["id", "email", "role"],
-);
+export const VSUser = v.required(v.omit(VSUserBase, ["confirmPassword"]), [
+  "id",
+  "email",
+  "role",
+]);
 
 export const VSUserPublic = v.required(
-  v.pick(VSUser, ["id", "email", "name", "role", "image"]),
+  v.pick(VSUser, ["id", "email", "name", "role", "image", "emailVerified"]),
   ["id", "email", "role"],
 );
 
 // full object for use in server
-export type TUser = v.InferInput<typeof VSUser> & { emailVerified?: boolean };
+export type TUser = v.InferInput<typeof VSUser>;
 
 // partial object for use in ui
-export type TUserPublic = v.InferInput<typeof VSUserPublic> & {
-  emailVerified?: boolean;
-};
+export type TUserPublic = v.InferInput<typeof VSUserPublic>;
 
 export type TUserPrisma = Prisma.Result<
   typeof prisma.user,
@@ -67,7 +65,7 @@ export const VSUserFormStateData = v.omit(VSUserBase, ["id"]);
 export type TUserFormStateData = v.InferInput<typeof VSUserFormStateData>;
 export type TUserFormStateErrors = v.FlatErrors<typeof VSUserBase>;
 export type TUserFormState = {
-  mode: "create" | "read" | "update";
+  mode?: "create" | "read" | "update";
   status?: "success" | "error";
   data?: TUserFormStateData;
   errors?: TUserFormStateErrors;
@@ -77,6 +75,8 @@ export type TUserFormState = {
 // admin: User crud forms
 export const VSUserCrudForm = v.omit(v.required(VSUser, ["email", "name"]), [
   "id",
+  "sessions",
+  "accounts",
 ]);
 
 export type TUserCrudForm = v.InferInput<typeof VSUserCrudForm>;

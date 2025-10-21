@@ -1,7 +1,6 @@
 "use server";
 
 import * as v from "valibot";
-
 import { deleteUploadedFile, uploadFile } from "@/lib/utils/uploads";
 import { parseFormData } from "@/lib/utils/form";
 import {
@@ -25,25 +24,32 @@ export async function updateUserServerAction(
   const sessionUser = await getSessionUser();
 
   // retreive data
-  let rawFormData = parseFormData(formData);
+  let parsedFormData = parseFormData({
+    formData,
+    info: {
+      booleans: ["emailVerified"],
+    },
+    excludeKeys: ["imageFile"],
+  });
+
+  // security: ensure on backend that SUPERUSER role cannot be changed
   if (user.role === userRoleEnum.SUPERUSER) {
-    rawFormData = {
-      ...rawFormData,
+    parsedFormData = {
+      ...parsedFormData,
       role: userRoleEnum.SUPERUSER,
     };
   }
 
   // Validate form
-  const validationResult = v.safeParse(VSUserCrudForm, rawFormData);
+  const validationResult = v.safeParse(VSUserCrudForm, parsedFormData);
 
   // handle validation errors
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSUserCrudForm>(validationResult.issues);
     return {
       ...prevState,
-      mode: "update",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
     };
   }
@@ -61,9 +67,8 @@ export async function updateUserServerAction(
   } catch (error) {
     console.log(error);
     return {
-      mode: "update",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: [
           "Failed to update user due to internal server error. Please try again.",
@@ -80,9 +85,8 @@ export async function updateUserServerAction(
       await deleteUploadedFile({ uploadUrl: user.image });
     } catch {
       return {
-        mode: "update",
         status: "error",
-        data: rawFormData,
+        data: parsedFormData,
         errors: {
           root: [
             "Failed to clear user image. Please try and update user again.",
@@ -102,9 +106,8 @@ export async function updateUserServerAction(
     } catch (error) {
       console.log(error);
       return {
-        mode: "update",
         status: "error",
-        data: rawFormData,
+        data: parsedFormData,
         errors: {
           root: [
             "User updated but image upload failed. Please try and update user again.",
@@ -126,9 +129,8 @@ export async function updateUserServerAction(
   } catch (error) {
     console.log(error);
     return {
-      mode: "create",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: [
           "User created but image upload failed. Please try and update user again.",

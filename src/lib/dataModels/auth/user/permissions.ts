@@ -14,6 +14,17 @@ export async function checkPermissions(
   if (mode === "server") return;
 
   switch (operation) {
+    case "delete":
+      if (user && user.role === "SUPERUSER") {
+        throw new PermissionError({
+          message:
+            "Permission denied: SUPERUSER can only be deleted from backend.",
+          log: {
+            data: { user, },
+          },
+        });
+      }
+
     case "read":
     case "update":
     case "delete":

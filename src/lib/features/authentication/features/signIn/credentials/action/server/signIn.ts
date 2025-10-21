@@ -12,17 +12,16 @@ export async function credentialsSignInActionServer(
   formData: FormData,
 ): Promise<TUserFormState> {
   // retreive data
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = parseFormData({ formData });
 
   // Validate form
-  const validationResult = v.safeParse(VSSignInForm, rawFormData);
+  const validationResult = v.safeParse(VSSignInForm, parsedFormData);
 
   // handle validation errors
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSSignInForm>(validationResult.issues);
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
     };
   }
@@ -37,8 +36,7 @@ export async function credentialsSignInActionServer(
   // validate: existing user
   if (!user) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: ["Invalid credentials."],
       },
@@ -48,8 +46,7 @@ export async function credentialsSignInActionServer(
   // validate: verification status
   if (!user?.emailVerified) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: ["Email is not verified yet."],
       },
@@ -63,10 +60,10 @@ export async function credentialsSignInActionServer(
       email: apiSubmissionData.email,
       password: apiSubmissionData.password,
     },
+    asResponse: true,
   });
 
   return {
-    mode: "read",
     status: "success",
     data: { ...validationResult.output },
   };

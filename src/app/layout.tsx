@@ -55,7 +55,7 @@ export default function RootLayout({
               <Navbar />
             </header>
             {children}
-            <Notifications />
+            <Notifications autoClose={3000} />
           </div>
         </Providers>
       </body>

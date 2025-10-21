@@ -14,17 +14,16 @@ export async function sendVerificationLinkActionServer(
   formData: FormData,
 ): Promise<TUserFormState> {
   // retreive data
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = parseFormData({ formData });
 
   // Validate form
-  const validationResult = v.safeParse(VSSignInFormBase, rawFormData);
+  const validationResult = v.safeParse(VSSignInFormBase, parsedFormData);
 
   // handle validation errors
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSSignInFormBase>(validationResult.issues);
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
     };
   }
@@ -39,8 +38,7 @@ export async function sendVerificationLinkActionServer(
   // validate: existing user
   if (!user) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: ["Invalid credentials."],
       },
@@ -49,8 +47,7 @@ export async function sendVerificationLinkActionServer(
 
   if (user.emailVerified) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       messages: ["Email already verified."],
     };
   }
@@ -64,15 +61,13 @@ export async function sendVerificationLinkActionServer(
   });
   if (data.status) {
     return {
-      mode: "read",
-      data: rawFormData,
+      data: parsedFormData,
       messages: [`Email verfication link sent to "${user.email}".`],
     };
   }
 
   return {
-    mode: "read",
-    data: rawFormData,
+    data: parsedFormData,
     messages: ["Failed to send email verification link, please try again."],
   };
 }

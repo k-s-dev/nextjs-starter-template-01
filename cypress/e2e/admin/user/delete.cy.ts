@@ -20,7 +20,7 @@ beforeEach(() => {
 });
 
 describe("admin.user.delete flow", () => {
-  it("should not delete user when signIn as non superuser", () => {
+  it("should not delete user when signed in as non superuser", () => {
     cy.visit(routes.authentication.signIn);
     cy.getByData("signIn-email").type("test-user-02@example.com");
     cy.getByData("signIn-password").type("12345678");
@@ -32,7 +32,7 @@ describe("admin.user.delete flow", () => {
   });
 
   it(
-    "should delete single user when signIn as superuser",
+    "should delete single user when signed in as superuser",
     {
       retries: {
         runMode: 4,
@@ -52,6 +52,28 @@ describe("admin.user.delete flow", () => {
       cy.getByData("delete-confirmation-button").should("be.visible").click();
       cy.visit(routes.admin.user.read);
       cy.contains("test-user-02@example.com").should("not.be.true");
+    },
+  );
+
+  it.only(
+    "should not delete a superuser when signed in as superuser",
+    {
+      retries: {
+        runMode: 4,
+        openMode: 0,
+      },
+    },
+    () => {
+      cy.visit(routes.authentication.signIn);
+      cy.getByData("signIn-email").type("test-user-01@example.com");
+      cy.getByData("signIn-password").type("12345678");
+      cy.getByData("signIn-btn").click();
+      cy.location("pathname").should("eq", "/");
+      cy.visit(routes.admin.user.read);
+      cy.getByData("select-row-2").click()
+      cy.getByData("delete-all-button").eq(0).click();
+      cy.getByData("delete-confirmation-button").click();
+      cy.getByData("delete-confirmation-button").should("be.visible");
     },
   );
 

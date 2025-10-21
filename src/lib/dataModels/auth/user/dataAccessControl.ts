@@ -1,7 +1,7 @@
 "use server";
 
 import prisma from "@/database/prismaClient";
-import { DbError } from "@/lib/utils/errors";
+import { DbError, PermissionError } from "@/lib/utils/errors";
 import { TDataRequestMode } from "@/lib/utils/types";
 import { TUserPublic } from "./definitions";
 import { Prisma } from "@/generated/prisma/client";
@@ -236,13 +236,37 @@ export async function deleteManyUsers(
   await checkPermissionsAttributes(mode, sessionUser);
   await checkPermissions("deleteMany", mode, sessionUser);
 
+  const failedDeleteMessages: string[] = [];
+
   try {
-    await prisma.user.deleteMany({
+    const users = await prisma.user.findMany({
       where: {
         id: {
           in: ids,
         },
       },
+    });
+
+    users.forEach(async (user) => {
+      if (user.role === "SUPERUSER") {
+        failedDeleteMessages.push(
+          `${user.email}: Superusers can only be deleted from backend.`,
+        );
+        throw new PermissionError({
+          message:
+            "Permission denied: SUPERUSER can only be deleted from backend.",
+          log: {
+            data: { user, sessionUser },
+          },
+        });
+      }
+      try {
+        await deleteUser({ id: user.id }, mode, sessionUser);
+      } catch {
+        failedDeleteMessages.push(
+          `${user.email}: failed to delete user due to internal server error.`,
+        );
+      }
     });
   } catch (error) {
     throw new DbError({
@@ -254,4 +278,6 @@ export async function deleteManyUsers(
       },
     });
   }
+
+  return failedDeleteMessages;
 }

@@ -1,7 +1,6 @@
 "use server";
 
 import * as v from "valibot";
-
 import { uploadFile } from "@/lib/utils/uploads";
 import { parseFormData } from "@/lib/utils/form";
 import { TUserFormState, VSUserCrudForm } from "../../../definitions";
@@ -19,19 +18,24 @@ export async function createUserServerAction(
   formData: FormData,
 ): Promise<TUserFormState> {
   // retreive data
-  const rawFormData = parseFormData(formData);
+  const parsedFormData = parseFormData({
+    formData,
+    info: {
+      booleans: ["emailVerified"],
+    },
+    excludeKeys: ["imageFile"],
+  });
 
   // Validate form
-  const validationResult = v.safeParse(VSUserCrudForm, rawFormData);
+  const validationResult = v.safeParse(VSUserCrudForm, parsedFormData);
 
   // handle validation errors
   if (!validationResult.success) {
     const errors = v.flatten<typeof VSUserCrudForm>(validationResult.issues);
     return {
       ...prevState,
-      mode: "create",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: errors,
     };
   }
@@ -43,9 +47,8 @@ export async function createUserServerAction(
 
   if (existingUser) {
     return {
-      mode: "create",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: ["User already exists."],
       },
@@ -65,9 +68,8 @@ export async function createUserServerAction(
   } catch (error) {
     console.log(error);
     return {
-      mode: "create",
       status: "error",
-      data: rawFormData,
+      data: parsedFormData,
       errors: {
         root: [
           "Failed to create user due to internal server error. Please try again.",
@@ -88,9 +90,8 @@ export async function createUserServerAction(
     } catch (error) {
       console.log(error);
       return {
-        mode: "create",
         status: "error",
-        data: rawFormData,
+        data: parsedFormData,
         errors: {
           root: [
             "User created but image upload failed. Please try and update user again.",
@@ -111,9 +112,8 @@ export async function createUserServerAction(
     } catch (error) {
       console.log(error);
       return {
-        mode: "create",
         status: "error",
-        data: rawFormData,
+        data: parsedFormData,
         errors: {
           root: [
             "User created but image upload failed. Please try and update user again.",
@@ -125,8 +125,7 @@ export async function createUserServerAction(
 
   revalidatePath(routes.admin.root);
   return {
-    mode: "create",
     status: "success",
-    data: rawFormData,
+    data: parsedFormData,
   };
 }
