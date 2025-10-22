@@ -27,7 +27,8 @@ export default defineConfig({
           return null;
         },
         "db:getUserByEmail": async (email: string) => {
-          return await getUser({ email: email }, "server");
+          const response = await getUser({ email: email }, "server");
+          return response.data
         },
       });
       return config;

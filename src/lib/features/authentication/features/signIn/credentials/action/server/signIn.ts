@@ -3,7 +3,7 @@
 import * as v from "valibot";
 import { VSSignInForm } from "../../definitions";
 import { parseFormData } from "@/lib/utils/form";
-import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
+import { TUserFormState, TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 import { getUserByEmail } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { auth } from "@/lib/features/authentication/auth";
 
@@ -31,7 +31,8 @@ export async function credentialsSignInActionServer(
     ...validationResult.output,
   };
 
-  const user = await getUserByEmail(apiSubmissionData.email, "server");
+  const response = await getUserByEmail(apiSubmissionData.email, "server");
+  const user = response.data as TUserPublic;
 
   // validate: existing user
   if (!user) {

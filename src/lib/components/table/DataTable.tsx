@@ -37,11 +37,12 @@ import { useMemo, useState } from "react";
 import DebouncedInput from "../DebouncedInput";
 import clsx from "clsx";
 import DeleteModalIcon from "../form/DeleteModalIcon";
+import { TServerResponsePromise } from "@/lib/utils/types";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  rowSelectionAction?: (ids: string[]) => Promise<"success" | "error" | never>;
+  rowSelectionAction?: (ids: string[]) => TServerResponsePromise;
   rowSelectionActionTitle?: string;
   tableProps?: TableProps;
 }
@@ -236,7 +237,7 @@ function DataTableInfo({
   rowSelectionActionTitle = "Delete selected rows",
 }: {
   rowSelection: RowSelectionState;
-  rowSelectionAction?: (ids: string[]) => Promise<"success" | "error" | never>;
+  rowSelectionAction?: (ids: string[]) => TServerResponsePromise;
   rowSelectionActionTitle?: string;
 }) {
   const count = Object.values(rowSelection).reduce((count, item) => {
@@ -267,7 +268,7 @@ function DataTableInfo({
                 }
               }
             }
-            const result = rowSelectionAction(ids);
+            const result = await rowSelectionAction(ids);
             return result;
           }}
           data-test-cy="delete-all-button"

@@ -45,8 +45,8 @@ describe("admin.user.create flow", () => {
       },
     },
     () => {
-      const userEmail = "test-user-04@example.com";
-      const userName = "user 04";
+      const userEmail = "test-user-05@example.com";
+      const userName = "user 05";
       cy.visit(routes.authentication.signIn);
       cy.getByData("signIn-email").type("test-user-01@example.com");
       cy.getByData("signIn-password").type("12345678");

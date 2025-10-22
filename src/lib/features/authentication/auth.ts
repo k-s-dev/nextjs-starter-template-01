@@ -7,6 +7,7 @@ import { customSession } from "better-auth/plugins";
 import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { USER_ROLE } from "@/generated/prisma/enums";
 import { EnvError } from "@/lib/utils/errors";
+import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
 
 const google_client_id = process.env.AUTH_GOOGLE_ID;
 const google_client_secret = process.env.AUTH_GOOGLE_SECRET;
@@ -38,12 +39,13 @@ export const auth = betterAuth({
   },
   plugins: [
     customSession(async ({ user, session }) => {
-      const dbUser = await getUser({ id: session.userId }, "server");
+      const response = await getUser({ id: session.userId }, "server");
+      const dbUser = response.data as TUserPublic;
       return {
         session,
         user: {
           ...user,
-          role: dbUser?.role as USER_ROLE,
+          role: dbUser.role as USER_ROLE,
         },
       };
     }),

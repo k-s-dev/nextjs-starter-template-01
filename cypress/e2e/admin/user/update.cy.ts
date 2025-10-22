@@ -47,7 +47,7 @@ describe("admin.user.update flow", () => {
     cy.get("#user-update-form").should("be.visible");
   });
 
-  it.only(
+  it(
     "should update user with superuser authentication",
     {
       retries: {

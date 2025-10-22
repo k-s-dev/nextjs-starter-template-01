@@ -1,8 +1,7 @@
 "use server";
 
-import { TDataRequestMode } from "@/lib/utils/types";
+import { TDataRequestMode, TServerResponsePromise } from "@/lib/utils/types";
 import { TUserPublic } from "./definitions";
-import { PermissionError } from "@/lib/utils/errors";
 import { Prisma, USER_ROLE } from "@/generated/prisma/client";
 
 export async function checkPermissions(
@@ -10,19 +9,19 @@ export async function checkPermissions(
   mode: TDataRequestMode,
   sessionUser?: TUserPublic,
   user?: Prisma.UserModel | null,
-) {
-  if (mode === "server") return;
+): TServerResponsePromise {
+  if (mode === "server") return { status: "success" };
 
   switch (operation) {
     case "delete":
       if (user && user.role === "SUPERUSER") {
-        throw new PermissionError({
-          message:
+        return {
+          status: "error",
+          errors: [
             "Permission denied: SUPERUSER can only be deleted from backend.",
-          log: {
-            data: { user, },
-          },
-        });
+          ],
+          log: { user },
+        };
       }
 
     case "read":
@@ -33,35 +32,30 @@ export async function checkPermissions(
         sessionUser.role !== USER_ROLE.SUPERUSER &&
         sessionUser.id !== user?.id
       ) {
-        throw new PermissionError({
-          message: "Permission denied.",
-          log: {
-            message: `Permission denied to ${operation} user.`,
-            data: {
-              user,
-              sessionUser,
-            },
-          },
-        });
+        return {
+          status: "error",
+          errors: [`Permission denied to ${operation} user.`],
+          log: { user, sessionUser },
+        };
       }
       break;
 
     case "count":
     case "deleteMany":
       if (sessionUser && sessionUser.role !== USER_ROLE.SUPERUSER) {
-        throw new PermissionError({
-          message: "Permission denied.",
-          log: {
-            message: `Permission denied to ${operation} users.`,
-            data: {
-              sessionUser,
-            },
-          },
-        });
+        return {
+          status: "error",
+          errors: [`Permission denied to ${operation} users.`],
+          log: { user: user as TUserPublic, sessionUser },
+        };
       }
       break;
 
     default:
       break;
   }
+
+  return {
+    status: "success",
+  };
 }

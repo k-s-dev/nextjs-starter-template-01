@@ -70,7 +70,7 @@ describe("admin.user.delete flow", () => {
       cy.getByData("signIn-btn").click();
       cy.location("pathname").should("eq", "/");
       cy.visit(routes.admin.user.read);
-      cy.getByData("select-row-2").click()
+      cy.getByData("select-row-1").click()
       cy.getByData("delete-all-button").eq(0).click();
       cy.getByData("delete-confirmation-button").click();
       cy.getByData("delete-confirmation-button").should("be.visible");

@@ -43,7 +43,9 @@ export async function createUserServerAction(
   const validatedData = validationResult.output;
 
   // check for existing user
-  const existingUser = await getUserByEmail(validatedData.email, "server");
+  const response = await getUserByEmail(validatedData.email, "server");
+  const existingUser =
+    response.status === "success" ? response.data : undefined;
 
   if (existingUser) {
     return {
@@ -64,7 +66,19 @@ export async function createUserServerAction(
 
   // try submitting data to backend
   try {
-    user = await createUser(apiSubmissionData);
+    const response = await createUser(apiSubmissionData);
+    if (!response.data) {
+      return {
+        status: "error",
+        data: parsedFormData,
+        errors: {
+          root: [
+            "Failed to create user due to internal server error. Please try again.",
+          ],
+        },
+      };
+    }
+    user = response.data;
   } catch (error) {
     console.log(error);
     return {

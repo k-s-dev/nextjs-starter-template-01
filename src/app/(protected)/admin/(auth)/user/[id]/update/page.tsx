@@ -10,13 +10,13 @@ export default async function page({
 }) {
   const { id } = await params;
 
-  const user = await getUser({ id: id }, "server");
+  const response = await getUser({ id: id }, "server");
 
-  if (!user) notFound();
+  if (response.status === "error") notFound();
 
   return (
     <div>
-      <UserUpdateForm user={user as TUserPublic} />
+      <UserUpdateForm user={response.data as TUserPublic} />
     </div>
   );
 }

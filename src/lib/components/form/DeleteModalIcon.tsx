@@ -6,13 +6,14 @@ import {
   Blockquote,
   Button,
   ButtonProps,
+  List,
+  ListItem,
   Modal,
   TextProps,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { DeleteIcon } from "../icons/TooltipIcons";
-import { AppError } from "@/lib/utils/errors";
-import { notifications } from "@mantine/notifications";
+import { TServerResponsePromise } from "@/lib/utils/types";
 
 const defaultErrorMessage = "Failed to delete resource. Please try again.";
 
@@ -30,7 +31,7 @@ export default function DeleteModalIcon({
 }: {
   resource: string;
   identifier: string;
-  deleteAction: () => Promise<"success" | "error">;
+  deleteAction: () => TServerResponsePromise;
   children?: React.ReactNode;
   title?: string;
   tooltipLabel?: string;
@@ -40,10 +41,10 @@ export default function DeleteModalIcon({
   restBtnProps?: ButtonProps;
 }) {
   const [opened, { open, close }] = useDisclosure(false);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessages, setErrorMessages] = useState<string[] | null>(null);
 
   useEffect(() => {
-    setErrorMessage(null);
+    setErrorMessages(null);
   }, [opened]);
 
   return (
@@ -54,28 +55,21 @@ export default function DeleteModalIcon({
           resource={resource}
           identifier={identifier}
           deleteAction={async () => {
-            let errors;
+            let response;
             try {
-              errors = await deleteAction();
-              if (errors) {
-                notifications.show({
-                  title: "Delete Errors!",
-                  message: JSON.stringify(errors),
-                  color: "orange",
-                });
-              }
-              close();
-            } catch (error) {
-              if (error instanceof AppError) {
-                setErrorMessage(error.message);
+              response = await deleteAction();
+              if (response.errors) {
+                setErrorMessages(response.errors);
               } else {
-                setErrorMessage(JSON.stringify(error));
+                close();
               }
+            } catch (error) {
+              setErrorMessages([JSON.stringify(error)]);
             }
           }}
         >
           {children}
-          {errorMessage && <FailMessage errorMessage={errorMessage} />}
+          {errorMessages && <FailMessage errorMessages={errorMessages} />}
         </DeleteModalContent>
       </Modal>
       <Button
@@ -143,10 +137,16 @@ export function DeleteModalContent({
   );
 }
 
-function FailMessage({ errorMessage }: { errorMessage?: string }) {
+function FailMessage({ errorMessages }: { errorMessages?: string[] }) {
   return (
     <Blockquote color="orange" mb="md">
-      {errorMessage || defaultErrorMessage}
+      <List>
+        {!errorMessages && <ListItem>{defaultErrorMessage}</ListItem>}
+        {errorMessages &&
+          errorMessages.map((error) => {
+            return <ListItem key={error}>{error}</ListItem>;
+          })}
+      </List>
     </Blockquote>
   );
 }

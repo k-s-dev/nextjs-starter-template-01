@@ -1,16 +1,12 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { deleteUser } from "../../../dataAccessControl";
-import { routes } from "@/lib/utils/routeMapper";
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
-import { redirect } from "next/navigation";
+import { TServerResponsePromise } from "@/lib/utils/types";
 
 export async function deleteUserServerAction(
   id?: string,
-): Promise<"error" | never> {
+): TServerResponsePromise {
   const sessionUser = await getSessionUser();
-  await deleteUser({ id: id }, "client", sessionUser);
-  revalidatePath(routes.admin.root);
-  redirect(routes.admin.user.read);
+  return await deleteUser({ id: id }, "client", sessionUser);
 }

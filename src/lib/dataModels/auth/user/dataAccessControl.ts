@@ -1,12 +1,14 @@
 "use server";
 
 import prisma from "@/database/prismaClient";
-import { DbError, PermissionError } from "@/lib/utils/errors";
-import { TDataRequestMode } from "@/lib/utils/types";
+import { DbError } from "@/lib/utils/errors";
+import { TDataRequestMode, TServerResponsePromise } from "@/lib/utils/types";
 import { TUserPublic } from "./definitions";
 import { Prisma } from "@/generated/prisma/client";
 import { checkPermissions } from "./permissions";
-import { checkPermissionsAttributes } from "../globalPermissions";
+import { checkPermissionsAttributes } from "../permissions";
+import { revalidatePath } from "next/cache";
+import { routes } from "@/lib/utils/routeMapper";
 
 const clientMask: Prisma.UserSelect = {
   id: true,
@@ -17,10 +19,10 @@ const clientMask: Prisma.UserSelect = {
   emailVerified: true,
 };
 
-export async function createUser(
+export async function createUser<GUser = TUserPublic>(
   dataIn: Prisma.UserCreateInput,
   mode: TDataRequestMode = "client",
-) {
+): TServerResponsePromise<GUser> {
   let user;
 
   // permissions check
@@ -43,18 +45,29 @@ export async function createUser(
     });
   }
 
-  return user;
+  revalidatePath(routes.admin.root);
+
+  return {
+    status: "success",
+    data: user as GUser,
+  };
 }
 
-export async function getUser(
+export async function getUser<GUser = TUserPublic>(
   where: Prisma.UserWhereUniqueInput,
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-): Promise<Prisma.UserModel | null> {
+): TServerResponsePromise<GUser | undefined> {
   let user;
 
   // check permissions attributes
-  await checkPermissionsAttributes(mode, sessionUser);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
 
   try {
     user = await prisma.user.findUnique({
@@ -73,20 +86,38 @@ export async function getUser(
   }
 
   //check permissions
-  await checkPermissions("read", mode, sessionUser, user);
+  const checkPermissionsResponse = await checkPermissions(
+    "read",
+    mode,
+    sessionUser,
+    user,
+  );
 
-  return user;
+  if (checkPermissionsResponse.status === "error") {
+    return checkPermissionsResponse;
+  }
+
+  return {
+    ...checkPermissionsResponse,
+    data: user as GUser,
+  };
 }
 
-export async function getUserByEmail(
+export async function getUserByEmail<GUser = TUserPublic>(
   email: string,
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-) {
+): TServerResponsePromise<GUser | undefined> {
   let user;
 
   // check permissions
-  await checkPermissionsAttributes(mode, sessionUser);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
 
   try {
     user = await prisma.user.findUnique({
@@ -105,21 +136,47 @@ export async function getUserByEmail(
   }
 
   //check permissions
-  await checkPermissions("read", mode, sessionUser, user);
+  const checkPermissionsResponse = await checkPermissions(
+    "read",
+    mode,
+    sessionUser,
+    user,
+  );
 
-  return user;
+  if (checkPermissionsResponse.status === "error") {
+    return checkPermissionsResponse;
+  }
+
+  return {
+    ...checkPermissionsResponse,
+    data: user as GUser,
+  };
 }
 
-export async function getUsers(
+export async function getUsers<GUser = TUserPublic>(
   where: Prisma.UserWhereInput,
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-) {
+): TServerResponsePromise<GUser[] | undefined> {
   let users;
 
   //check permissions
-  await checkPermissionsAttributes(mode, sessionUser);
-  await checkPermissions("read", mode, sessionUser);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
+
+  const checkPermissionsResponse = await checkPermissions(
+    "read",
+    mode,
+    sessionUser,
+  );
+  if (checkPermissionsResponse.status === "error") {
+    return checkPermissionsResponse;
+  }
 
   try {
     users = await prisma.user.findMany({
@@ -137,18 +194,35 @@ export async function getUsers(
     });
   }
 
-  return users;
+  return {
+    status: "success",
+    data: users as GUser[],
+  };
 }
 
 export async function getUserCount(
   where: Prisma.UserWhereInput,
   mode: TDataRequestMode = "server",
   sessionUser?: TUserPublic,
-) {
+): TServerResponsePromise<number | undefined> {
   let count;
 
-  await checkPermissionsAttributes(mode, sessionUser);
-  await checkPermissions("count", mode, sessionUser);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
+
+  const checkPermissionsResponse = await checkPermissions(
+    "count",
+    mode,
+    sessionUser,
+  );
+  if (checkPermissionsResponse.status === "error") {
+    return checkPermissionsResponse;
+  }
 
   try {
     count = await prisma.user.count({ where });
@@ -163,20 +237,38 @@ export async function getUserCount(
     });
   }
 
-  return count;
+  return {
+    status: "success",
+    data: count,
+  };
 }
 
-export async function updateUser(
+export async function updateUser<GUser = TUserPublic>(
   where: Prisma.UserWhereUniqueInput,
   dataIn: Prisma.UserUpdateInput,
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-) {
+): TServerResponsePromise<GUser | undefined> {
   let user = await prisma.user.findUnique({ where: where });
 
   //check permissions
-  await checkPermissionsAttributes(mode, sessionUser);
-  await checkPermissions("update", mode, sessionUser, user);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
+
+  const checkPermissionsResponse = await checkPermissions(
+    "update",
+    mode,
+    sessionUser,
+    user,
+  );
+  if (checkPermissionsResponse.status === "error") {
+    return checkPermissionsResponse;
+  }
 
   try {
     user = await prisma.user.update({
@@ -195,19 +287,38 @@ export async function updateUser(
     });
   }
 
-  return user;
+  revalidatePath(routes.admin.root);
+
+  return {
+    status: "success",
+    data: user as GUser,
+  };
 }
 
-export async function deleteUser(
+export async function deleteUser<GUser = TUserPublic>(
   where: Prisma.UserWhereUniqueInput,
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-) {
+): TServerResponsePromise<GUser | undefined> {
   let user = await prisma.user.findUnique({ where: where });
 
   //check permissions
-  await checkPermissionsAttributes(mode, sessionUser);
-  await checkPermissions("delete", mode, sessionUser, user);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
+
+  const checkPermissionsResponse = await checkPermissions(
+    "delete",
+    mode,
+    sessionUser,
+    user,
+  );
+  if (checkPermissionsResponse.status === "error")
+    return checkPermissionsResponse;
 
   try {
     user = await prisma.user.delete({
@@ -224,49 +335,47 @@ export async function deleteUser(
     });
   }
 
-  return user;
+  revalidatePath(routes.admin.root);
+
+  return {
+    status: "success",
+    data: user as GUser,
+  };
 }
 
-export async function deleteManyUsers(
+export async function deleteManyUsersById(
   ids: string[],
   mode: TDataRequestMode = "client",
   sessionUser?: TUserPublic,
-) {
+): TServerResponsePromise {
+  let users;
+
   //check permissions
-  await checkPermissionsAttributes(mode, sessionUser);
-  await checkPermissions("deleteMany", mode, sessionUser);
+  const checkAttributesResponse = await checkPermissionsAttributes(
+    mode,
+    sessionUser,
+  );
+  if (checkAttributesResponse.status === "error") {
+    return checkAttributesResponse;
+  }
+  const checkPermissionsResponse = await checkPermissions(
+    "deleteMany",
+    mode,
+    sessionUser,
+  );
+  if (checkPermissionsResponse.status === "error") {
+    return checkPermissionsResponse;
+  }
 
   const failedDeleteMessages: string[] = [];
 
   try {
-    const users = await prisma.user.findMany({
+    users = await prisma.user.findMany({
       where: {
         id: {
           in: ids,
         },
       },
-    });
-
-    users.forEach(async (user) => {
-      if (user.role === "SUPERUSER") {
-        failedDeleteMessages.push(
-          `${user.email}: Superusers can only be deleted from backend.`,
-        );
-        throw new PermissionError({
-          message:
-            "Permission denied: SUPERUSER can only be deleted from backend.",
-          log: {
-            data: { user, sessionUser },
-          },
-        });
-      }
-      try {
-        await deleteUser({ id: user.id }, mode, sessionUser);
-      } catch {
-        failedDeleteMessages.push(
-          `${user.email}: failed to delete user due to internal server error.`,
-        );
-      }
     });
   } catch (error) {
     throw new DbError({
@@ -279,5 +388,29 @@ export async function deleteManyUsers(
     });
   }
 
-  return failedDeleteMessages;
+  for (const user of users) {
+    const response = await deleteUser({ id: user.id }, mode, sessionUser);
+    if (response.status === "error") {
+      if (response.errors) {
+        response.errors.forEach((error) => {
+          failedDeleteMessages.push(`${user.email}: ${error}`);
+        });
+      } else {
+        failedDeleteMessages.push(`Failed to delete user ${response.data}`);
+      }
+    }
+  }
+
+  revalidatePath(routes.admin.root);
+
+  if (failedDeleteMessages.length > 0) {
+    return {
+      status: "error",
+      errors: failedDeleteMessages,
+    };
+  }
+
+  return {
+    status: "success",
+  };
 }

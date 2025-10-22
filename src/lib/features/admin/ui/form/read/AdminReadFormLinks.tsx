@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BackIcon, EditIcon } from "@/lib/components/icons/TooltipIcons";
 import DeleteModalIcon from "@/lib/components/form/DeleteModalIcon";
 import AdminFormLinksContainer from "../AdminFormLinksContainer";
+import { TServerResponsePromise } from "@/lib/utils/types";
 
 export default function AdminReadFormLinks({
   modelName,
@@ -36,5 +37,5 @@ export interface IAdminReadFormLinksProps {
   editHref: string;
   backHref: string;
   identifier: string;
-  deleteAction: () => Promise<"success" | "error">;
+  deleteAction: () => TServerResponsePromise;
 }

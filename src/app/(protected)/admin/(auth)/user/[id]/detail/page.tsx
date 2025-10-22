@@ -10,14 +10,14 @@ export default async function Page({
 }) {
   const { id } = await params;
 
-  const user = await getUser({ id: id }, "server");
+  const response = await getUser({ id: id }, "server");
 
-  if (!user) notFound();
+  if (response.status === "error") notFound();
 
   return (
     <>
       {/* // TODO:HACK: review forced type casting */}
-      <UserReadForm user={user as TUserPublic} />
+      <UserReadForm user={response.data as TUserPublic} />
     </>
   );
 }

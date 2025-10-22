@@ -4,11 +4,22 @@ import { UserTable } from "@/lib/dataModels/auth/user/ui/UserTable";
 import { getSessionUser } from "@/lib/features/authentication/getSessionUser";
 import LinkButton from "@/lib/components/LinkButton";
 import AdminFormHeaderContainer from "@/lib/features/admin/ui/form/AdminFormHeaderContainer";
-import { MODEL_NAME, TUser } from "@/lib/dataModels/auth/user/definitions";
+import {
+  MODEL_NAME,
+  TUser,
+} from "@/lib/dataModels/auth/user/definitions";
 
 export default async function Page() {
   const sessionUser = await getSessionUser();
-  const users = await getUsers({}, "client", sessionUser);
+  const response = await getUsers({}, "client", sessionUser);
+
+  let users;
+
+  if (response.status === "error") {
+    users = [] as TUser[];
+  } else {
+    users = response.data;
+  }
 
   return (
     <div>

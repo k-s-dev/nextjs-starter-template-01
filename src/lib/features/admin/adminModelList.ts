@@ -4,6 +4,8 @@ import { getUserCount } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { routes } from "@/lib/utils/routeMapper";
 
 export async function getAdminModelList(flattenModelList = false) {
+  const response = await getUserCount({}, "server")
+
   const adminModels: IAdminModelList = {
     Auth: [
       {
@@ -11,7 +13,7 @@ export async function getAdminModelList(flattenModelList = false) {
         titlePlural: "Users",
         rootPath: routes.admin.user.root,
         href: routes.admin.user.read,
-        count: await getUserCount({}, "server"),
+        count: response.data as number,
       },
     ],
   };
