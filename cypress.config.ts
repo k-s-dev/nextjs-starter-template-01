@@ -5,7 +5,7 @@ import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 
 export default defineConfig({
   e2e: {
-    baseUrl: process.env.BASE_URL,
+    baseUrl: process.env.HOST,
     defaultCommandTimeout: 10000,
     setupNodeEvents(on, config) {
       // implement node event listeners here
