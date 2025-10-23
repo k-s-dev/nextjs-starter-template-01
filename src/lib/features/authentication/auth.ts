@@ -8,6 +8,7 @@ import { getUser } from "@/lib/dataModels/auth/user/dataAccessControl";
 import { USER_ROLE } from "@/generated/prisma/enums";
 import { EnvError } from "@/lib/utils/errors";
 import { TUserPublic } from "@/lib/dataModels/auth/user/definitions";
+import { scrypt } from "node:crypto";
 
 const google_client_id = process.env.AUTH_GOOGLE_ID;
 const google_client_secret = process.env.AUTH_GOOGLE_SECRET;
@@ -60,6 +61,50 @@ export const auth = betterAuth({
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     sendResetPassword: async ({ user, url, token }, request) => {
       await sendVerificationEmail(user.email, url, "RESET_PASSWORD");
+    },
+    password: {
+      hash: async (password: string) => {
+        const cost = Number(process.env.BETTER_AUTH_HASH_COST!);
+        const salt = process.env.SALT!;
+        return new Promise((resolve, reject) => {
+          scrypt(
+            password,
+            salt,
+            64,
+            {
+              cost: cost,
+            },
+            (err, key) => {
+              if (err) reject(err);
+              resolve(key.toString("hex"));
+            },
+          );
+        });
+      },
+      verify: async ({
+        hash,
+        password,
+      }: {
+        hash: string;
+        password: string;
+      }) => {
+        const cost = Number(process.env.BETTER_AUTH_HASH_COST!);
+        const salt = process.env.SALT!;
+        return new Promise((resolve, reject) => {
+          scrypt(
+            password,
+            salt,
+            64,
+            {
+              cost: cost,
+            },
+            (err, key) => {
+              if (err) reject(err);
+              resolve(hash === key.toString("hex"));
+            },
+          );
+        });
+      },
     },
   },
   socialProviders: {
