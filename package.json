@@ -19,7 +19,7 @@
     "dev:db:reset": "npm run dev:env -- npx prisma migrate reset -- --force --skip-seed --",
     "dev:db:clear:generated": "npm run dev:env -- npx tsx ./src/database/utils/dev/clearGenerated.ts",
     "dev:db:clear:migrations": "npm run dev:env -- npx tsx ./src/database/utils/dev/clearMigrations.ts",
-    "test:env": "dotenv -e .env.test.local -e .env.local -e .env",
+    "test:env": "dotenv -e .env.test.local -e .env",
     "test:build": "npm run test:env -- next build",
     "test:start": "npm run test:env -- next start",
     "test": "npm run test:db:push -- --force-reset --accept-data-loss && npm run test:build && npm run test:start",

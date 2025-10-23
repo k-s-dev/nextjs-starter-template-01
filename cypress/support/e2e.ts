@@ -1,6 +1,6 @@
 import "./commands";
 
-before(() => {
+beforeEach(() => {
   cy.task("db:reset");
   cy.task("db:seed");
 });

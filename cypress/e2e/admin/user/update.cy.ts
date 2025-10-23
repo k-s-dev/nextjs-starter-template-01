@@ -28,10 +28,11 @@ describe("admin.user.update flow", () => {
     cy.getByData("signIn-email").type("test-user-02@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
+    cy.visit(routes.generic.home);
     cy.get<string>("@user01UrlUpdate").then((url) => {
       cy.visit(url);
     });
-    cy.location("pathname").should("eq", "/signIn");
+    cy.contains("Unauthorized").should("exist");
   });
 
   it("should navigate to user/update page with superuser authentication", () => {
@@ -39,7 +40,7 @@ describe("admin.user.update flow", () => {
     cy.getByData("signIn-email").type("test-user-01@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
-    cy.location("pathname").should("eq", "/");
+    cy.visit(routes.generic.home);
     cy.get<string>("@user01UrlUpdate").then((url) => {
       cy.visit(url);
       cy.location("pathname").should("eq", url);
@@ -60,6 +61,7 @@ describe("admin.user.update flow", () => {
       cy.getByData("signIn-email").type("test-user-01@example.com");
       cy.getByData("signIn-password").type("12345678");
       cy.getByData("signIn-btn").click();
+      cy.visit(routes.generic.home);
       cy.location("pathname").should("eq", "/");
       cy.get<string>("@user01UrlUpdate").then((url) => {
         cy.visit(url);

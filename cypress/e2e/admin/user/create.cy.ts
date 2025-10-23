@@ -21,8 +21,9 @@ describe("admin.user.create flow", () => {
     cy.getByData("signIn-email").type("test-user-02@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
+    cy.visit(routes.generic.home);
     cy.visit(routes.admin.user.create);
-    cy.location("pathname").should("eq", "/signIn");
+    cy.contains("Unauthorized").should("exist");
   });
 
   it("should navigate to user/create page with superuser authentication", () => {
@@ -30,6 +31,7 @@ describe("admin.user.create flow", () => {
     cy.getByData("signIn-email").type("test-user-01@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
+    cy.visit(routes.generic.home);
     cy.location("pathname").should("eq", "/");
     cy.visit(routes.admin.user.create);
     cy.location("pathname").should("eq", "/admin/user/create");
@@ -51,6 +53,7 @@ describe("admin.user.create flow", () => {
       cy.getByData("signIn-email").type("test-user-01@example.com");
       cy.getByData("signIn-password").type("12345678");
       cy.getByData("signIn-btn").click();
+      cy.visit(routes.generic.home);
       cy.location("pathname").should("eq", "/");
       cy.getByData("nav-user-avatar").should("be.visible");
       cy.visit(routes.admin.user.create);

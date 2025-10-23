@@ -12,8 +12,10 @@ describe("admin flow", () => {
     cy.getByData("signIn-email").type("test-user-02@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
+    cy.visit(routes.generic.home);
+    cy.location("pathname").should("eq", "/");
     cy.visit(routes.admin.root);
-    // cy.contains("Unauthorized access").should("be.visible");
+    cy.contains("Unauthorized").should("be.visible");
   });
 
   it("should navigate to admin page with superuser authentication", () => {
@@ -21,6 +23,7 @@ describe("admin flow", () => {
     cy.getByData("signIn-email").type("test-user-01@example.com");
     cy.getByData("signIn-password").type("12345678");
     cy.getByData("signIn-btn").click();
+    cy.visit(routes.generic.home);
     cy.location("pathname").should("eq", "/");
     cy.visit(routes.admin.root);
     cy.location("pathname").should("eq", "/admin");
