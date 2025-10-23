@@ -10,7 +10,7 @@ describe("Reset password flow", () => {
       .should("contain", "check your email for the reset link");
   });
 
-  it("should not reset password for unverfied user", () => {
+  it("should not reset password for unverified user", () => {
     cy.visit(routes.authentication.signIn);
     cy.getByData("signIn-email").type("test-user-03@example.com");
     cy.getByData("reset_password-btn").click();

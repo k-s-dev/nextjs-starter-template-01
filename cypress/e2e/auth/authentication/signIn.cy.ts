@@ -12,13 +12,11 @@ describe("SignIn flow", () => {
 
   it("should signIn verfified user", () => {
     cy.visit(routes.authentication.signIn);
-    cy.getByData("signIn-email").type("test-user-01@example.com");
-    cy.getByData("signIn-password").type("12345678");
-    cy.getByData("signIn-btn").click();
+      cy.confirmSignIn("test-user-01@example.com", "12345678");
     cy.location("pathname").should("eq", routes.DEFAULT_LOGIN_REDIRECT);
   });
 
-  it("should not signIn unverfified user", () => {
+  it("should not signIn unverifified user", () => {
     cy.visit(routes.authentication.signIn);
     cy.getByData("signIn-email").type("test-user-03@example.com");
     cy.getByData("signIn-password").type("12345678");

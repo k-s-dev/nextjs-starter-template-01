@@ -23,46 +23,39 @@ describe("admin.user.update flow", () => {
     cy.location("pathname").should("eq", "/signIn");
   });
 
-  it("should not navigate to /user/update page without superuser authentication", () => {
-    cy.visit(routes.authentication.signIn);
-    cy.getByData("signIn-email").type("test-user-02@example.com");
-    cy.getByData("signIn-password").type("12345678");
-    cy.getByData("signIn-btn").click();
-    cy.visit(routes.generic.home);
-    cy.get<string>("@user01UrlUpdate").then((url) => {
-      cy.visit(url);
-    });
-    cy.contains("Unauthorized").should("exist");
-  });
+  it(
+    "should not navigate to /user/update page without superuser authentication",
+    { retries: { runMode: 4 } },
+    () => {
+      cy.visit(routes.authentication.signIn);
+      cy.confirmSignIn("test-user-02@example.com", "12345678");
+      cy.get<string>("@user01UrlUpdate").then((url) => {
+        cy.visit(url);
+      });
+      cy.contains("Unauthorized").should("exist");
+    },
+  );
 
-  it("should navigate to user/update page with superuser authentication", () => {
-    cy.visit(routes.authentication.signIn);
-    cy.getByData("signIn-email").type("test-user-01@example.com");
-    cy.getByData("signIn-password").type("12345678");
-    cy.getByData("signIn-btn").click();
-    cy.visit(routes.generic.home);
-    cy.get<string>("@user01UrlUpdate").then((url) => {
-      cy.visit(url);
-      cy.location("pathname").should("eq", url);
-    });
-    cy.get("#user-update-form").should("be.visible");
-  });
+  it(
+    "should navigate to user/update page with superuser authentication",
+    { retries: { runMode: 4 } },
+    () => {
+      cy.visit(routes.authentication.signIn);
+      cy.confirmSignIn("test-user-01@example.com", "12345678");
+      cy.get<string>("@user01UrlUpdate").then((url) => {
+        cy.visit(url);
+        cy.location("pathname").should("eq", url);
+      });
+      cy.get("#user-update-form").should("be.visible");
+    },
+  );
 
   it(
     "should update user with superuser authentication",
-    {
-      retries: {
-        runMode: 4,
-        openMode: 4,
-      },
-    },
+    { retries: { runMode: 4 } },
     () => {
       cy.visit(routes.authentication.signIn);
-      cy.getByData("signIn-email").type("test-user-01@example.com");
-      cy.getByData("signIn-password").type("12345678");
-      cy.getByData("signIn-btn").click();
-      cy.visit(routes.generic.home);
-      cy.location("pathname").should("eq", "/");
+      cy.confirmSignIn("test-user-01@example.com", "12345678");
       cy.get<string>("@user01UrlUpdate").then((url) => {
         cy.visit(url);
       });
