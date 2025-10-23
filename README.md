@@ -4,26 +4,26 @@
 
 - Framework: [Nextjs - app router](https://nextjs.org/)
 - Styling
-  - vanilla css and sass (without css/sass modules)
+  - vanilla css and sass
   - styled components: [mantine](https://mantine.dev/)
   - icons: [react-icons](https://react-icons.github.io/react-icons/)
 - Data backend
-  - [Prisma ORM](https://www.prisma.io/)
   - Database: `postgresql` (can be configured with `.env*`)
+  - [Prisma ORM](https://www.prisma.io/)
   - Data access and control layer
   - Admin template
 
 - File uploads: [Vercel blob](https://vercel.com/docs/vercel-blob)
 
-- Auth: [Authjs](https://authjs.dev/)
+- Auth: [Better-Auth](www.better-auth.com)
   - providers (github, google, ...) can be configured
-  - encryption/session management: [jose](https://github.com/panva/jose)
   - Authorization: simple role based checks
 - Emails: [nodemailer]()
 - Testing
   - Unit and component testing: [jest](https://nextjs.org/docs/app/guides/testing/jest)
   - end2end: [cypress](https://nextjs.org/docs/app/guides/testing/cypress)
 - Forms
+  - `formData` parser
   - client and server actions
   - validation (client and server): using [valibot](https://valibot.dev/)
 
@@ -36,7 +36,9 @@ Sample environment files provided below and in git repo.
 Refer to below links for more details.
 
 - [Nextjs environment setup](https://nextjs.org/docs/app/guides/environment-variables)
-- [Authjs environment setup](https://authjs.dev/getting-started/installation#setup-environment)
+- [Better-Auth environment setup](https://www.better-auth.com/docs/installation#set-environment-variables)
+  - `BETTER_AUTH_HASH_COST` is configuration for how slow/fast password hash/verify functions work depending on the environment
+
 #### Checklist
 
 - **Database**: Prisma database setup configuration
