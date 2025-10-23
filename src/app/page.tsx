@@ -68,7 +68,7 @@ const stack = [
   ["Vercel Blob", "https://vercel.com/storage/blob"],
   ["Prisma", "https://www.prisma.io/"],
   ["Postgres", "https://www.postgresql.org"],
-  ["Authjs", "https://authjs.dev/"],
+  ["Better-Auth", "https://www.better-auth.com/"],
   ["Valibot", "https://valibot.dev/"],
   ["Mantine UI", "https://mantine.dev/"],
   ["Cypress", "https://www.cypress.io/"],
