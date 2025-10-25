@@ -55,6 +55,7 @@ export function UserPassword({
       placeholder="Password"
       defaultValue={formState.data?.password}
       errors={formState.errors?.nested?.password}
+      required
       {...props}
     />
   );
@@ -73,6 +74,7 @@ export function UserConfirmPassword({
       placeholder="Confirm Password"
       defaultValue={formState.data?.confirmPassword}
       errors={formState.errors?.nested?.confirmPassword}
+      required
       {...props}
     />
   );
