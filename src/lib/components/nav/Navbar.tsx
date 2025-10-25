@@ -1,10 +1,10 @@
 import styles from "./Navbar.module.scss";
 import { Suspense } from "react";
 import NavLinks from "./NavLinks";
-import NavLinksPhone from "./NavLinksPhone";
 import NavUser from "./NavUser";
 import { Skeleton } from "@mantine/core";
 import NavThemeToggle from "./theme/NavThemeToggleWrapper";
+import { NavLinksPhone } from "./NoSsrComponents";
 
 export default async function Navbar() {
   return (

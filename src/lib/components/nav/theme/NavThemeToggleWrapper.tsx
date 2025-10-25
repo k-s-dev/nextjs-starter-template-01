@@ -1,9 +1,8 @@
 "use server";
 
 import { cookies } from "next/headers";
-import NavThemeToggleButton, {
-  TThemes,
-} from "./NavThemeToggleButton";
+import { TThemes } from "./NavThemeToggleButton";
+import { NavThemeToggleButton } from "../NoSsrComponents";
 
 export default async function NavThemeToggleWrapper() {
   const cookieStore = await cookies();
