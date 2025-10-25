@@ -1,4 +1,3 @@
-import styles from "./layout.module.scss";
 import "@/styles/index.scss";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
@@ -9,7 +8,6 @@ import { Roboto } from "next/font/google";
 import { Suspense } from "react";
 import { ColorSchemeScript, mantineHtmlProps } from "@mantine/core";
 import Providers from "@/lib/components/Providers";
-import Navbar from "@/lib/components/nav/Navbar";
 import { Notifications } from "@mantine/notifications";
 import Script from "next/script";
 
@@ -24,7 +22,7 @@ const poppins = Poppins({
 });
 
 const roboto = Roboto({
-  weight: ["300", "400", "500", "700"],
+  weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
   subsets: ["latin"],
   display: "swap",
   variable: "--font-roboto",
@@ -50,13 +48,8 @@ export default function RootLayout({
       </head>
       <body>
         <Providers>
-          <div className={styles.rootContainer}>
-            <header className={styles.header}>
-              <Navbar />
-            </header>
             {children}
             <Notifications autoClose={3000} />
-          </div>
         </Providers>
       </body>
     </html>
