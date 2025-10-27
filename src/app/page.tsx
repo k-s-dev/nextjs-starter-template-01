@@ -1,32 +1,36 @@
 "use server";
 
+import Navbar from "@/lib/components/nav/Navbar";
 import styles from "./page.module.scss";
 import { Button } from "@mantine/core";
 import Link from "next/link";
+import AppShellHome from "@/lib/components/layout/home/AppShell";
 
 export default async function Page() {
   return (
-    <main className={styles.rootContainer}>
-      <header className={styles.rootHeader}>
-        <h1>Nextjs App Template</h1>
-      </header>
+    <AppShellHome nav={<Navbar />}>
+      <main className={styles.mainContainer}>
+        <header className={styles.mainHeader}>
+          <h1>Nextjs App Template</h1>
+        </header>
 
-      <section className={styles.stackAndFeaturesContainer}>
-        <h2>Features</h2>
-        <section className={styles.featuresRow}>
-          {features.map(([title, href], idx) => {
-            return <Item key={idx} href={href} title={title} />;
-          })}
-        </section>
+        <section className={styles.stackAndFeaturesContainer}>
+          <h2>Features</h2>
+          <section className={styles.featuresRow}>
+            {features.map(([title, href], idx) => {
+              return <Item key={idx} href={href} title={title} />;
+            })}
+          </section>
 
-        <h2>Stack</h2>
-        <section className={styles.stackRow}>
-          {stack.map(([title, href], idx) => {
-            return <Item key={idx} href={href} title={title} />;
-          })}
+          <h2>Stack</h2>
+          <section className={styles.stackRow}>
+            {stack.map(([title, href], idx) => {
+              return <Item key={idx} href={href} title={title} />;
+            })}
+          </section>
         </section>
-      </section>
-    </main>
+      </main>
+    </AppShellHome>
   );
 }
 
@@ -37,11 +41,7 @@ function Item({ href, title }: { href: string; title: string }) {
       target={href.length === 0 ? "_self" : "_blank"}
       referrerPolicy="no-referrer"
     >
-      <Button
-        fullWidth
-        fz="md"
-        color="yellow.1"
-      >
+      <Button fullWidth fz="md" color="yellow.1">
         {title}
       </Button>
     </Link>

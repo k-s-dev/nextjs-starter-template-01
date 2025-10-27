@@ -3,6 +3,7 @@
 ## Stack & Features
 
 - Framework: [Nextjs - app router](https://nextjs.org/)
+
 - Styling
   - vanilla css and sass
   - styled components: [mantine](https://mantine.dev/)
@@ -18,10 +19,13 @@
 - Auth: [Better-Auth](www.better-auth.com)
   - providers (github, google, ...) can be configured
   - Authorization: simple role based checks
+
 - Emails: [nodemailer]()
+
 - Testing
   - Unit and component testing: [jest](https://nextjs.org/docs/app/guides/testing/jest)
   - end2end: [cypress](https://nextjs.org/docs/app/guides/testing/cypress)
+
 - Forms
   - `formData` parser
   - client and server actions

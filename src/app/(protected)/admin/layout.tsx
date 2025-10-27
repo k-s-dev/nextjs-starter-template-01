@@ -5,6 +5,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { routes } from "@/lib/utils/routeMapper";
 import { Blockquote, Card, Center } from "@mantine/core";
+import AppShellHome from "@/lib/components/layout/home/AppShell";
+import Navbar from "@/lib/components/nav/Navbar";
 
 export default async function layout({
   children,
@@ -21,8 +23,8 @@ export default async function layout({
 
   if (session.user.role !== "SUPERUSER") {
     return (
-      <Center w={{ base: "99%", xl: "80%" }}>
-        <Card shadow="lg" radius="lg">
+      <Center>
+        <Card shadow="lg" radius="lg" w={{ base: "99%", xl: "80%" }} maw={500}>
           <Blockquote color="red.3">Unauthorized access.</Blockquote>
         </Card>
       </Center>
@@ -30,13 +32,13 @@ export default async function layout({
   }
 
   return (
-    <>
+    <AppShellHome nav={<Navbar />}>
       <div className={styles.rootLayout}>
         <aside className={styles.leftSidebar}>
           <AdminSidebarWrapper />
         </aside>
         <main className={styles.main}>{children}</main>
       </div>
-    </>
+    </AppShellHome>
   );
 }

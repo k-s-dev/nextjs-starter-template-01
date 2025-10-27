@@ -2,7 +2,7 @@
 
 @use "@/styles/abstracts/" as *;
 
-.rootContainer {
+.mainContainer {
   max-width: 100vw;
   @extend %text-center;
 
@@ -21,7 +21,7 @@
   }
 }
 
-.rootHeader {
+.mainHeader {
   & h1 {
     color: var(--color-success);
     text-shadow: #{$shadow-lg};
