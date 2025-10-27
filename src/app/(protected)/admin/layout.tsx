@@ -7,6 +7,9 @@ import { routes } from "@/lib/utils/routeMapper";
 import { Blockquote, Card, Center } from "@mantine/core";
 import AppShellHome from "@/lib/components/layout/home/AppShell";
 import Navbar from "@/lib/components/nav/Navbar";
+import { USER_ROLE } from "@/lib/dataModels/auth/user/definitions";
+
+const allowedRoles: USER_ROLE[] = ["SUPERUSER"];
 
 export default async function layout({
   children,
@@ -21,15 +24,9 @@ export default async function layout({
     return redirect(routes.authentication.signIn);
   }
 
-  if (session.user.role !== "SUPERUSER") {
-    return (
-      <Center>
-        <Card shadow="lg" radius="lg" w={{ base: "99%", xl: "80%" }} maw={500}>
-          <Blockquote color="red.3">Unauthorized access.</Blockquote>
-        </Card>
-      </Center>
-    );
-  }
+  const accessGranted = allowedRoles.includes(session.user.role);
+
+  if (!accessGranted) return <UnAuthorized />;
 
   return (
     <AppShellHome nav={<Navbar />}>
@@ -39,6 +36,18 @@ export default async function layout({
         </aside>
         <main className={styles.main}>{children}</main>
       </div>
+    </AppShellHome>
+  );
+}
+
+function UnAuthorized() {
+  return (
+    <AppShellHome nav={<Navbar />}>
+      <Center>
+        <Card shadow="lg" radius="lg" w={{ base: "99%", xl: "80%" }} maw={500}>
+          <Blockquote color="red.3">Access denied.</Blockquote>
+        </Card>
+      </Center>
     </AppShellHome>
   );
 }
