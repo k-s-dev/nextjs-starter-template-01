@@ -1,9 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 
-// TODO: review eslint disable
-// eslint-disable-next-line
-export default function proxy(request: NextRequest) {
-  return NextResponse.next()
+export default async function proxy(request: NextRequest) {
+  const headers = new Headers(request.headers);
+  headers.set("x-current-path", request.nextUrl.pathname);
+
+  return NextResponse.next({
+    request: {
+      headers: headers,
+    },
+  });
 }
 
 // Read more: https://clerk.com/docs/quickstarts/nextjs#add-clerk-middleware-to-your-app
