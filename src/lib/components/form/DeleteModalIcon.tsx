@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { DeleteIcon } from "../icons/TooltipIcons";
-import { TServerResponsePromise } from "@/lib/utils/types";
+import { TServerResponsePromise } from "@/lib/types/serverResponse";
 
 const defaultErrorMessage = "Failed to delete resource. Please try again.";
 

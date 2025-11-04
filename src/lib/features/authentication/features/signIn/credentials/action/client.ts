@@ -3,7 +3,7 @@
 import * as v from "valibot";
 
 import { parseFormData } from "@/lib/utils/form";
-import { TServerAction } from "@/lib/utils/types";
+import { TServerAction } from "@/lib/types/serverResponse";
 import { VSSignInForm, VSSignInFormBase } from "../definitions";
 import { TUserFormState } from "@/lib/dataModels/auth/user/definitions";
 

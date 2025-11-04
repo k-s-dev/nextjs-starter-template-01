@@ -6,6 +6,10 @@ export const NavLinksPhone = dynamic(() => import("./NavLinksPhone"), {
   ssr: false,
 });
 
+export const NavLinks = dynamic(() => import("./NavLinks"), {
+  ssr: false,
+});
+
 export const NavThemeToggleButton = dynamic(
   () => import("./theme/NavThemeToggleButton"),
   {

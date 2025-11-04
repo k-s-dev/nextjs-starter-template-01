@@ -1,35 +1,47 @@
 "use client";
 
 import styles from "./NavLinks.module.scss";
-import Link from "next/link";
-import { Menu, MenuDropdown, MenuItem, MenuTarget } from "@mantine/core";
-import { PiYinYang } from "react-icons/pi";
+import { Modal, Title } from "@mantine/core";
 import { navLinks } from "./NavLinks";
 import { usePathname } from "next/navigation";
-import clsx from "clsx";
+import { theme } from "../theme";
+import { routes } from "@/lib/utils/routeMapper";
+import { useDisclosure } from "@mantine/hooks";
+import { INavLink } from "@/lib/types/navLinks";
+import { renderNavLinks } from "@/lib/utils/render/navLinks";
 
 export default function NavLinksPhone() {
   const pathname = usePathname();
+  const [opened, { open, close }] = useDisclosure(false);
 
   return (
-    <Menu>
-      <MenuTarget>
-        <PiYinYang />
-      </MenuTarget>
-      <MenuDropdown>
-        {Object.entries(navLinks).map(([k, v]) => {
-          return (
-            <MenuItem key={`${k}-phone`}>
-              <Link
-                href={v.href || "/"}
-                className={clsx(styles.link, pathname === v.href && styles.active)}
-              >
-                {v.title}
-              </Link>
-            </MenuItem>
-          );
+    <>
+      <Modal opened={opened} onClose={close} title="Authentication">
+        {/* Modal content */}
+        {navLinksPhone.map((link) => {
+          return renderNavLinks({
+            link,
+            classNames: { base: styles.link, active: styles.active },
+            pathname,
+            screen: "phone",
+            root: false,
+            close,
+          });
         })}
-      </MenuDropdown>
-    </Menu>
+      </Modal>
+
+      <Title order={6} size="h1" onClick={open}>
+        Next
+        <span style={{ color: theme.colors.green[5] }}>Demo</span>
+      </Title>
+    </>
   );
 }
+
+export const navLinksPhone: INavLink[] = [
+  {
+    title: "Home",
+    href: routes.generic.home,
+  },
+  ...navLinks,
+];

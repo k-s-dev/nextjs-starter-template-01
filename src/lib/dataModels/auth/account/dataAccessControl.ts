@@ -1,7 +1,7 @@
 "use server";
 
 import { Prisma } from "@/generated/prisma/client";
-import { TDataRequestMode } from "@/lib/utils/types";
+import { TDataRequestMode } from "@/lib/types/serverResponse";
 import { TUserPublic } from "../user/definitions";
 import prisma from "@/database/prismaClient";
 import { DbError } from "@/lib/utils/errors";

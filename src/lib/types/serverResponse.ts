@@ -12,7 +12,7 @@ export type TDataRequestMode = "server" | "client";
 
 export type TServerResponse<GData = undefined> = {
   status: "error" | "success" | "pending";
-  data?: GData | undefined;
+  data?: GData;
   errors?: string[];
   log?: unknown;
 };

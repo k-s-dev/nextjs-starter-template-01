@@ -1,10 +1,9 @@
 import styles from "./Navbar.module.scss";
 import { Suspense } from "react";
-import NavLinks from "./NavLinks";
 import NavUser from "./NavUser";
 import { Skeleton } from "@mantine/core";
-import NavThemeToggle from "./theme/NavThemeToggleWrapper";
-import { NavLinksPhone } from "./NoSsrComponents";
+import { NavLinks, NavLinksPhone } from "./NoSsrComponents";
+import NavThemeToggle from "./theme/NavThemeToggle";
 
 export default async function Navbar() {
   return (
@@ -28,7 +27,7 @@ export function NavPhoneUp() {
           <section>Search</section>
         </div>
         <div className={styles.right}>
-          <NavRightSection />
+          <NavRight />
         </div>
       </div>
     </section>
@@ -41,7 +40,7 @@ export function NavPhone() {
       <section className="media-phone">
         <div className={styles.wrapper}>
           <NavLinksPhone />
-          <NavRightSection />
+          <NavRight />
         </div>
       </section>
     </>
@@ -58,7 +57,7 @@ export function NavPhoneSearch() {
   );
 }
 
-function NavRightSection() {
+function NavRight() {
   return (
     <>
       <Suspense fallback={<Skeleton circle height={20} />}>

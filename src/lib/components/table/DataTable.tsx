@@ -37,7 +37,7 @@ import { useMemo, useState } from "react";
 import DebouncedInput from "../DebouncedInput";
 import clsx from "clsx";
 import DeleteModalIcon from "../form/DeleteModalIcon";
-import { TServerResponsePromise } from "@/lib/utils/types";
+import { TServerResponsePromise } from "@/lib/types/serverResponse";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];

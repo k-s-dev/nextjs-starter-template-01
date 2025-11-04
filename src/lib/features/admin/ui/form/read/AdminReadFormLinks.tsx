@@ -4,7 +4,7 @@ import Link from "next/link";
 import { BackIcon, EditIcon } from "@/lib/components/icons/TooltipIcons";
 import DeleteModalIcon from "@/lib/components/form/DeleteModalIcon";
 import AdminFormLinksContainer from "../AdminFormLinksContainer";
-import { TServerResponsePromise } from "@/lib/utils/types";
+import { TServerResponsePromise } from "@/lib/types/serverResponse";
 
 export default function AdminReadFormLinks({
   modelName,

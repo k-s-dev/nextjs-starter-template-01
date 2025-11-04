@@ -4,14 +4,23 @@
 
 .container {
   display: inline-flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: fn-space(8);
+}
+
+.linksContainer {
+  display: inline-flex;
   justify-content: center;
   align-items: center;
   gap: fn-space(2);
 }
 
 .link {
+  font-size: fn-font-size(7);
   padding: fn-space(1) fn-space(2);
   border-radius: fn-space(1);
+  color: var(--color-2);
   background-color: transparent;
 
   &:hover {
